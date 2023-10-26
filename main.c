@@ -1,10 +1,11 @@
 #include "ADT/ADT.h"
+#include "Lib/commands.h"
 #include <stdio.h>
 
-boolean isWordEqual(Word input,Word cek)
+boolean isWordEqual(Word input, Word cek)
 {
-    
-    if(input.Length != cek.Length)
+
+    if (input.Length != cek.Length)
     {
         return false;
     }
@@ -12,38 +13,31 @@ boolean isWordEqual(Word input,Word cek)
     {
         for (int i = 0; i < input.Length; i++)
         {
-            if(input.TabWord[i] != cek.TabWord[i])
+            if (input.TabWord[i] != cek.TabWord[i])
             {
                 return false;
             }
         }
-        return true;     
+        return true;
     }
-    
 }
-
 
 int main()
 {
     boolean runProgram = true;
-    Word keluarprogram = {"KELUAR",6};
-    Word kicauCommand = {"KICAU",5};
+
     while (runProgram)
     {
         printf(">> ");
         STARTWORD();
-        //command.tabword = currentWord.tabword  & command.length = currentWord.length
+        // command.tabword = currentWord.tabword  & command.length = currentWord.length
         Word command = currentWord;
-        if (isWordEqual(command,keluarprogram))
+        if (isWordEqual(command, tutupProgramCmd))
         {
             fclose(pita);
             runProgram = false;
-            printf("keluar program\n");
-
+            printf("Anda telah keluar dari program BurBir. Sampai jumpa di penjelajahan berikutnya.\n");
         }
     }
     return 0;
-
 }
-
-

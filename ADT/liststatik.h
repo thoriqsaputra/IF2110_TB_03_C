@@ -9,7 +9,7 @@
 #include "boolean.h"
 
 /*  Kamus Umum */
-#define CAPACITY 100
+#define CAPACITYSTATIK 100
 /* Kapasitas penyimpanan */
 #define IDX_MIN 0
 /* Indeks minimum list */
@@ -23,9 +23,9 @@ typedef int ElType; /* type elemen List */
 typedef int IdxType;
 typedef struct
 {
-   ElType contents[CAPACITY]; /* memori tempat penyimpan elemen (container) */
+   ElType contents[CAPACITYSTATIK]; /* memori tempat penyimpan elemen (container) */
 } ListStatik;
-/* Indeks yang digunakan [0..CAPACITY-1] */
+/* Indeks yang digunakan [0..CAPACITYSTATIK-1] */
 /* Jika l adalah ListStatik, cara deklarasi dan akses: */
 /* Deklarasi : l : ListStatik */
 /* Maka cara akses:
@@ -41,7 +41,7 @@ typedef struct
 /* Konstruktor : create List kosong  */
 void CreateListStatik(ListStatik *l);
 /* I.S. l sembarang */
-/* F.S. Terbentuk List l kosong dengan kapasitas CAPACITY */
+/* F.S. Terbentuk List l kosong dengan kapasitas CAPACITYSTATIK */
 /* Proses: Inisialisasi semua elemen List l dengan MARK */
 
 /* ********** SELEKTOR (TAMBAHAN) ********** */
@@ -81,9 +81,9 @@ void readListStatik(ListStatik *l);
 /* F.S. List l terdefinisi */
 /* Proses: membaca banyaknya elemen l dan mengisi nilainya */
 /* 1. Baca banyaknya elemen diakhiri enter, misalnya n */
-/*    Pembacaan diulangi sampai didapat n yang benar yaitu 0 <= n <= CAPACITY */
+/*    Pembacaan diulangi sampai didapat n yang benar yaitu 0 <= n <= CAPACITYSTATIK */
 /*    Jika n tidak valid, tidak diberikan pesan kesalahan */
-/* 2. Jika 0 < n <= CAPACITY; Lakukan n kali:
+/* 2. Jika 0 < n <= CAPACITYSTATIK; Lakukan n kali:
           Baca elemen mulai dari indeks 0 satu per satu diakhiri enter */
 /*    Jika n = 0; hanya terbentuk List kosong */
 void printListStatik(ListStatik l);

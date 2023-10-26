@@ -15,7 +15,7 @@ boolean isEmptyQueue(Queue q)
 
 boolean isFullQueue(Queue q)
 {
-    return IDX_HEAD(q) == (IDX_TAIL(q) + 1) % CAPACITY;
+    return IDX_HEAD(q) == (IDX_TAIL(q) + 1) % CAPACITYQUEUE;
 }
 
 int lengthQueue(Queue q)
@@ -32,7 +32,7 @@ int lengthQueue(Queue q)
         }
         else if (IDX_TAIL(q) < IDX_HEAD(q))
         {
-            return (IDX_TAIL(q) + CAPACITY - IDX_HEAD(q) + 1);
+            return (IDX_TAIL(q) + CAPACITYQUEUE - IDX_HEAD(q) + 1);
         }
         else
         {
@@ -52,7 +52,7 @@ void enqueue(Queue *q, ElType val)
     }
     else
     {
-        IDX_TAIL(*q) = (IDX_TAIL(*q) + 1) % CAPACITY;
+        IDX_TAIL(*q) = (IDX_TAIL(*q) + 1) % CAPACITYQUEUE;
         TAIL(*q) = val;
     }
 }
@@ -68,7 +68,7 @@ void dequeue(Queue *q, ElType *val)
     else
     {
         *val = HEAD(*q);
-        IDX_HEAD(*q) = (IDX_HEAD(*q) + 1) % CAPACITY;
+        IDX_HEAD(*q) = (IDX_HEAD(*q) + 1) % CAPACITYQUEUE;
     }
 }
 

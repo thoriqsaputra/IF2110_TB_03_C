@@ -6,7 +6,7 @@
 void CreateListStatik(ListStatik *l)
 {
     int i;
-    for (i = 0; i < CAPACITY; i++)
+    for (i = 0; i < CAPACITYSTATIK; i++)
     {
         ELMTListStatik(*l, i) = MARK;
     }
@@ -15,7 +15,7 @@ void CreateListStatik(ListStatik *l)
 int listLengthListStatik(ListStatik l)
 {
     int i = 0, panjang = 0;
-    while (ELMTListStatik(l, i) != MARK && i < CAPACITY)
+    while (ELMTListStatik(l, i) != MARK && i < CAPACITYSTATIK)
     {
         panjang += 1;
         i += 1;
@@ -35,7 +35,7 @@ IdxType getLastIdxListStatik(ListStatik l)
 
 boolean isIdxValidListStatik(ListStatik l, IdxType i)
 {
-    return (i >= 0 && i < CAPACITY);
+    return (i >= 0 && i < CAPACITYSTATIK);
 }
 
 boolean isIdxEffListStatik(ListStatik l, IdxType i)
@@ -50,7 +50,7 @@ boolean isEmptyListStatik(ListStatik l)
 
 boolean isFullListStatik(ListStatik l)
 {
-    return (ELMTListStatik(l, CAPACITY - 1) != MARK);
+    return (ELMTListStatik(l, CAPACITYSTATIK - 1) != MARK);
 }
 
 void readListStatik(ListStatik *l)
@@ -58,7 +58,7 @@ void readListStatik(ListStatik *l)
     CreateListStatik(l);
     int n, i, m;
     scanf("%d", &n);
-    while (n < 0 || n > CAPACITY)
+    while (n < 0 || n > CAPACITYSTATIK)
     {
         scanf("%d", &n);
     }
@@ -179,18 +179,18 @@ void insertAtListStatik(ListStatik *l, ElType val, IdxType idx)
 
 void insertLastListStatik(ListStatik *l, ElType val)
 {
-    ELMTListStatik(*l, listLength(*l)) = val;
+    ELMTListStatik(*l, listLengthListStatik(*l)) = val;
 }
 
 void deleteFirstListStatik(ListStatik *l, ElType *val)
 {
     int i;
     *val = ELMTListStatik(*l, 0);
-    for (i = 0; i < listLength(*l) - 1; i++)
+    for (i = 0; i < listLengthListStatik(*l) - 1; i++)
     {
         ELMTListStatik(*l, i) = ELMTListStatik(*l, i + 1);
     }
-    ELMTListStatik(*l, listLength(*l) - 1) = MARK;
+    ELMTListStatik(*l, listLengthListStatik(*l) - 1) = MARK;
 }
 
 void deleteAtListStatik(ListStatik *l, ElType *val, IdxType idx)

@@ -18,7 +18,7 @@ int NBElmt (PrioQueueChar Q){
 
 /* *** Kreator *** */
 void MakeEmpty (PrioQueueChar * Q, int Max){
-    (*Q).T = (infotype*) malloc (sizeof(infotype) * (Max + 1));
+    (*Q).T = (infotypePQ*) malloc (sizeof(infotypePQ) * (Max + 1));
     if ((*Q).T == NULL){
         MaxPQ(*Q) = 0;
     } else{
@@ -39,7 +39,7 @@ void DeAlokasi(PrioQueueChar * Q){
 
 
 /* *** Primitif Add/Delete *** */
-void Enqueue (PrioQueueChar * Q, infotype X){
+void Enqueue (PrioQueueChar * Q, infotypePQ X){
     if (IsEmpty(*Q)){
         Head(*Q) = 0;
         Tail(*Q) = 0;
@@ -49,7 +49,7 @@ void Enqueue (PrioQueueChar * Q, infotype X){
         InfoTail(*Q) = X;
         
         address i;
-        infotype temp;
+        infotypePQ temp;
         for(i = Head(*Q); i != Tail(*Q); i = (i + 1) % MaxPQ(*Q)){
             if (Prio(InfoTail(*Q)) < Prio(Elmt(*Q,i))){
                 temp = InfoTail(*Q);
@@ -60,7 +60,7 @@ void Enqueue (PrioQueueChar * Q, infotype X){
     }
 }
 
-void Dequeue (PrioQueueChar * Q, infotype * X){
+void Dequeue (PrioQueueChar * Q, infotypePQ * X){
     *X = InfoHead(*Q);
     if (NBElmt(*Q) == 1){
         Head(*Q) = Nil;

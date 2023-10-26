@@ -4,13 +4,12 @@
 #include "charmachine.h"
 #include "boolean.h"
 
-
 boolean EndWord;
 Word currentWord;
 
 void IgnoreBlanks()
 {
-    while (currentChar == BLANK && currentChar != MARK)
+    while (currentChar == BLANK && currentChar != MARKC)
     {
         ADV();
     }
@@ -21,7 +20,7 @@ void STARTWORD()
     START();
     IgnoreBlanks();
     ignoreNewLine();
-    if (currentChar == MARK)
+    if (currentChar == MARKC)
     {
         EndWord = true;
     }
@@ -35,7 +34,7 @@ void STARTWORD()
 void ADVWORD()
 {
     IgnoreBlanks();
-    if (currentChar == MARK)
+    if (currentChar == MARKC)
     {
         EndWord = true;
     }
@@ -49,7 +48,7 @@ void ADVWORD()
 void CopyWord()
 {
     int i = 0;
-    while (currentChar != MARK && currentChar != BLANK)
+    while (currentChar != MARKC && currentChar != BLANK)
     {
         currentWord.TabWord[i] = currentChar;
         ADV();
@@ -63,7 +62,7 @@ void CopyWord()
 }
 void ignoreNewLine()
 {
-    while (currentChar == newLine && currentChar != MARK)
+    while (currentChar == newLine && currentChar != MARKC)
     {
         ADV();
     }

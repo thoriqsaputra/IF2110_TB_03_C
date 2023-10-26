@@ -20,9 +20,9 @@ typedef int ElType; /* type elemen list */
 typedef int IdxType;
 typedef struct
 {
-    ElType *buffer; /* memori tempat penyimpan elemen (container) */
-    int nEff;       /* >=0, banyaknya elemen efektif */
-    int capacity;   /* ukuran elemen */
+   ElType *buffer; /* memori tempat penyimpan elemen (container) */
+   int nEff;       /* >=0, banyaknya elemen efektif */
+   int capacity;   /* ukuran elemen */
 } ListDin;
 /* Indeks yang digunakan [0..capacity-1] */
 /* Jika l adalah : ListDin, cara deklarasi dan akses: */
@@ -40,7 +40,7 @@ typedef struct
 #define NEFF(l) (l).nEff
 #define BUFFER(l) (l).buffer
 #define ELMTListDin(l, i) (l).buffer[i]
-#define CAPACITY(l) (l).capacity
+#define CAPACITYDINAMIS(l) (l).capacity
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create list kosong  */
@@ -54,7 +54,7 @@ void dealocateListDin(ListDin *l);
 
 /* ********** SELEKTOR (TAMBAHAN) ********** */
 /* *** Banyaknya elemen *** */
-int listLengthListDin(ListDin l);
+int lengthListDin(ListDin l);
 /* Mengirimkan banyaknya elemen efektif list */
 /* Mengirimkan nol jika list l kosong */
 /* *** Daya tampung container *** */
@@ -135,7 +135,7 @@ void extremeValuesListDin(ListDin l, ElType *max, ElType *min);
 void copyListDin(ListDin lIn, ListDin *lOut);
 /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
 /* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */
-/* Proses : Menyalin isi lIn ke lOut */ 
+/* Proses : Menyalin isi lIn ke lOut */
 ElType sumListDin(ListDin l);
 /* Menghasilkan hasil penjumlahan semua elemen l */
 /* Jika l kosong menghasilkan 0 */

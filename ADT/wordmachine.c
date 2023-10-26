@@ -4,6 +4,7 @@
 #include "charmachine.h"
 #include "boolean.h"
 
+
 boolean EndWord;
 Word currentWord;
 
@@ -19,6 +20,7 @@ void STARTWORD()
 {
     START();
     IgnoreBlanks();
+    ignoreNewLine();
     if (currentChar == MARK)
     {
         EndWord = true;
@@ -58,4 +60,11 @@ void CopyWord()
         i = NMax;
     }
     currentWord.Length = i;
+}
+void ignoreNewLine()
+{
+    while (currentChar == newLine && currentChar != MARK)
+    {
+        ADV();
+    }
 }

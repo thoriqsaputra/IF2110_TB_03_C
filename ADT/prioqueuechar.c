@@ -8,11 +8,11 @@ boolean IsEmpty (PrioQueueChar Q){
 }
 
 boolean IsFull (PrioQueueChar Q){
-    return (NBElmt(Q) == MaxEl(Q));
+    return (NBElmt(Q) == MaxPQ(Q));
 }
 
 int NBElmt (PrioQueueChar Q){
-    return (Tail(Q) - Head(Q) + MaxEl(Q)) % MaxEl(Q) + !IsEmpty(Q);
+    return (Tail(Q) - Head(Q) + MaxPQ(Q)) % MaxPQ(Q) + !IsEmpty(Q);
 }
 
 
@@ -20,9 +20,9 @@ int NBElmt (PrioQueueChar Q){
 void MakeEmpty (PrioQueueChar * Q, int Max){
     (*Q).T = (infotype*) malloc (sizeof(infotype) * (Max + 1));
     if ((*Q).T == NULL){
-        MaxEl(*Q) = 0;
+        MaxPQ(*Q) = 0;
     } else{
-        MaxEl(*Q) = Max;
+        MaxPQ(*Q) = Max;
         Head(*Q) = Nil;
         Tail(*Q) = Nil;
     }
@@ -31,7 +31,7 @@ void MakeEmpty (PrioQueueChar * Q, int Max){
 
 /* *** Destruktor *** */
 void DeAlokasi(PrioQueueChar * Q){
-    MaxEl(*Q) = 0;
+    MaxPQ(*Q) = 0;
     Head(*Q) = Nil;
     Tail(*Q) = Nil;
     free((*Q).T);
@@ -45,12 +45,12 @@ void Enqueue (PrioQueueChar * Q, infotype X){
         Tail(*Q) = 0;
         InfoTail(*Q) = X;
     } else{
-        Tail(*Q) = (Tail(*Q) + 1) % MaxEl(*Q);
+        Tail(*Q) = (Tail(*Q) + 1) % MaxPQ(*Q);
         InfoTail(*Q) = X;
         
         address i;
         infotype temp;
-        for(i = Head(*Q); i != Tail(*Q); i = (i + 1) % MaxEl(*Q)){
+        for(i = Head(*Q); i != Tail(*Q); i = (i + 1) % MaxPQ(*Q)){
             if (Prio(InfoTail(*Q)) < Prio(Elmt(*Q,i))){
                 temp = InfoTail(*Q);
                 InfoTail(*Q) = Elmt(*Q,i);
@@ -66,7 +66,7 @@ void Dequeue (PrioQueueChar * Q, infotype * X){
         Head(*Q) = Nil;
         Tail(*Q) = Nil;
     } else{
-        Head(*Q) = (Head(*Q) + 1) % MaxEl(*Q);
+        Head(*Q) = (Head(*Q) + 1) % MaxPQ(*Q);
     }
 }
 
@@ -76,7 +76,7 @@ void PrintPrioQueueChar (PrioQueueChar Q){
     int i;
 
     if (!IsEmpty(Q)){
-        for (i = Head(Q); i != Tail(Q); i = (i+1) % MaxEl(Q)){
+        for (i = Head(Q); i != Tail(Q); i = (i+1) % MaxPQ(Q)){
             printf("%d %c\n",Prio(Elmt(Q,i)),Info(Elmt(Q,i)));
         }
         printf("%d %c\n",Prio(Elmt(Q,i)),Info(Elmt(Q,i)));

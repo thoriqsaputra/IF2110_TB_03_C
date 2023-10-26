@@ -23,7 +23,7 @@ typedef struct {
     infotype * T;   /* tabel penyimpan elemen */
     address HEAD;  /* alamat penghapusan */
     address TAIL;  /* alamat penambahan */
-    int MaxEl;     /* Max elemen queue */
+    int MaxPQ;     /* Max elemen queue */
 } PrioQueueChar;
 /* Definisi PrioQueueChar kosong: HEAD=Nil; TAIL=Nil. */
 /* Catatan implementasi: T[0] tidak pernah dipakai */
@@ -36,7 +36,7 @@ typedef struct {
 #define Tail(Q)     (Q).TAIL
 #define InfoHead(Q) (Q).T[(Q).HEAD]
 #define InfoTail(Q) (Q).T[(Q).TAIL]
-#define MaxEl(Q)    (Q).MaxEl
+#define MaxPQ(Q)    (Q).MaxPQ
 #define Elmt(Q,i)   (Q).T[(i)]
 
 /* ********* Prototype ********* */
@@ -44,7 +44,7 @@ boolean IsEmpty (PrioQueueChar Q);
 /* Mengirim true jika Q kosong: lihat definisi di atas */
 boolean IsFull (PrioQueueChar Q);
 /* Mengirim true jika tabel penampung elemen Q sudah penuh */
-/* yaitu mengandung elemen sebanyak MaxEl */
+/* yaitu mengandung elemen sebanyak MaxPQ */
 int NBElmt (PrioQueueChar Q);
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika Q kosong. */
 
@@ -53,14 +53,14 @@ void MakeEmpty (PrioQueueChar * Q, int Max);
 /* I.S. sembarang */
 /* F.S. Sebuah Q kosong terbentuk dan salah satu kondisi sbb: */
 /* Jika alokasi berhasil, Tabel memori dialokasi berukuran Max+1 */
-/* atau : jika alokasi gagal, Q kosong dg MaxEl=0 */
+/* atau : jika alokasi gagal, Q kosong dg MaxPQ=0 */
 /* Proses : Melakukan alokasi, membuat sebuah Q kosong */
 
 /* *** Destruktor *** */
 void DeAlokasi(PrioQueueChar * Q);
 /* Proses: Mengembalikan memori Q */
 /* I.S. Q pernah dialokasi */
-/* F.S. Q menjadi tidak terdefinisi lagi, MaxEl(Q) diset 0 */
+/* F.S. Q menjadi tidak terdefinisi lagi, MaxPQ(Q) diset 0 */
 
 /* *** Primitif Add/Delete *** */
 void Enqueue (PrioQueueChar * Q, infotype X);

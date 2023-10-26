@@ -1,12 +1,6 @@
 #include "stack.h"
 #include "boolean.h"
 
-#define Nil -1 // stack dengan elemen kosong
-#define MaxEl 100
-
-#define Top(S) (S).TOP
-#define InfoTop(S) (S).T[(S).TOP]
-
 void CreateStack(Stack *S)
 {
     Top(*S) = Nil;
@@ -19,7 +13,7 @@ boolean IsEmptyStack(Stack S)
 
 boolean IsFullStack(Stack S)
 {
-    return Top(S) == MaxEl - 1;
+    return Top(S) == MaxST - 1;
 }
 
 void Push(Stack *S, infotype X)

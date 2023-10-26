@@ -20,7 +20,7 @@ boolean isFullQueue(Queue q)
 
 int lengthQueue(Queue q)
 {
-    if (isEmpty(q))
+    if (isEmptyQueue(q))
     {
         return 0;
     }
@@ -43,7 +43,7 @@ int lengthQueue(Queue q)
 
 void enqueue(Queue *q, ElType val)
 {
-    if (isEmpty(*q))
+    if (isEmptyQueue(*q))
     {
         IDX_HEAD(*q) = 0;
         IDX_TAIL(*q) = 0;
@@ -59,7 +59,7 @@ void enqueue(Queue *q, ElType val)
 
 void dequeue(Queue *q, ElType *val)
 {
-    if (length(*q) == 1)
+    if (lengthQueue(*q) == 1)
     {
         *val = HEAD(*q);
         IDX_HEAD(*q) = IDX_UNDEF;
@@ -74,14 +74,14 @@ void dequeue(Queue *q, ElType *val)
 
 void displayQueue(Queue q)
 {
-    if (isEmpty(q))
+    if (isEmptyQueue(q))
     {
         printf("[]\n");
     }
     else
     {
         printf("[");
-        int len = length(q), i, temp, thead = IDX_HEAD(q);
+        int len = lengthQueue(q), i, temp, thead = IDX_HEAD(q);
         for (i = thead; i < thead + len; i++)
         {
             dequeue(&q, &temp);

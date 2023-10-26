@@ -26,7 +26,7 @@ void STARTWORDFILE(char filename[])
     else
     {
         EndWord = false;
-        CopyWord();
+        CopyWordFile();
     }
 
 }
@@ -71,13 +71,13 @@ void ADVWORDFILE()
         else
         {
             ignoreNewLine();
-            CopyWord();
+            CopyWordFile();
         }
 }
 void CopyWord()
 {
     int i = 0;
-    while (currentChar != MARKC && currentChar != newLine)
+    while (currentChar != MARKC && currentChar != BLANK)
     {
         currentWord.TabWord[i] = currentChar;
         ADV();
@@ -92,7 +92,7 @@ void CopyWord()
 void CopyWordFile()
 {
     int i = 0;
-    while (currentChar != MARKC)
+    while (currentChar != MARKC && currentChar != newLine)
     {
         currentWord.TabWord[i] = currentChar;
         ADV();

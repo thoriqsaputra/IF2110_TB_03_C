@@ -14,7 +14,22 @@ void IgnoreBlanks()
         ADV();
     }
 }
+void STARTWORDFILE(char filename[])
+{
+    STARTFILE(filename);
+    IgnoreBlanks();
+    ignoreNewLine();
+    if (currentChar == MARKC)
+    {
+        EndWord = true;
+    }
+    else
+    {
+        EndWord = false;
+        CopyWord();
+    }
 
+}
 void STARTWORD()
 {
     START();
@@ -29,6 +44,7 @@ void STARTWORD()
         EndWord = false;
         CopyWord();
     }
+    
 }
 
 void ADVWORD()
@@ -44,11 +60,39 @@ void ADVWORD()
         IgnoreBlanks();
     }
 }
-
+void ADVWORDFILE()
+// ada \n nya
+{
+    IgnoreBlanks();
+        if (currentChar == MARKC)
+        {
+            EndWord = true;
+        }
+        else
+        {
+            ignoreNewLine();
+            CopyWord();
+        }
+}
 void CopyWord()
 {
     int i = 0;
-    while (currentChar != MARKC && currentChar != BLANK)
+    while (currentChar != MARKC && currentChar != newLine)
+    {
+        currentWord.TabWord[i] = currentChar;
+        ADV();
+        i++;
+    }
+    if (i > NMax)
+    {
+        i = NMax;
+    }
+    currentWord.Length = i;
+}
+void CopyWordFile()
+{
+    int i = 0;
+    while (currentChar != MARKC)
     {
         currentWord.TabWord[i] = currentChar;
         ADV();

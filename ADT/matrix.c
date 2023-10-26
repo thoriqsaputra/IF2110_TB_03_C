@@ -24,7 +24,7 @@ IdxType getLastIdxCol(Matrix m)
     return COL_EFF(m) - 1;
 }
 
-boolean isIdxEff(Matrix m, IdxType i, IdxType j)
+boolean isIdxEffMatrix(Matrix m, IdxType i, IdxType j)
 {
     return (0 <= i && i <= ROW_EFF(m) - 1 && 0 <= j && j <= COL_EFF(m) - 1);
 }

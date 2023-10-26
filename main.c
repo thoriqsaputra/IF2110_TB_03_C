@@ -32,11 +32,24 @@ int main()
         STARTWORD();
         // command.tabword = currentWord.tabword  & command.length = currentWord.length
         Word command = currentWord;
+
         if (isWordEqual(command, tutupProgramCmd))
         {
             fclose(pita);
             runProgram = false;
             printf("Anda telah keluar dari program BurBir. Sampai jumpa di penjelajahan berikutnya.\n");
+        }
+        else if (isWordEqual(command, kicauCmd))
+        {
+            ADVWORD();
+            Word kicau = currentWord;
+            printf("kamu masuk kicau\n");
+
+            for (int i = 0; i < kicau.Length; i++)
+            {
+                printf("%c", kicau.TabWord[i]);
+            }
+            printf("\n");
         }
     }
     return 0;

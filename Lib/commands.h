@@ -1,4 +1,4 @@
-#include "./ADT/wordmachine.h"
+#include "../ADT/wordmachine.h"
 
 // Pengguna
 Word daftarCmd = {"DAFTAR", 6};

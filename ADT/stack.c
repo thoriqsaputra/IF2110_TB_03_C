@@ -7,17 +7,17 @@
 #define Top(S) (S).TOP
 #define InfoTop(S) (S).T[(S).TOP]
 
-void CreateEmpty(Stack *S)
+void CreateStack(Stack *S)
 {
     Top(*S) = Nil;
 }
 
-boolean IsEmpty(Stack S)
+boolean IsEmptyStack(Stack S)
 {
     return Top(S) == Nil;
 }
 
-boolean IsFull(Stack S)
+boolean IsFullStack(Stack S)
 {
     return Top(S) == MaxEl - 1;
 }

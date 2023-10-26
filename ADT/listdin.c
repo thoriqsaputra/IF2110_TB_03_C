@@ -11,49 +11,49 @@ void CreateListDin(ListDin *l, int capacity)
     CAPACITY(*l) = capacity;
 }
 
-void dealocateList(ListDin *l)
+void dealocateListDin(ListDin *l)
 {
     free(BUFFER(*l));
     CAPACITY(*l) = 0;
     NEFF(*l) = 0;
 }
 
-int listLength(ListDin l)
+int listLengthListDin(ListDin l)
 {
     return NEFF(l);
 }
 
-IdxType getFirstIdx(ListDin l)
+IdxType getFirstIdxListDin(ListDin l)
 {
     return IDX_MIN;
 }
 
-IdxType getLastIdx(ListDin l)
+IdxType getLastIdxListDin(ListDin l)
 {
     return NEFF(l) - 1;
 }
 
-boolean isIdxValid(ListDin l, IdxType i)
+boolean isIdxValidListDin(ListDin l, IdxType i)
 {
     return (i >= 0) && (i < CAPACITY(l));
 }
 
-boolean isIdxEff(ListDin l, IdxType i)
+boolean isIdxEffListDin(ListDin l, IdxType i)
 {
     return (i >= 0) && (i < NEFF(l));
 }
 
-boolean isEmpty(ListDin l)
+boolean isEmptyListDin(ListDin l)
 {
     return NEFF(l) == 0;
 }
 
-boolean isFull(ListDin l)
+boolean isFullListDin(ListDin l)
 {
     return NEFF(l) == CAPACITY(l);
 }
 
-void readList(ListDin *l)
+void readListListDin(ListDin *l)
 {
     int n, i, m;
     scanf("%d", &n);
@@ -69,7 +69,7 @@ void readList(ListDin *l)
     NEFF(*l) = n;
 }
 
-void printList(ListDin l)
+void printListListDin(ListDin l)
 {
     int i;
     printf("[");
@@ -87,7 +87,7 @@ void printList(ListDin l)
     printf("]");
 }
 
-ListDin plusMinusList(ListDin l1, ListDin l2, boolean plus)
+ListDin plusMinusListDin(ListDin l1, ListDin l2, boolean plus)
 {
     int i;
     ListDin temp;
@@ -111,7 +111,7 @@ ListDin plusMinusList(ListDin l1, ListDin l2, boolean plus)
     }
 }
 
-boolean isListEqual(ListDin l1, ListDin l2)
+boolean isListDinEqual(ListDin l1, ListDin l2)
 {
     if (NEFF(l1) == NEFF(l2))
     {
@@ -131,7 +131,7 @@ boolean isListEqual(ListDin l1, ListDin l2)
     }
 }
 
-IdxType indexOf(ListDin l, ElType val)
+IdxType indexOfListDin(ListDin l, ElType val)
 {
     int i;
     for (i = 0; i < NEFF(l); i++)
@@ -144,7 +144,7 @@ IdxType indexOf(ListDin l, ElType val)
     return IDX_UNDEF;
 }
 
-void extremeValues(ListDin l, ElType *max, ElType *min)
+void extremeValuesListDin(ListDin l, ElType *max, ElType *min)
 {
     int i;
     *max = ELMT(l, 0);
@@ -161,7 +161,7 @@ void extremeValues(ListDin l, ElType *max, ElType *min)
         }
     }
 }
-void copyList(ListDin lIn, ListDin *lOut)
+void copyListDin(ListDin lIn, ListDin *lOut)
 {
     int i;
     dealocateList(lOut);
@@ -173,7 +173,7 @@ void copyList(ListDin lIn, ListDin *lOut)
     }
 }
 
-ElType sumList(ListDin l)
+ElType sumListDin(ListDin l)
 {
     int i;
     ElType sum = 0;
@@ -184,7 +184,7 @@ ElType sumList(ListDin l)
     return sum;
 }
 
-int countVal(ListDin l, ElType val)
+int countValListDin(ListDin l, ElType val)
 {
     int i, sum = 0;
     for (i = 0; i < NEFF(l); i++)
@@ -197,7 +197,7 @@ int countVal(ListDin l, ElType val)
     return sum;
 }
 
-void sort(ListDin *l, boolean asc)
+void sortListDin(ListDin *l, boolean asc)
 {
     int i, j, swapped, temp;
     if (asc)
@@ -246,19 +246,19 @@ void sort(ListDin *l, boolean asc)
     }
 }
 
-void insertLast(ListDin *l, ElType val)
+void insertLastListDin(ListDin *l, ElType val)
 {
     ELMT(*l, listLength(*l)) = val;
     NEFF(*l) += 1;
 }
 
-void deleteLast(ListDin *l, ElType *val)
+void deleteLastListDin(ListDin *l, ElType *val)
 {
     *val = ELMT(*l, listLength(*l) - 1);
     NEFF(*l) -= 1;
 }
 
-void expandList(ListDin *l, int num)
+void expandListDin(ListDin *l, int num)
 {
     ListDin temp;
     CreateListDin(&temp, CAPACITY(*l) + num);
@@ -270,7 +270,7 @@ void expandList(ListDin *l, int num)
     dealocateList(&temp);
 }
 
-void shrinkList(ListDin *l, int num)
+void shrinkListDin(ListDin *l, int num)
 {
     ListDin temp;
     CreateListDin(&temp, CAPACITY(*l) - num);
@@ -282,7 +282,7 @@ void shrinkList(ListDin *l, int num)
     dealocateList(&temp);
 }
 
-void compressList(ListDin *l)
+void compressListDin(ListDin *l)
 {
     shrinkList(l, CAPACITY(*l) - NEFF(*l));
 }

@@ -8,17 +8,17 @@ void CreateQueue(Queue *q)
     IDX_TAIL(*q) = IDX_UNDEF;
 }
 
-boolean isEmpty(Queue q)
+boolean isEmptyQueue(Queue q)
 {
     return IDX_HEAD(q) == IDX_UNDEF && IDX_TAIL(q) == IDX_UNDEF;
 }
 
-boolean isFull(Queue q)
+boolean isFullQueue(Queue q)
 {
     return IDX_HEAD(q) == (IDX_TAIL(q) + 1) % CAPACITY;
 }
 
-int length(Queue q)
+int lengthQueue(Queue q)
 {
     if (isEmpty(q))
     {

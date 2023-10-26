@@ -1,0 +1,1 @@
+gcc main.c ADT/liststatik.c ADT/listdin.c ADT/matrix.c ADT/charmachine.c ADT/wordmachine.c ADT/stack.c ADT/queue.c -o main -lm

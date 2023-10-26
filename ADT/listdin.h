@@ -1,174 +1,184 @@
-/* MODUL LIST INTEGER STATIK DENGAN ELEMEN POSITIF */
-/* Berisi definisi dan semua primitif pemrosesan list integer statik dengan elemen positif */
+/* MODUL INTEGER DYNAMIC LIST */
+/* Berisi definisi dan semua primitif pemrosesan list integer */
 /* Penempatan elemen selalu rapat kiri */
-/* Banyaknya elemen didefinisikan secara implisit, memori list statik */
+/* Versi II : dengan banyaknya elemen didefinisikan secara eksplisit,
+   memori list dinamik */
 
-#ifndef LISTSTATIK_H
-#define LISTSTATIK_H
+#ifndef LISTDIN_H
+#define LISTDIN_H
 
 #include "boolean.h"
 
 /*  Kamus Umum */
-#define CAPACITY 100
-/* Kapasitas penyimpanan */
 #define IDX_MIN 0
 /* Indeks minimum list */
 #define IDX_UNDEF -1
 /* Indeks tak terdefinisi*/
-#define MARK -9999
-/* Nilai elemen tak terdefinisi*/
 
 /* Definisi elemen dan koleksi objek */
-typedef int ElType;  /* type elemen List */
+typedef int ElType; /* type elemen list */
 typedef int IdxType;
-typedef struct {
-   ElType contents[CAPACITY]; /* memori tempat penyimpan elemen (container) */
-} ListStatik;
-/* Indeks yang digunakan [0..CAPACITY-1] */
-/* Jika l adalah ListStatik, cara deklarasi dan akses: */
-/* Deklarasi : l : ListStatik */
-/* Maka cara akses: 
-   ELMT(l,i) untuk mengakses elemen ke-i */
-/* Definisi : 
-   List kosong: semua elemen bernilai MARK
-   Definisi elemen pertama: ELMT(l,i) dengan i=0 */
+typedef struct
+{
+    ElType *buffer; /* memori tempat penyimpan elemen (container) */
+    int nEff;       /* >=0, banyaknya elemen efektif */
+    int capacity;   /* ukuran elemen */
+} ListDin;
+/* Indeks yang digunakan [0..capacity-1] */
+/* Jika l adalah : ListDin, cara deklarasi dan akses: */
+/* Deklarasi : l : ListDin */
+/* Maka cara akses:
+   l.nEff      untuk mengetahui banyaknya elemen
+   l.buffer    untuk mengakses seluruh nilai elemen list
+   l.buffer[i] untuk mengakses elemen ke-i */
+/* Definisi :
+  list kosong: l.nEff = 0
+  Definisi elemen pertama : l.buffer[i] dengan i=0
+  Definisi elemen terakhir yang terdefinisi: l.buffer[i] dengan i=l.capacity */
 
 /* ********** SELEKTOR ********** */
-#define ELMT(l, i) (l).contents[(i)]
+#define NEFF(l) (l).nEff
+#define BUFFER(l) (l).buffer
+#define ELMT(l, i) (l).buffer[i]
+#define CAPACITY(l) (l).capacity
 
 /* ********** KONSTRUKTOR ********** */
-/* Konstruktor : create List kosong  */
-void CreateListStatik(ListStatik *l);
-/* I.S. l sembarang */
-/* F.S. Terbentuk List l kosong dengan kapasitas CAPACITY */
-/* Proses: Inisialisasi semua elemen List l dengan MARK */
+/* Konstruktor : create list kosong  */
+void CreateListDin(ListDin *l, int capacity);
+/* I.S. l sembarang, capacity > 0 */
+/* F.S. Terbentuk list dinamis l kosong dengan kapasitas capacity */
+
+void dealocateList(ListDin *l);
+/* I.S. l terdefinisi; */
+/* F.S. (l) dikembalikan ke system, CAPACITY(l)=0; NEFF(l)=0 */
 
 /* ********** SELEKTOR (TAMBAHAN) ********** */
 /* *** Banyaknya elemen *** */
-int listLength(ListStatik l);
-/* Mengirimkan banyaknya elemen efektif List */
-/* Mengirimkan nol jika List kosong */  
+int listLength(ListDin l);
+/* Mengirimkan banyaknya elemen efektif list */
+/* Mengirimkan nol jika list l kosong */
+/* *** Daya tampung container *** */
 
 /* *** Selektor INDEKS *** */
-IdxType getFirstIdx(ListStatik l);
+IdxType getFirstIdx(ListDin l);
 /* Prekondisi : List l tidak kosong */
 /* Mengirimkan indeks elemen l pertama */
-IdxType getLastIdx(ListStatik l);
+IdxType getLastIdx(ListDin l);
 /* Prekondisi : List l tidak kosong */
 /* Mengirimkan indeks elemen l terakhir */
 
 /* ********** Test Indeks yang valid ********** */
-boolean isIdxValid(ListStatik l, IdxType i);
-/* Mengirimkan true jika i adalah indeks yang valid utk kapasitas List l */
+boolean isIdxValid(ListDin l, IdxType i);
+/* Mengirimkan true jika i adalah indeks yang valid utk kapasitas list l */
 /* yaitu antara indeks yang terdefinisi utk container*/
-boolean isIdxEff(ListStatik l, IdxType i);
-/* Mengirimkan true jika i adalah indeks yang terdefinisi utk List l */
-/* yaitu antara 0..length(l)-1 */
+boolean isIdxEff(ListDin l, IdxType i);
+/* Mengirimkan true jika i adalah indeks yang terdefinisi utk list */
+/* yaitu antara 0..NEFF(l) */
 
 /* ********** TEST KOSONG/PENUH ********** */
-/* *** Test List kosong *** */
-boolean isEmpty(ListStatik l);
-/* Mengirimkan true jika List l kosong, mengirimkan false jika tidak */
-/* *** Test List penuh *** */
-boolean isFull(ListStatik l);
-/* Mengirimkan true jika List l penuh, mengirimkan false jika tidak */
+/* *** Test list kosong *** */
+boolean isEmpty(ListDin l);
+/* Mengirimkan true jika list l kosong, mengirimkan false jika tidak */
+/* *** Test list penuh *** */
+boolean isFull(ListDin l);
+/* Mengirimkan true jika list l penuh, mengirimkan false jika tidak */
 
 /* ********** BACA dan TULIS dengan INPUT/OUTPUT device ********** */
-/* *** Mendefinisikan isi List dari pembacaan *** */
-void readList(ListStatik *l);
-/* I.S. l sembarang */
+/* *** Mendefinisikan isi list dari pembacaan *** */
+void readList(ListDin *l);
+/* I.S. l sembarang dan sudah dialokasikan sebelumnya */
 /* F.S. List l terdefinisi */
-/* Proses: membaca banyaknya elemen l dan mengisi nilainya */
-/* 1. Baca banyaknya elemen diakhiri enter, misalnya n */
-/*    Pembacaan diulangi sampai didapat n yang benar yaitu 0 <= n <= CAPACITY */
-/*    Jika n tidak valid, tidak diberikan pesan kesalahan */
-/* 2. Jika 0 < n <= CAPACITY; Lakukan n kali: 
-          Baca elemen mulai dari indeks 0 satu per satu diakhiri enter */
-/*    Jika n = 0; hanya terbentuk List kosong */
-void printList(ListStatik l);
-/* Proses : Menuliskan isi List dengan traversal, List ditulis di antara kurung 
-   siku; antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan 
-   karakter di depan, di tengah, atau di belakang, termasuk spasi dan enter */
+/* Proses : membaca banyaknya elemen l dan mengisi nilainya */
+/* 1. Baca banyaknya elemen diakhiri enter, misalnya N */
+/*    Pembacaan diulangi sampai didapat N yang benar yaitu 0 <= N <= CAPACITY(l) */
+/*    Jika N tidak valid, tidak diberikan pesan kesalahan */
+/* 2. Jika 0 < N <= CAPACITY(l); Lakukan N kali: Baca elemen mulai dari indeks
+      0 satu per satu diakhiri enter */
+/*    Jika N = 0; hanya terbentuk l kosong */
+void printList(ListDin l);
+/* Proses : Menuliskan isi list dengan traversal, list ditulis di antara kurung siku;
+   antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan karakter di depan,
+   di tengah, atau di belakang, termasuk spasi dan enter */
 /* I.S. l boleh kosong */
 /* F.S. Jika l tidak kosong: [e1,e2,...,en] */
 /* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
-/* Jika List kosong : menulis [] */
+/* Jika list kosong : menulis [] */
 
 /* ********** OPERATOR ARITMATIKA ********** */
-/* *** Aritmatika List : Penjumlahan, pengurangan, perkalian, ... *** */
-ListStatik plusMinusList(ListStatik l1, ListStatik l2, boolean plus);
-/* Prekondisi : l1 dan l2 berukuran sama dan tidak kosong */
-/* Jika plus = true, mengirimkan  l1+l2, yaitu setiap elemen l1 dan l2 pada 
-       indeks yang sama dijumlahkan */
-/* Jika plus = false, mengirimkan l1-l2, yaitu setiap elemen l1 dikurangi 
-       elemen l2 pada indeks yang sama */
+/* *** Aritmatika list : Penjumlahan, pengurangan, perkalian, ... *** */
+ListDin plusMinusList(ListDin l1, ListDin l2, boolean plus);
+/* Prekondisi : l1 dan l2 memiliki Neff sama dan tidak kosong */
+/* Jika plus = true, mengirimkan  l1+l2, yaitu setiap elemen l1 dan l2 pada indeks yang sama dijumlahkan */
+/* Jika plus = false, mengirimkan l1-l2, yaitu setiap elemen l1 dikurangi elemen l2 pada indeks yang sama */
 
 /* ********** OPERATOR RELASIONAL ********** */
-/* *** Operasi pembandingan List: *** */
-boolean isListEqual(ListStatik l1, ListStatik l2);
-/* Mengirimkan true jika l1 sama dengan l2 yaitu jika ukuran l1 = l2 dan semua 
-   elemennya sama */
+/* *** Operasi pembandingan list : < =, > *** */
+boolean isListEqual(ListDin l1, ListDin l2);
+/* Mengirimkan true jika l1 sama dengan l2 yaitu jika nEff l1 = l2 dan semua elemennya sama */
 
 /* ********** SEARCHING ********** */
-/* ***  Perhatian : List boleh kosong!! *** */
-int indexOf(ListStatik l, ElType val);
+/* ***  Perhatian : list boleh kosong!! *** */
+IdxType indexOf(ListDin l, ElType val);
 /* Search apakah ada elemen List l yang bernilai val */
-/* Jika ada, menghasilkan indeks i terkecil, dengan ELMT(l,i) = val */
-/* Jika tidak ada atau jika l kosong, mengirimkan IDX_UNDEF */
+/* Jika ada, menghasilkan indeks i terkecil, dengan elemen ke-i = val */
+/* Jika tidak ada, mengirimkan IDX_UNDEF */
+/* Menghasilkan indeks tak terdefinisi (IDX_UNDEF) jika List l kosong */
 /* Skema Searching yang digunakan bebas */
 
 /* ********** NILAI EKSTREM ********** */
-void extremeValues(ListStatik l, ElType *max, ElType *min);
+void extremeValues(ListDin l, ElType *max, ElType *min);
 /* I.S. List l tidak kosong */
-/* F.S. Max berisi nilai terbesar dalam l;
-        Min berisi nilai terkecil dalam l */
+/* F.S. max berisi nilai maksimum l;
+        min berisi nilai minimum l */
 
-/* ********** MENAMBAH ELEMEN ********** */
-/* *** Menambahkan elemen terakhir *** */
-void insertFirst(ListStatik *l, ElType val);
-/* Proses: Menambahkan val sebagai elemen pertama List */
-/* I.S. List l boleh kosong, tetapi tidak penuh */
-/* F.S. val adalah elemen pertama l yang baru */
-/* *** Menambahkan elemen pada index tertentu *** */
-void insertAt(ListStatik *l, ElType val, IdxType idx);
-/* Proses: Menambahkan val sebagai elemen pada index idx List */
-/* I.S. List l tidak kosong dan tidak penuh, idx merupakan index yang valid di l */
-/* F.S. val adalah elemen yang disisipkan pada index idx l */
-/* *** Menambahkan elemen terakhir *** */
-void insertLast(ListStatik *l, ElType val);
-/* Proses: Menambahkan val sebagai elemen terakhir List */
-/* I.S. List l boleh kosong, tetapi tidak penuh */
-/* F.S. val adalah elemen terakhir l yang baru */
-
-/* ********** MENGHAPUS ELEMEN ********** */
-/* *** Menghapus elemen pertama *** */
-void deleteFirst(ListStatik *l, ElType *val);
-/* Proses : Menghapus elemen pertama List */
-/* I.S. List tidak kosong */
-/* F.S. val adalah nilai elemen pertama l sebelum penghapusan, */
-/*      Banyaknya elemen List berkurang satu */
-/*      List l mungkin menjadi kosong */
-/* *** Menghapus elemen pada index tertentu *** */
-void deleteAt(ListStatik *l, ElType *val, IdxType idx);
-/* Proses : Menghapus elemen pada index idx List */
-/* I.S. List tidak kosong, idx adalah index yang valid di l */
-/* F.S. val adalah nilai elemen pada index idx l sebelum penghapusan, */
-/*      Banyaknya elemen List berkurang satu */
-/*      List l mungkin menjadi kosong */
-/* *** Menghapus elemen terakhir *** */
-void deleteLast(ListStatik *l, ElType *val);
-/* Proses : Menghapus elemen terakhir List */
-/* I.S. List tidak kosong */
-/* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
-/*      Banyaknya elemen List berkurang satu */
-/*      List l mungkin menjadi kosong */
+/* ********** OPERASI LAIN ********** */
+void copyList(ListDin lIn, ListDin *lOut);
+/* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
+/* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */
+/* Proses : Menyalin isi lIn ke lOut */ 
+ElType sumList(ListDin l);
+/* Menghasilkan hasil penjumlahan semua elemen l */
+/* Jika l kosong menghasilkan 0 */
+int countVal(ListDin l, ElType val);
+/* Menghasilkan berapa banyak kemunculan val di l */
+/* Jika l kosong menghasilkan 0 */
 
 /* ********** SORTING ********** */
-void sortList(ListStatik *l, boolean asc);
+void sort(ListDin *l, boolean asc);
 /* I.S. l boleh kosong */
 /* F.S. Jika asc = true, l terurut membesar */
 /*      Jika asc = false, l terurut mengecil */
 /* Proses : Mengurutkan l dengan salah satu algoritma sorting,
    algoritma bebas */
+
+/* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
+/* *** Menambahkan elemen terakhir *** */
+void insertLast(ListDin *l, ElType val);
+/* Proses: Menambahkan val sebagai elemen terakhir list */
+/* I.S. List l boleh kosong, tetapi tidak penuh */
+/* F.S. val adalah elemen terakhir l yang baru */
+/* ********** MENGHAPUS ELEMEN ********** */
+void deleteLast(ListDin *l, ElType *val);
+/* Proses : Menghapus elemen terakhir list */
+/* I.S. List tidak kosong */
+/* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
+/*      Banyaknya elemen list berkurang satu */
+/*      List l mungkin menjadi kosong */
+
+/* ********* MENGUBAH UKURAN ARRAY ********* */
+void expandList(ListDin *l, int num);
+/* Proses : Menambahkan capacity l sebanyak num */
+/* I.S. List sudah terdefinisi */
+/* F.S. Ukuran list bertambah sebanyak num */
+
+void shrinkList(ListDin *l, int num);
+/* Proses : Mengurangi capacity sebanyak num */
+/* I.S. List sudah terdefinisi, ukuran capacity > num, dan nEff < capacity - num. */
+/* F.S. Ukuran list berkurang sebanyak num. */
+
+void compressList(ListDin *l);
+/* Proses : Mengubah capacity sehingga capacity = nEff */
+/* I.S. List tidak kosong */
+/* F.S. Ukuran capacity = nEff */
 
 #endif

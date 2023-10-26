@@ -64,7 +64,7 @@ void readListListDin(ListDin *l)
     for (i = 0; i < n; i++)
     {
         scanf("%d", &m);
-        ELMT(*l, i) = m;
+        ELMTListDin(*l, i) = m;
     }
     NEFF(*l) = n;
 }
@@ -77,11 +77,11 @@ void printListListDin(ListDin l)
     {
         if (i != NEFF(l) - 1)
         {
-            printf("%d,", ELMT(l, i));
+            printf("%d,", ELMTListDin(l, i));
         }
         else
         {
-            printf("%d", ELMT(l, i));
+            printf("%d", ELMTListDin(l, i));
         }
     }
     printf("]");
@@ -97,7 +97,7 @@ ListDin plusMinusListDin(ListDin l1, ListDin l2, boolean plus)
     {
         for (i = 0; i < NEFF(l1); i++)
         {
-            ELMT(temp, i) = ELMT(l1, i) + ELMT(l2, i);
+            ELMTListDin(temp, i) = ELMTListDin(l1, i) + ELMTListDin(l2, i);
         }
         return temp;
     }
@@ -105,7 +105,7 @@ ListDin plusMinusListDin(ListDin l1, ListDin l2, boolean plus)
     {
         for (i = 0; i < NEFF(l2); i++)
         {
-            ELMT(temp, i) = ELMT(l1, i) - ELMT(l2, i);
+            ELMTListDin(temp, i) = ELMTListDin(l1, i) - ELMTListDin(l2, i);
         }
         return temp;
     }
@@ -118,7 +118,7 @@ boolean isListDinEqual(ListDin l1, ListDin l2)
         int i;
         for (i = 0; i < NEFF(l1); i++)
         {
-            if (ELMT(l1, i) != ELMT(l2, i))
+            if (ELMTListDin(l1, i) != ELMTListDin(l2, i))
             {
                 return false;
             }
@@ -136,7 +136,7 @@ IdxType indexOfListDin(ListDin l, ElType val)
     int i;
     for (i = 0; i < NEFF(l); i++)
     {
-        if (ELMT(l, i) == val)
+        if (ELMTListDin(l, i) == val)
         {
             return i;
         }
@@ -147,17 +147,17 @@ IdxType indexOfListDin(ListDin l, ElType val)
 void extremeValuesListDin(ListDin l, ElType *max, ElType *min)
 {
     int i;
-    *max = ELMT(l, 0);
-    *min = ELMT(l, 0);
+    *max = ELMTListDin(l, 0);
+    *min = ELMTListDin(l, 0);
     for (i = 1; i < NEFF(l); i++)
     {
-        if (*max < ELMT(l, i))
+        if (*max < ELMTListDin(l, i))
         {
-            *max = ELMT(l, i);
+            *max = ELMTListDin(l, i);
         }
-        if (*min > ELMT(l, i))
+        if (*min > ELMTListDin(l, i))
         {
-            *min = ELMT(l, i);
+            *min = ELMTListDin(l, i);
         }
     }
 }
@@ -169,7 +169,7 @@ void copyListDin(ListDin lIn, ListDin *lOut)
     NEFF(*lOut) = NEFF(lIn);
     for (i = 0; i < NEFF(lIn); i++)
     {
-        ELMT(*lOut, i) = ELMT(lIn, i);
+        ELMTListDin(*lOut, i) = ELMTListDin(lIn, i);
     }
 }
 
@@ -179,7 +179,7 @@ ElType sumListDin(ListDin l)
     ElType sum = 0;
     for (i = 0; i < NEFF(l); i++)
     {
-        sum += ELMT(l, i);
+        sum += ELMTListDin(l, i);
     }
     return sum;
 }
@@ -189,7 +189,7 @@ int countValListDin(ListDin l, ElType val)
     int i, sum = 0;
     for (i = 0; i < NEFF(l); i++)
     {
-        if (ELMT(l, i) == val)
+        if (ELMTListDin(l, i) == val)
         {
             sum += 1;
         }
@@ -207,11 +207,11 @@ void sortListDin(ListDin *l, boolean asc)
             swapped = 0;
             for (j = 0; j < listLength(*l) - i - 1; j++)
             {
-                if (ELMT(*l, j) > ELMT(*l, j + 1))
+                if (ELMTListDin(*l, j) > ELMTListDin(*l, j + 1))
                 {
-                    temp = ELMT(*l, j);
-                    ELMT(*l, j) = ELMT(*l, j + 1);
-                    ELMT(*l, j + 1) = temp;
+                    temp = ELMTListDin(*l, j);
+                    ELMTListDin(*l, j) = ELMTListDin(*l, j + 1);
+                    ELMTListDin(*l, j + 1) = temp;
                     swapped = 1;
                 }
             }
@@ -229,11 +229,11 @@ void sortListDin(ListDin *l, boolean asc)
 
             for (int j = 0; j < listLength(*l) - i - 1; j++)
             {
-                if (ELMT(*l, j) < ELMT(*l, j + 1))
+                if (ELMTListDin(*l, j) < ELMTListDin(*l, j + 1))
                 {
-                    temp = ELMT(*l, j);
-                    ELMT(*l, j) = ELMT(*l, j + 1);
-                    ELMT(*l, j + 1) = temp;
+                    temp = ELMTListDin(*l, j);
+                    ELMTListDin(*l, j) = ELMTListDin(*l, j + 1);
+                    ELMTListDin(*l, j + 1) = temp;
                     swapped = 1;
                 }
             }
@@ -248,13 +248,13 @@ void sortListDin(ListDin *l, boolean asc)
 
 void insertLastListDin(ListDin *l, ElType val)
 {
-    ELMT(*l, listLength(*l)) = val;
+    ELMTListDin(*l, listLength(*l)) = val;
     NEFF(*l) += 1;
 }
 
 void deleteLastListDin(ListDin *l, ElType *val)
 {
-    *val = ELMT(*l, listLength(*l) - 1);
+    *val = ELMTListDin(*l, listLength(*l) - 1);
     NEFF(*l) -= 1;
 }
 

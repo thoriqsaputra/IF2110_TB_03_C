@@ -1,24 +1,120 @@
-#include <stdio.h>
-#include "../ADT/listdin.h"
 
-int main()
+#include "pengguna.h"
+void printWord(Word kata)
 {
-    FILE *config_file = fopen("../configs/config-1/pengguna.config", "r");
-    if (config_file == NULL)
+    for (int i = 0; i < kata.Length; i++)
     {
-        printf("Error: could not open config file\n");
-        return 1;
+        printf("%c",kata.TabWord[i]);
     }
+    
+}
+int wordToInt(Word kata)
+{
+    return (kata.TabWord[0] - '0');
+}
+void tulisDataPengguna(Pengguna * user)
+{
+    printWord((*user).nama);
+    printf("\n");
+    printWord((*user).password);
+    printf("\n");
+    printWord((*user).bio);
+    printf("\n");
+    printWord((*user).noHp);
+    printf("\n");
+    printWord((*user).weton);
+    printf("\n");
+    printWord((*user).jenisAkun);
+    printf("\n");
+    displayMatrixChar((*user).fotoProfil);
+}
 
-    char buffer[100];
-    fgets(buffer, 100, config_file);
-    int banyakPengguna = buffer[0]; // baris pertama
-    int i;
-    for (i = 0; i < banyakPengguna; i++)
+void loadPenggunaConfig(char filename[],listWord * LW, ListUserStatik * LU)
+{
+    
+    int countWord = 0;
+    boolean getN = true;
+   
+    STARTWORDFILE(filename);
+    while ((!(EndWord) )&& (getN))
     {
-
-        // fgets(buffer, 100, config_file); kalau mau ambil line selanjutnya
+        
+        (*LW).contents[countWord] = currentWord;
+        ADVWORDFILE();
+        countWord ++;
+        (*LU).capacity = wordToInt((*LW).contents[0]);
+        if(countWord ==(  (*LU).capacity * 11) + 1)
+        {
+            getN = false;
+        }
     }
-    fclose(config_file);
-    return 0;
+    //opsional, nanti di akhir program aja
+    // fclose(pita);
+    
+    int j = 0;
+        for (int i = 1; i < countWord; i++)
+        {
+            printf(", panjang word = %d skrg word ke - %d = " , (*LW).contents[i].Length,i);
+            printWord((*LW).contents[i]);
+            printf("\n");
+            if(i % 11 == 1)
+            {
+                (*LU).buffer[j].nama = (*LW).contents[i];
+            }
+            else if (i % 11 == 2)
+            {
+                (*LU).buffer[j].password = (*LW).contents[i];
+            }
+            else if (i % 11 == 3)
+            {
+                (*LU).buffer[j].bio = (*LW).contents[i];
+            }
+            else if (i % 11 == 4)
+            {
+                (*LU).buffer[j].noHp = (*LW).contents[i];
+            }
+            else if (i % 11 == 5)
+            {
+                (*LU).buffer[j].weton = (*LW).contents[i];
+            }
+            else if (i % 11 == 6)
+            {
+                (*LU).buffer[j].jenisAkun = (*LW).contents[i];
+            }
+            else if (i % 11 == 7)
+            {//Matriks ntar disini
+
+                int rowProfile;
+                int colProfile;
+                int counterRow;
+                createMatrix(5,10,&(*LU).buffer[j].fotoProfil);
+                counterRow = i;
+                colProfile = 0;
+                rowProfile = 0;
+                while (counterRow % 11 != 1)
+                {
+                    colProfile = 0;
+                    for (int k = 0; k < (*LW).contents[i].Length; k++)
+                    {
+                        if((*LW).contents[counterRow].TabWord[k] != BLANK)
+                        {
+                           
+                            ELMTMatrix((*LU).buffer[j].fotoProfil,rowProfile,colProfile) = (*LW).contents[counterRow].TabWord[k] ;
+                            colProfile ++;
+                        }
+                    }
+                    counterRow++;
+                    rowProfile ++;
+                }
+            }
+            else if (i % 11== 0)//reset
+            {
+                j++;
+            }
+        }
+
+}
+void CreateEmptyPengguna(ListUserStatik * l)
+{
+    (*l).capacity = 0;
 }

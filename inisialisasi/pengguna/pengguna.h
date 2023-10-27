@@ -1,5 +1,11 @@
 #include "../../ADT/wordmachine.h"
 #include "../../ADT/matrix.h"
+/*
+ListUser menggunakan dasar dari listatik, karena ListUser ini terdiri merupakan array statis dari ElTypePengguna (maks 20)
+*/
+
+
+#define CAPACITYUSER 20
 
 typedef struct
 {
@@ -11,15 +17,17 @@ typedef struct
     Word jenisAkun;
     Matrix fotoProfil;
 } Pengguna;
+
+
 typedef struct
 {
     Pengguna buffer[20]; // maks user 20
     int capacity;
-} ListUser;
+} ListUserStatik;
 
 typedef struct
 {
-   Word   contents[10000]; /* memori tempat penyimpan elemen (container) , coba coba temp 10rb */
+   Word  contents[10000]; /* memori tempat penyimpan elemen (container) , coba coba temp 10rb */
 } listWord;
 
 /*
@@ -38,7 +46,8 @@ typedef struct
     kelipatan 11 , mod 11
     di paling akhir, ada matrix pertemanan dan permintaan teman
 */
-
+void CreateEmptyPengguna(ListUserStatik * l);
+// ListUserStatic.capacity = 0
 
 void printWord(Word kata);
 /*Print ADT Word*/
@@ -50,7 +59,6 @@ void tulisDataPengguna(Pengguna * user);
 /*I.S Menulis dari 
   F.S
 */
-
-void loadPenggunaConfig(char filename[], listWord * LW, ListUser * LU);
+void loadPenggunaConfig(char filename[], listWord * LW, ListUserStatik * LU);
 /*Load Config Pengguna dari pengguna.config, lalu mengassign data data sesuai dengan kebutuhan typedef Pengguna
 */

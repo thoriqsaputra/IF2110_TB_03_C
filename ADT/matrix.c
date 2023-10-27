@@ -80,6 +80,26 @@ void displayMatrix(Matrix m)
         printf("\n", ELMTMatrix(m, i, j));
     }
 }
+//ADISI UNTUK PRINT PROFIL
+void displayMatrixChar(Matrix m)
+{
+    int i, j;
+    for (i = 0; i < ROW_EFF(m); i++)
+    {
+        for (j = 0; j < COL_EFF(m); j++)
+        {
+            if (j == COL_EFF(m) - 1)
+            {
+                printf("%c", ELMTMatrix(m, i, j));
+            }
+            else
+            {
+                printf("%c ", ELMTMatrix(m, i, j));
+            }
+        }
+        printf("\n", ELMTMatrix(m, i, j));
+    }
+}
 
 Matrix addMatrix(Matrix m1, Matrix m2)
 {

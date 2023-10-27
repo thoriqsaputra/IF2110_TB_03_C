@@ -92,7 +92,7 @@ void CopyWord()
 void CopyWordFile()
 {
     int i = 0;
-    while (currentChar != MARKC && currentChar != newLine)
+    while ( currentChar != newLine)
     {
         currentWord.TabWord[i] = currentChar;
         ADV();

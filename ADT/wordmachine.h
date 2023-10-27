@@ -8,7 +8,7 @@
 #include "charmachine.h"
 
 #define newLine '\n'
-#define NMax 50
+#define NMax 100
 #define BLANK ' '
 
 typedef struct

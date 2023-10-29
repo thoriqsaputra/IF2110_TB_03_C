@@ -11,6 +11,7 @@
 #define NMax 100
 #define BLANK ' '
 
+
 typedef struct
 {
    char TabWord[NMax]; /* container penyimpan kata, indeks yang dipakai [0..NMax-1] */
@@ -31,6 +32,9 @@ void STARTWORD();
    F.S. : EndWord = true, dan currentChar = MARKC;
           atau EndWord = false, currentWord adalah kata yang sudah diakuisisi,
           currentChar karakter pertama sesudah karakter terakhir kata */
+void STARTWORDINPUT();
+
+void STARTWORDFILE();
 
 void ADVWORD();
 /* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi
@@ -39,6 +43,7 @@ void ADVWORD();
           Jika currentChar = MARKC, EndWord = true.
    Proses : Akuisisi kata menggunakan procedure SalinWord */
 void ADVWORDFILE();
+void ADVWORDINPUT();
 
 void CopyWord();
 /* Mengakuisisi kata, menyimpan dalam currentWord
@@ -48,6 +53,7 @@ void CopyWord();
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 void CopyWordFile();
+void CopyWordInput();
 void ignoreNewLine();
 
 

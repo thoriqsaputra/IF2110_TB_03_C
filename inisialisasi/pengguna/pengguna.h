@@ -1,7 +1,8 @@
 #include "../../ADT/wordmachine.h"
 #include "../../ADT/matrix.h"
 /*
-ListUser menggunakan dasar dari listatik, karena ListUser ini terdiri merupakan array statis dari ElTypePengguna (maks 20)
+ListUserStatik menggunakan dasar dari listatik, karena ListUser ini terdiri merupakan array statis dari ElTypePengguna (maks 20)
+listWord juga menggunakan dasar dari listatik
 */
 
 
@@ -24,7 +25,6 @@ typedef struct
     Pengguna buffer[20]; // maks user 20
     int capacity;
 } ListUserStatik;
-
 typedef struct
 {
    Word  contents[10000]; /* memori tempat penyimpan elemen (container) , coba coba temp 10rb */
@@ -59,6 +59,6 @@ void tulisDataPengguna(Pengguna * user);
 /*I.S Menulis dari 
   F.S
 */
-void loadPenggunaConfig(char filename[], listWord * LW, ListUserStatik * LU);
+void loadPenggunaConfig(char filename[], ListUserStatik * LU);
 /*Load Config Pengguna dari pengguna.config, lalu mengassign data data sesuai dengan kebutuhan typedef Pengguna
 */

@@ -7,6 +7,7 @@
 #include "boolean.h"
 
 #define MARKC '.'
+#define MARKINPUT ';'
 /* State Mesin */
 extern char currentChar;
 extern boolean EOP;

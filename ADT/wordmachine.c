@@ -46,6 +46,22 @@ void STARTWORD()
     }
     
 }
+void STARTWORDINPUT()
+{
+    START();
+    IgnoreBlanks();
+    ignoreNewLine();
+    if (currentChar == MARKINPUT)
+    {
+        EndWord = true;
+    }
+    else
+    {
+        EndWord = false;
+        CopyWordInput();
+    }
+    
+}
 
 void ADVWORD()
 {
@@ -74,6 +90,21 @@ void ADVWORDFILE()
             CopyWordFile();
         }
 }
+void ADVWORDINPUT()
+// ada \n nya
+{
+    IgnoreBlanks();
+        if (currentChar == MARKINPUT)
+        {
+            EndWord = true;
+        }
+        else
+        {
+            ignoreNewLine();
+            CopyWordInput();
+        }
+}
+
 void CopyWord()
 {
     int i = 0;
@@ -92,7 +123,22 @@ void CopyWord()
 void CopyWordFile()
 {
     int i = 0;
-    while ( currentChar != newLine)
+    while ( currentChar != newLine )
+    {
+        currentWord.TabWord[i] = currentChar;
+        ADV();
+        i++;
+    }
+    if (i > NMax)
+    {
+        i = NMax;
+    }
+    currentWord.Length = i;
+}
+void CopyWordInput()
+{
+    int i = 0;
+    while (currentChar != MARKINPUT)
     {
         currentWord.TabWord[i] = currentChar;
         ADV();
@@ -111,3 +157,4 @@ void ignoreNewLine()
         ADV();
     }
 }
+

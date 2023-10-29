@@ -1,4 +1,4 @@
-
+#include <stdio.h>
 #include "pengguna.h"
 void printWord(Word kata)
 {
@@ -29,9 +29,9 @@ void tulisDataPengguna(Pengguna * user)
     displayMatrixChar((*user).fotoProfil);
 }
 
-void loadPenggunaConfig(char filename[],listWord * LW, ListUserStatik * LU)
+void loadPenggunaConfig(char filename[], ListUserStatik * LU)
 {
-    
+    listWord LW;
     int countWord = 0;
     boolean getN = true;
    
@@ -39,10 +39,10 @@ void loadPenggunaConfig(char filename[],listWord * LW, ListUserStatik * LU)
     while ((!(EndWord) )&& (getN))
     {
         
-        (*LW).contents[countWord] = currentWord;
+        (LW).contents[countWord] = currentWord;
         ADVWORDFILE();
         countWord ++;
-        (*LU).capacity = wordToInt((*LW).contents[0]);
+        (*LU).capacity = wordToInt((LW).contents[0]);
         if(countWord ==(  (*LU).capacity * 11) + 1)
         {
             getN = false;
@@ -54,32 +54,31 @@ void loadPenggunaConfig(char filename[],listWord * LW, ListUserStatik * LU)
     int j = 0;
         for (int i = 1; i < countWord; i++)
         {
-            printf(", panjang word = %d skrg word ke - %d = " , (*LW).contents[i].Length,i);
-            printWord((*LW).contents[i]);
-            printf("\n");
+            
+            
             if(i % 11 == 1)
             {
-                (*LU).buffer[j].nama = (*LW).contents[i];
+                (*LU).buffer[j].nama = (LW).contents[i];
             }
             else if (i % 11 == 2)
             {
-                (*LU).buffer[j].password = (*LW).contents[i];
+                (*LU).buffer[j].password = (LW).contents[i];
             }
             else if (i % 11 == 3)
             {
-                (*LU).buffer[j].bio = (*LW).contents[i];
+                (*LU).buffer[j].bio = (LW).contents[i];
             }
             else if (i % 11 == 4)
             {
-                (*LU).buffer[j].noHp = (*LW).contents[i];
+                (*LU).buffer[j].noHp = (LW).contents[i];
             }
             else if (i % 11 == 5)
             {
-                (*LU).buffer[j].weton = (*LW).contents[i];
+                (*LU).buffer[j].weton = (LW).contents[i];
             }
             else if (i % 11 == 6)
             {
-                (*LU).buffer[j].jenisAkun = (*LW).contents[i];
+                (*LU).buffer[j].jenisAkun = (LW).contents[i];
             }
             else if (i % 11 == 7)
             {//Matriks ntar disini
@@ -94,12 +93,12 @@ void loadPenggunaConfig(char filename[],listWord * LW, ListUserStatik * LU)
                 while (counterRow % 11 != 1)
                 {
                     colProfile = 0;
-                    for (int k = 0; k < (*LW).contents[i].Length; k++)
+                    for (int k = 0; k < (LW).contents[i].Length; k++)
                     {
-                        if((*LW).contents[counterRow].TabWord[k] != BLANK)
+                        if((LW).contents[counterRow].TabWord[k] != BLANK)
                         {
                            
-                            ELMTMatrix((*LU).buffer[j].fotoProfil,rowProfile,colProfile) = (*LW).contents[counterRow].TabWord[k] ;
+                            ELMTMatrix((*LU).buffer[j].fotoProfil,rowProfile,colProfile) = (LW).contents[counterRow].TabWord[k] ;
                             colProfile ++;
                         }
                     }

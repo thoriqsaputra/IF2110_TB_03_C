@@ -1,7 +1,32 @@
 #include "ADT/tempRun.h"
 #include "Lib/commands.h"
 #include <stdio.h>
+// #include "Lib/ganti_profil/gantiprofil.h"
 #include "inisialisasi/pengguna/pengguna.c"
+
+void getInput()
+{
+    STARTWORDINPUT();
+    if(currentChar == MARKINPUT && currentWord.Length == 0)
+    {
+        currentWord.TabWord[0] = ' ';
+        currentWord.Length = 1;
+    }
+   
+}
+void gantiProfil(ListUserStatik *LU)
+{
+    printf("Masukkan Bio Akun:\n");
+    getInput();
+    //misal skrg profil 1
+    (*LU).buffer[0].bio = currentWord;
+    printf("Masukkan No HP:\n");
+    getInput();
+    (*LU).buffer[0].noHp = currentWord;
+    printf("Masukkan Weton:\n");
+    getInput();
+    (*LU).buffer[0].weton = currentWord;
+}
 
 
 boolean isWordEqual(Word input, Word cek)
@@ -59,6 +84,11 @@ int main()
             }
             printf("\n");
         }
+        else if (isWordEqual(command,gantiProfilCmd))
+        {
+            gantiProfil(&LU);
+        }
+        
     }
     return 0;
 }

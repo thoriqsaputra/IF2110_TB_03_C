@@ -8,6 +8,25 @@ void printWord(Word kata)
     }
     
 }
+boolean isWordEqual(Word input, Word cek)
+{
+    
+    if (input.Length != cek.Length)
+    {
+        return false;
+    }
+    else
+    {
+        for (int i = 0; i < input.Length; i++)
+        {
+            if (input.TabWord[i] != cek.TabWord[i])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
 int wordToInt(Word kata)
 {
     return (kata.TabWord[0] - '0');
@@ -36,14 +55,14 @@ void loadPenggunaConfig(char filename[], ListUserStatik * LU)
     boolean getN = true;
    
     STARTWORDFILE(filename);
-    while ((!(EndWord) )&& (getN))
+    UserCount(*LU) = wordToInt(currentWord);
+    countWord ++;
+    while (getN)
     {
-        
-        (LW).contents[countWord] = currentWord;
         ADVWORDFILE();
+        (LW).contents[countWord] = currentWord;
         countWord ++;
-        (*LU).capacity = wordToInt((LW).contents[0]);
-        if(countWord ==(  (*LU).capacity * 11) + 1)
+        if(countWord ==((*LU).capacity * 11) + 1)
         {
             getN = false;
         }
@@ -54,31 +73,29 @@ void loadPenggunaConfig(char filename[], ListUserStatik * LU)
     int j = 0;
         for (int i = 1; i < countWord; i++)
         {
-            
-            
             if(i % 11 == 1)
             {
-                (*LU).buffer[j].nama = (LW).contents[i];
+                NAMA_USER(*LU,j)= (LW).contents[i];
             }
             else if (i % 11 == 2)
             {
-                (*LU).buffer[j].password = (LW).contents[i];
+                PASSWORD_USER(*LU,j) = (LW).contents[i];
             }
             else if (i % 11 == 3)
             {
-                (*LU).buffer[j].bio = (LW).contents[i];
+                BIO_USER(*LU,j) = (LW).contents[i];
             }
             else if (i % 11 == 4)
             {
-                (*LU).buffer[j].noHp = (LW).contents[i];
+                NOHP_USER(*LU,j)= (LW).contents[i];
             }
             else if (i % 11 == 5)
             {
-                (*LU).buffer[j].weton = (LW).contents[i];
+                WETON_USER(*LU,j) = (LW).contents[i];
             }
             else if (i % 11 == 6)
             {
-                (*LU).buffer[j].jenisAkun = (LW).contents[i];
+                JENIS_USER(*LU,j) = (LW).contents[i];
             }
             else if (i % 11 == 7)
             {//Matriks ntar disini
@@ -98,7 +115,7 @@ void loadPenggunaConfig(char filename[], ListUserStatik * LU)
                         if((LW).contents[counterRow].TabWord[k] != BLANK)
                         {
                            
-                            ELMTMatrix((*LU).buffer[j].fotoProfil,rowProfile,colProfile) = (LW).contents[counterRow].TabWord[k] ;
+                            ELMTMatrix(FOTO_USER(*LU,j),rowProfile,colProfile) = (LW).contents[counterRow].TabWord[k] ;
                             colProfile ++;
                         }
                     }
@@ -111,9 +128,73 @@ void loadPenggunaConfig(char filename[], ListUserStatik * LU)
                 j++;
             }
         }
-
+    printf("Berhasil Konfigurasi!\n");
 }
 void CreateEmptyPengguna(ListUserStatik * l)
 {
     (*l).capacity = 0;
+}
+
+//======================Ganti Profil==========================
+void getInputProfil()
+{
+    STARTWORDINPUT();
+    if(currentChar == MARKINPUT && currentWord.Length == 0)
+    {
+        currentWord.TabWord[0] = ' ';
+        currentWord.Length = 1;
+    }
+   
+}
+void gantiProfil(ListUserStatik *LU)
+{
+    printf("Masukkan Bio Akun:\n");
+    getInputProfil();
+    //misal skrg profil 1
+    (*LU).buffer[0].bio = currentWord;
+    printf("Masukkan No HP:\n");
+    getInputProfil();
+    (*LU).buffer[0].noHp = currentWord;
+    printf("Masukkan Weton:\n");
+    getInputProfil();
+    (*LU).buffer[0].weton = currentWord;
+}
+//======================Daftar==========================
+boolean cekSameNama(ListUserStatik LU,Word inputWord)
+{
+    
+    int i = 0;
+    boolean flag = true;
+    while (i < LU.capacity)
+    {
+         if((isWordEqual(LU.buffer[i].nama,inputWord)))
+         {
+            flag = false;
+         }
+         i++;
+    }
+    return flag;
+    
+    
+    
+}
+void Daftar(ListUserStatik *LU)
+{
+    printf("Masukkan Nama Akun:\n");
+    STARTWORDINPUT();
+    while (!(cekSameNama(*LU,currentWord)))
+    {
+        printf("Wah, sayang sekali nama tersebut telah diambil.!:\n");
+        printf("Masukkan Nama Akun:\n");
+        STARTWORDINPUT();
+    }
+
+    printf("Masukkan kata sandi:\n");
+    STARTWORDINPUT();
+    //input  password ke LU
+    
+}
+void Masuk(ListUserStatik *LU)
+{
+
 }

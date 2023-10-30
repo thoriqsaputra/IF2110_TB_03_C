@@ -1,6 +1,5 @@
 
-// #include "../../ADT/tempRun.h"
-
+#include "../../ADT/tempRun.h"
 #include <stdio.h>
 void getInput()
 {

@@ -7,6 +7,15 @@ listWord juga menggunakan dasar dari listatik
 
 
 #define CAPACITYUSER 20
+#define IDX_TAIL(q) (q).idxTail
+#define NAMA_USER(l,q)   (l).buffer[q].nama
+#define PASSWORD_USER(l,q)   (l).buffer[q].password
+#define BIO_USER(l,q)   (l).buffer[q].bio
+#define NOHP_USER(l,q)   (l).buffer[q].noHp
+#define WETON_USER(l,q)   (l).buffer[q].weton
+#define JENIS_USER(l,q)   (l).buffer[q].jenisAkun
+#define FOTO_USER(l,q) (l).buffer[q].fotoProfil
+#define UserCount(l) (l).capacity
 
 typedef struct
 {
@@ -46,6 +55,10 @@ typedef struct
     kelipatan 11 , mod 11
     di paling akhir, ada matrix pertemanan dan permintaan teman
 */
+
+boolean isWordEqual(Word input, Word cek);
+//cek word sama
+
 void CreateEmptyPengguna(ListUserStatik * l);
 // ListUserStatic.capacity = 0
 
@@ -62,3 +75,10 @@ void tulisDataPengguna(Pengguna * user);
 void loadPenggunaConfig(char filename[], ListUserStatik * LU);
 /*Load Config Pengguna dari pengguna.config, lalu mengassign data data sesuai dengan kebutuhan typedef Pengguna
 */
+void getInputProfil();
+
+void gantiProfil(ListUserStatik *LU);
+
+boolean cekSameNama(ListUserStatik LU,Word inputWord);
+
+void Daftar(ListUserStatik *LU);

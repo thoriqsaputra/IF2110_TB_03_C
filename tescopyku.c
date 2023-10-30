@@ -3,54 +3,9 @@
 #include <stdio.h>
 // #include "Lib/ganti_profil/gantiprofil.h"
 #include "inisialisasi/pengguna/pengguna.c"
-
-void getInput()
-{
-    STARTWORDINPUT();
-    if(currentChar == MARKINPUT && currentWord.Length == 0)
-    {
-        currentWord.TabWord[0] = ' ';
-        currentWord.Length = 1;
-    }
-   
-}
-void gantiProfil(ListUserStatik *LU)
-{
-    printf("Masukkan Bio Akun:\n");
-    getInput();
-    //misal skrg profil 1
-    (*LU).buffer[0].bio = currentWord;
-    printf("Masukkan No HP:\n");
-    getInput();
-    (*LU).buffer[0].noHp = currentWord;
-    printf("Masukkan Weton:\n");
-    getInput();
-    (*LU).buffer[0].weton = currentWord;
-}
-
-
-boolean isWordEqual(Word input, Word cek)
-{
-
-    if (input.Length != cek.Length)
-    {
-        return false;
-    }
-    else
-    {
-        for (int i = 0; i < input.Length; i++)
-        {
-            if (input.TabWord[i] != cek.TabWord[i])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
 int main()
-{
+{ 
+    boolean isLogged  = true; //sementara true
     //Inisialiasi
     ListUserStatik LU;
     CreateEmptyPengguna(&LU);
@@ -72,7 +27,7 @@ int main()
             runProgram = false;
             printf("Anda telah keluar dari program BurBir. Sampai jumpa di penjelajahan berikutnya.\n");
         }
-        else if (isWordEqual(command, kicauCmd))
+        else if (isWordEqual(command, kicauCmd) && isLogged)
         {
             ADVWORD();
             Word kicau = currentWord;
@@ -84,10 +39,17 @@ int main()
             }
             printf("\n");
         }
-        else if (isWordEqual(command,gantiProfilCmd))
+        else if (isWordEqual(command,gantiProfilCmd) && isLogged)
         {
             gantiProfil(&LU);
         }
+        else if (isWordEqual(command,daftarCmd) && isLogged)
+        {
+            Daftar(&LU);
+        }
+        
+        
+        
         
     }
     return 0;

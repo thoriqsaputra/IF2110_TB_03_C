@@ -46,3 +46,7 @@ Word cetakUtasCmd = {"CETAK_UTAS", 10};
 // Simpan dan muat
 Word simpanCmd = {"SIMPAN", 6};
 Word muatCmd = {"MUAT", 4};
+
+
+//DEBUGGING ONLY
+Word currentU = {"user",4};

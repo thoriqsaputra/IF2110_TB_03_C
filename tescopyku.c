@@ -25,7 +25,7 @@ int main()
         {
             if (isWordEqual(command, masukCmd))
             {
-                Masuk(&LU, &CU);
+                Masuk(&LU, &CU,&isLogged);
             }
             else if (isWordEqual(command, daftarCmd))
             {
@@ -65,7 +65,23 @@ int main()
         }
         else if (isWordEqual(command, gantiProfilCmd))
         {
-            gantiProfil(&LU);
+            gantiProfil(&LU,&CU);
+        }
+        //Buat Debugging
+        else if (isWordEqual(command,currentU))
+        {
+            tulisDataPengguna(&LU.buffer[idUser(CU)]);
+        }
+        else if (isWordEqual(command,lihatProfilCmd))
+        {
+            STARTWORDINPUT();
+            Word findusername = currentWord;
+            lihatUser(&LU,findusername);
+        }
+
+        else
+        {
+            printf("Tidak ada command itu\n\n");
         }
     }
     return 0;

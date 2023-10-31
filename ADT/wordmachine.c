@@ -5,6 +5,7 @@
 #include "boolean.h"
 
 boolean EndWord;
+boolean EndInput;
 Word currentWord;
 
 void IgnoreBlanks()
@@ -53,11 +54,11 @@ void STARTWORDINPUT()
     ignoreNewLine();
     if (currentChar == MARKINPUT)
     {
-        EndWord = true;
+        EndInput = true;
     }
     else
     {
-        EndWord = false;
+        EndInput = false;
         CopyWordInput();
     }
     

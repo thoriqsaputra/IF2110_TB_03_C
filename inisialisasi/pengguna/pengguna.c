@@ -32,18 +32,25 @@ int wordToInt(Word kata)
 }
 void tulisDataPengguna(Pengguna *user)
 {
+    printf("| Nama: ");
     printWord((*user).nama);
     printf("\n");
+    printf("| Password: ");
     printWord((*user).password);
     printf("\n");
+    printf("| Bio Akun: ");
     printWord((*user).bio);
     printf("\n");
+    printf("| No HP: ");
     printWord((*user).noHp);
     printf("\n");
+    printf("| Weton: ");
     printWord((*user).weton);
     printf("\n");
+    printf("| Jenis Akun: ");
     printWord((*user).jenisAkun);
     printf("\n");
+    printf("| FotoProfil: ");
     displayMatrixChar((*user).fotoProfil);
 }
 
@@ -138,7 +145,7 @@ void CreateEmptyCurrentUser(currentUser *CU)
 {
     (*CU).nama.TabWord[0] = BLANK;
 }
-int getUserId(currentUser CU, ListUserStatik LU)
+int getUserIdCurrent(currentUser CU, ListUserStatik LU)
 // Cek nama yang sama di data base lalu kembalikan id nya
 //  Mengembalikan nilai id dari current User sekarang yang login, apabila tidak ditemukan maka IDX_UNDEF
 {
@@ -149,36 +156,84 @@ int getUserId(currentUser CU, ListUserStatik LU)
     }
     if (i == UserCount(LU))
     {
-        return IDX_UNDEF; // tidak ditemukan
+        return -1; // tidak ditemukan IDX_UNDEF
     }
     else
     {
         return i;
     }
 }
-
+int getUserId(Word inputNama,ListUserStatik LU)
+//Mengembalikan nilai id sesuai dengan inputNama di database pengguna
+// IDX_UNDEF apabila tidak ditemukan
+{
+    int i = 0;
+    while (isWordEqual(NAMA_USER(LU, i), inputNama) == false && i < UserCount(LU)) // kalau nama gak sama, next i
+    {
+        i++;
+    }
+    if (i == UserCount(LU))
+    {
+        return -1; // tidak ditemukan IDX_UNDEF
+    }
+    else
+    {
+        return i;
+    }
+}
 //======================Ganti Profil==========================
+boolean cekEmptyInput(char CC)
+{
+    return (CC == MARKINPUT && currentWord.Length == 0);
+}
 void getInputProfil()
 {
     STARTWORDINPUT();
-    if (currentChar == MARKINPUT && currentWord.Length == 0)
+    if (EndInput)
     {
         currentWord.TabWord[0] = ' ';
         currentWord.Length = 1;
     }
 }
-void gantiProfil(ListUserStatik *LU)
+boolean isValidWeton(Word inputWeton)
+//Mengembalikan nilai true apabila sesuai data Weton yang tersedia
+//Pahing, Kliwon, Wage, Pon, dan Legi
+{
+    Word pahing = {"Pahing",6};
+    Word Kliwon = {"Kliwon",6};
+    Word Wage = {"Wage",4};
+    Word Pon = {"Pon",3};
+    Word Legi = {"Legi",4};
+
+    if(isWordEqual(inputWeton,pahing) || isWordEqual(inputWeton,Kliwon)|| isWordEqual(inputWeton,Wage) || isWordEqual(inputWeton,Pon) || isWordEqual(inputWeton,Legi) || EndInput)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+void gantiProfil(ListUserStatik *LU,currentUser *CU)
 {
     printf("Masukkan Bio Akun:\n");
     getInputProfil();
     // misal skrg profil 1
-    (*LU).buffer[0].bio = currentWord;
+    BIO_USER(*LU,idUser(*CU)) = currentWord;
     printf("Masukkan No HP:\n");
     getInputProfil();
-    (*LU).buffer[0].noHp = currentWord;
+    NOHP_USER(*LU,idUser(*CU)) = currentWord;
     printf("Masukkan Weton:\n");
     getInputProfil();
-    (*LU).buffer[0].weton = currentWord;
+    while (isValidWeton(currentWord) == false &&  EndInput == false)
+    {
+        printf("Weton anda tidak valid.\n\n");
+        printf("Masukkan Weton:\n");
+        getInputProfil();
+    }
+    WETON_USER(*LU,idUser(*CU)) = currentWord;
+
+    printf("\n Profil Anda sudah berhasil diperbaharui! \n\n");
 }
 //======================Daftar==========================
 boolean cekSameNama(ListUserStatik LU, Word inputWord)
@@ -214,18 +269,13 @@ void Daftar(ListUserStatik *LU)
     // input  password ke LU
 }
 // ========================================MASUK===================================
-boolean cekSamePass(ListUserStatik LU, currentUser CU, Word inputPass)
-// mengembalikan true apabila input = password user tersebut di database (LU)
-{
-    printf("CEK PAS");
-    int id = getUserId(CU, LU);
-    printf("id %d\n", id);
-    printWord(inputPass);
-    printf("\n");
-    printWord(PASSWORD_USER(LU, id));
-    return (isWordEqual(inputPass, PASSWORD_USER(LU, id)));
-}
-void Masuk(ListUserStatik *LU, currentUser *CU)
+// boolean cekSamePass(ListUserStatik LU, currentUser CU, Word inputPass)
+// // mengembalikan true apabila input = password user tersebut di database (LU)
+// {
+//     int id = getUserIdCurrent(CU, LU);
+//     return (isWordEqual(inputPass, PASSWORD_USER(LU, id)));
+// }
+void Masuk(ListUserStatik *LU, currentUser *CU,boolean *isLog)
 // Mengubah Current user dengan user yang berhasil login
 {
     printf("Masukkan nama: \n");
@@ -237,16 +287,56 @@ void Masuk(ListUserStatik *LU, currentUser *CU)
         STARTWORDINPUT();
     }
     // nama sesuai dengan database LUs
-    (*CU).nama = currentWord;
-    int id = getUserId(*CU, *LU);
-    printf("%d\n", id);
+    nameUser(*CU) = currentWord;
+    idUser(*CU) = getUserIdCurrent(*CU, *LU); // dapetin ID si username yang masuk ke program
+    printf("Ketik '-' apabila ingin keluar dari 'MASUK'! \n\n");
     printf("Masukkan kata sandi:\n");
+    
     STARTWORDINPUT();
-    printf("%d", cekSamePass(*LU, *CU, currentWord));
-    while (cekSamePass(*LU, *CU, currentWord) == false)
+    while (isWordEqual(currentWord, PASSWORD_USER((*LU), idUser(*CU))) == false && currentWord.TabWord[0] != '-' )
     {
         printf("Wah, Password tidak sesuai!\n\n");
         printf("Masukkan kata sandi:\n");
         STARTWORDINPUT();
     }
+    if(currentWord.TabWord[0] == '-')
+    {
+        *isLog = false;
+        printf("Keluar dari fitur Masuk\n");
+    }
+    else
+    {
+        *isLog = true;
+        printf("Berhasil Login!\n");
+    }
+   
+}
+//=============================LIHAT PROFIL=====================================
+void lihatUser(ListUserStatik *LU, Word namaProfil)
+{
+    int iduser = getUserId(namaProfil,*LU);
+    if(iduser == IDX_UNDEF)
+    {
+        printf("Tidak ditemukan profil dengan nama '");
+        printWord(namaProfil);
+        printf("' \n");
+    }
+    else
+    {
+        printf("| Nama: ");
+        printWord((*LU).buffer[iduser].nama);
+        printf("\n");
+        printf("| Bio Akun: ");
+        printWord((*LU).buffer[iduser].bio);
+        printf("\n");
+        printf("| No HP: ");
+        printWord((*LU).buffer[iduser].noHp);
+        printf("\n");
+        printf("| Weton: ");
+        printWord((*LU).buffer[iduser].weton);
+        printf("\n");
+        printf("| FotoProfil: \n");
+        displayMatrixChar((*LU).buffer[iduser].fotoProfil);
+    }
+    
 }

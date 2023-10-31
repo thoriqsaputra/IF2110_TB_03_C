@@ -15,7 +15,9 @@ listWord juga menggunakan dasar dari listatik
 #define JENIS_USER(l, q) (l).buffer[q].jenisAkun
 #define FOTO_USER(l, q) (l).buffer[q].fotoProfil
 #define UserCount(l) (l).capacity
-
+#define idUser(c) (c).idUser
+#define nameUser(c) (c).nama
+// l -> LU (ListUserStatik)  c -> CU (currentUser)
 typedef struct
 {
     Word nama;
@@ -39,6 +41,7 @@ typedef struct
 typedef struct
 {
     Word nama;
+    int idUser; // id user di LU
     // ListDin ListofKicauan
 } currentUser;
 
@@ -59,12 +62,22 @@ typedef struct
     di paling akhir, ada matrix pertemanan dan permintaan teman
 */
 
-boolean isWordEqual(Word input, Word cek);
-// cek word sama
+
+
+//=====================DEKLARASI==============================
 
 void CreateEmptyPengguna(ListUserStatik *l);
 // ListUserStatic.capacity = 0
 
+void CreateEmptyCurrentUser(currentUser *CU);
+
+//===================GETTER============================
+
+int getUserIdCurrent(currentUser CU, ListUserStatik LU);
+
+int getUserId(Word inputNama, ListUserStatik LU);
+
+//========================UTILITY==========================
 void printWord(Word kata);
 /*Print ADT Word*/
 
@@ -75,13 +88,22 @@ void tulisDataPengguna(Pengguna *user);
 /*I.S Menulis dari
   F.S
 */
-void loadPenggunaConfig(char filename[], ListUserStatik *LU);
-/*Load Config Pengguna dari pengguna.config, lalu mengassign data data sesuai dengan kebutuhan typedef Pengguna
- */
 void getInputProfil();
-
-void gantiProfil(ListUserStatik *LU);
 
 boolean cekSameNama(ListUserStatik LU, Word inputWord);
 
+boolean isWordEqual(Word input, Word cek);
+// cek word sama
+boolean isValidWeton(Word inputWeton);
+//=========================LOADCONFIG=========================================
+void loadPenggunaConfig(char filename[], ListUserStatik *LU);
+/*Load Config Pengguna dari pengguna.config, lalu mengassign data data sesuai dengan kebutuhan typedef Pengguna
+ */
+
+//====================FITUR===============================
+
 void Daftar(ListUserStatik *LU);
+
+void Masuk(ListUserStatik *LU, currentUser *CU,boolean *isLog);
+
+void gantiProfil(ListUserStatik *LU,currentUser *CU);

@@ -123,7 +123,7 @@ void CopyWord()
 void CopyWordFile()
 {
     int i = 0;
-    while ( currentChar != newLine )
+    while ( currentChar != newLine && retval == 1)
     {
         currentWord.TabWord[i] = currentChar;
         ADV();

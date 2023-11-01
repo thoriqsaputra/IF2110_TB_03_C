@@ -17,6 +17,7 @@ listWord juga menggunakan dasar dari listatik
 #define UserCount(l) (l).capacity
 #define idUser(c) (c).idUser
 #define nameUser(c) (c).nama
+
 // l -> LU (ListUserStatik)  c -> CU (currentUser)
 typedef struct
 {
@@ -24,8 +25,8 @@ typedef struct
     Word password;
     Word bio;
     Word noHp;
-    Word weton;
-    Word jenisAkun;
+    Word weton; 
+    int jenisAkun; // kalo 1 = publik, kalo 0 private
     Matrix fotoProfil;
 } Pengguna;
 
@@ -62,7 +63,8 @@ typedef struct
     di paling akhir, ada matrix pertemanan dan permintaan teman
 */
 
-
+//Define primitif
+Word BlankWord = {" ",1};
 
 //=====================DEKLARASI==============================
 
@@ -70,6 +72,10 @@ void CreateEmptyPengguna(ListUserStatik *l);
 // ListUserStatic.capacity = 0
 
 void CreateEmptyCurrentUser(currentUser *CU);
+// CU.nama = BLANK, CU.id = IDX_UNDEF
+
+Matrix createMatrixDefault();
+//Membuat matrix default sesuai spek
 
 //===================GETTER============================
 
@@ -78,7 +84,7 @@ int getUserIdCurrent(currentUser CU, ListUserStatik LU);
 int getUserId(Word inputNama, ListUserStatik LU);
 
 //========================UTILITY==========================
-void printWord(Word kata);
+// void printWord(Word kata);
 /*Print ADT Word*/
 
 int wordToInt(Word kata);
@@ -107,3 +113,10 @@ void Daftar(ListUserStatik *LU);
 void Masuk(ListUserStatik *LU, currentUser *CU,boolean *isLog);
 
 void gantiProfil(ListUserStatik *LU,currentUser *CU);
+
+void lihatUser(ListUserStatik *LU, Word namaProfil);
+
+void Keluar(ListUserStatik *LU, currentUser *CU,boolean * isLog);
+
+void aturJenisAkun(ListUserStatik *LU,currentUser *CU);
+void ubahFotoProfil(ListUserStatik * LU, currentUser *CU);

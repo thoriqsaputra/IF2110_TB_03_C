@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include "kicauan.h"
 
-void printWord(Word kata)
-{
-    for (int i = 0; i < kata.Length; i++)
-    {
-        printf("%c",kata.TabWord[i]);
-    }
-    printf("\n");   
-}
+// void printWord(Word kata)
+// {
+//     for (int i = 0; i < kata.Length; i++)
+//     {
+//         printf("%c",kata.TabWord[i]);
+//     }
+//     printf("\n");   
+// }
 
 boolean isWordEqual(Word input, Word cek)
 {

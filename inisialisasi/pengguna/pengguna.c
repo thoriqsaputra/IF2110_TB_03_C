@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include "pengguna.h"
-void printWord(Word kata)
-{
-    for (int i = 0; i < kata.Length; i++)
-    {
-        printf("%c", kata.TabWord[i]);
-    }
-}
+// void printWord(Word kata)
+// {
+//     for (int i = 0; i < kata.Length; i++)
+//     {
+//         printf("%c", kata.TabWord[i]);
+//     }
+// }
 boolean isWordEqual(Word input, Word cek)
 {
 
@@ -48,14 +48,48 @@ void tulisDataPengguna(Pengguna *user)
     printWord((*user).weton);
     printf("\n");
     printf("| Jenis Akun: ");
-    printWord((*user).jenisAkun);
+    if((*user).jenisAkun == 1)
+    {
+        printf("Publik");
+    }
+    else
+    {
+        printf("Private");
+    }
     printf("\n");
-    printf("| FotoProfil: ");
+    printf("| FotoProfil: \n");
     displayMatrixChar((*user).fotoProfil);
 }
+Matrix createMatrixDefault()
+/*
+82 42 82 42 82 42 82 42 82 42
+82 42 71 64 66 42 71 64 82 42
+82 42 71 64 71 64 71 64 82 42
+82 42 71 64 66 42 71 64 82 42
+82 42 82 42 82 42 82 42 82 42
+*/
+{
+    Matrix newM;
+    ListDin listD;
+    char temp[50] = {'R','*','R','*','R','*','R','*','R','*',
+                        'R','*','G','@','B','*','G','@','R','*'
+                        ,'R','*','G','@','B','@','G','@','R','*'
+                        ,'R','*','G','@','B','*','G','@','R','*'
+                        ,'R','*','R','*','R','*','R','*','R','*'};
+    createMatrix(5, 10, &newM);
+    int cnt = 0;
+    while ( cnt < 50)
+    {
+        ELMTMatrix(newM,cnt / 10, cnt % 10) = temp[cnt];
+        cnt ++;
+    }
+    return newM;
 
+}
 void loadPenggunaConfig(char filename[], ListUserStatik *LU)
 {
+    Word privateFlag = {"Private",7};
+    Word publicFlag = {"Public",6};
     listWord LW;
     int countWord = 0;
     boolean getN = true;
@@ -101,7 +135,15 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU)
         }
         else if (i % 11 == 6)
         {
-            JENIS_USER(*LU, j) = (LW).contents[i];
+            if(isWordEqual((LW).contents[i],privateFlag))
+            {
+                JENIS_USER(*LU, j) = 0;
+            }
+            else
+            {
+                JENIS_USER(*LU, j) = 1;
+            }
+            
         }
         else if (i % 11 == 7)
         { // Matriks ntar disini
@@ -143,7 +185,8 @@ void CreateEmptyPengguna(ListUserStatik *l)
 //=====================Struct currentUser=======================
 void CreateEmptyCurrentUser(currentUser *CU)
 {
-    (*CU).nama.TabWord[0] = BLANK;
+    nameUser(*CU) = BlankWord;
+    idUser(*CU) = IDX_UNDEF;
 }
 int getUserIdCurrent(currentUser CU, ListUserStatik LU)
 // Cek nama yang sama di data base lalu kembalikan id nya
@@ -255,6 +298,7 @@ boolean cekSameNama(ListUserStatik LU, Word inputWord)
 
 void Daftar(ListUserStatik *LU)
 {
+    
     printf("Masukkan Nama Akun:\n");
     STARTWORDINPUT();
     while ((cekSameNama(*LU, currentWord) == true))
@@ -264,8 +308,18 @@ void Daftar(ListUserStatik *LU)
         STARTWORDINPUT();
     }
     // handling masukin data input nama yang berhasil ke database pengguna
+    NAMA_USER(*LU,(*LU).capacity) = currentWord;
     printf("Masukkan kata sandi:\n");
     STARTWORDINPUT();
+    PASSWORD_USER(*LU,(*LU).capacity) = currentWord;
+
+    //DEFAULT SETTING SETELAH DAFTAR
+    BIO_USER(*LU,(*LU).capacity) = BlankWord;
+    NOHP_USER(*LU,(*LU).capacity) = BlankWord;
+    WETON_USER(*LU,(*LU).capacity) = BlankWord;
+    JENIS_USER(*LU,(*LU).capacity) = 1;
+    FOTO_USER(*LU,(*LU).capacity) = createMatrixDefault();
+    (*LU).capacity ++;
     // input  password ke LU
 }
 // ========================================MASUK===================================
@@ -337,6 +391,97 @@ void lihatUser(ListUserStatik *LU, Word namaProfil)
         printf("\n");
         printf("| FotoProfil: \n");
         displayMatrixChar((*LU).buffer[iduser].fotoProfil);
+    }
+    
+}
+//=========================KELUAR=========================
+void Keluar(ListUserStatik *LU, currentUser *CU,boolean * isLog)
+{
+    CreateEmptyCurrentUser(CU);
+    idUser(*CU) = IDX_UNDEF;
+    *isLog = false;
+    printf("\n\nAnda berhasil logout. Sampai jumpa di pertemuan berikutnya!\n\n");
+}
+
+//=========================ATUR JENIS AKUN=========================
+void aturJenisAkun(ListUserStatik *LU,currentUser *CU)
+{
+    Word ya = {"YA",2};
+    Word tidak = {"TIDAK",5};
+    printf("\nSaat ini, akun Anda adalah akun ");
+    if(JENIS_USER(*LU,getUserIdCurrent(*CU,*LU)) == 1)
+    {
+        printf("Publik.Ingin mengubah ke akun Privat?");
+    }
+    else
+    {
+         printf("Private.Ingin mengubah ke akun Publik?");
+    }
+    printf("\n(YA/TIDAK)");
+    STARTWORDINPUT();
+    if(isWordEqual(currentWord,ya))
+    {
+        
+        printf("Akun anda sudah diubah menjadi akun\n");
+        if(JENIS_USER(*LU,getUserIdCurrent(*CU,*LU)) == 1)
+        {
+            printf("Private");
+            JENIS_USER(*LU,getUserIdCurrent(*CU,*LU)) = 0;
+        }
+        else
+        {
+            printf("Publik");
+            JENIS_USER(*LU,getUserIdCurrent(*CU,*LU)) = 1;
+        }
+       
+    }
+    else if(isWordEqual(currentWord,tidak))
+    {
+        printf("Tidak ingin ubah, balik ke menu\n");
+    }
+    else
+    {
+        printf("Input tidak sesuai! keluar dari ATUR_JENIS_AKUN\n");
+    }
+    printf("\n");
+
+}
+
+void ubahFotoProfil(ListUserStatik * LU, currentUser *CU)
+{
+    
+    Matrix newMatrix;
+    printf("Foto profil anda saat ini adalah : \n");
+    displayMatrixChar(FOTO_USER(*LU, getUserIdCurrent(*CU,*LU)));
+    printf("\nMasukkan foto profil yang baru\n");
+    STARTWORDINPUT();
+    printf("%d",currentWord.Length);
+    if(currentWord.Length != 99)
+    {
+        printf("Foto profil tidak sesuai matrix 5 x 5!\n");
+    }
+    else
+    {
+        printf("\n\n\n");
+        printWord(currentWord);
+        printf("\n\n\n");
+        createMatrix(5,10,&newMatrix);
+
+        
+        for (int i = 0; i < currentWord.Length; i++)
+        {
+            if(currentWord.TabWord[i] != BLANK && currentWord.TabWord[i] != newLine)
+            {
+                printf("%c ",currentWord.TabWord[i]);
+                printf("baris %d , kolom %d\n", i / 20, i % 20 / 2);
+                
+                ELMTMatrix(newMatrix,i / 20, i % 20 / 2) = currentWord.TabWord[i];
+            }
+            
+        }
+        copyMatrix(newMatrix,&FOTO_USER(*LU, getUserIdCurrent(*CU,*LU)));
+        printf("\nFOTO PROFIL BARU ANDA:\n");
+        displayMatrixChar(FOTO_USER(*LU, getUserIdCurrent(*CU,*LU)));
     }
     
 }

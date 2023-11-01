@@ -159,3 +159,10 @@ void ignoreNewLine()
     }
 }
 
+void printWord(Word kata)
+{
+    for (int i = 0; i < kata.Length; i++)
+    {
+        printf("%c", kata.TabWord[i]);
+    }
+}

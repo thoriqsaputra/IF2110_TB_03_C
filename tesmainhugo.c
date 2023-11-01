@@ -21,6 +21,7 @@ int main()
         STARTWORD();
         // command.tabword = currentWord.tabword  & command.length = currentWord.length
         Word command = currentWord;
+        Word lu = {"lu",2};
         while ((isLogged == false))
         {
             if (isWordEqual(command, masukCmd))
@@ -37,9 +38,17 @@ int main()
                 command = currentWord;
                 break;
             }
+            else if(isWordEqual(command,lu))
+            {
+                for (int i = 0; i < LU.capacity; i++)
+                {
+                    tulisDataPengguna(&LU.buffer[i]);
+                }
+                
+            }
             else
             {
-                printf("Anda Belum Logged in, silahkan daftar dahulu!\n");
+                printf("Anda Belum Login, silahkan MASUK terlebih dahulu!\n");
             }
             printf(">> ");
             STARTWORD();
@@ -78,7 +87,19 @@ int main()
             Word findusername = currentWord;
             lihatUser(&LU,findusername);
         }
+        else if(isWordEqual(command,keluarCmd))
+        {
+            Keluar(&LU,&CU,&isLogged);
+        }
+        else if(isWordEqual(command,aturJenisAkunCmd))
+        {
+            aturJenisAkun(&LU,&CU);
 
+        }
+        else if (isWordEqual(command,ubahFotoProfilCmd))
+        {
+            ubahFotoProfil(&LU,&CU);
+        }
         else
         {
             printf("Tidak ada command itu\n\n");

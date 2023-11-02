@@ -11,7 +11,6 @@
 #define NMax 280
 #define BLANK ' '
 
-
 typedef struct
 {
    char TabWord[NMax]; /* container penyimpan kata, indeks yang dipakai [0..NMax-1] */
@@ -55,7 +54,6 @@ void CopyWord();
 void CopyWordFile();
 void CopyWordInput();
 void ignoreNewLine();
-
-
+void printWord(Word kata);
 
 #endif

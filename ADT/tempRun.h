@@ -6,4 +6,5 @@
 #include "stack.c"
 #include "wordmachine.c"
 #include "prioqueuechar.c"
-
+#include "datetime.c"
+#include "time.c"

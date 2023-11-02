@@ -5,9 +5,9 @@
 // void printWord(Word kata)
 // {
 //     for (int i = 0; i < kata.Length; i++)
-//     {
+// {
 //         printf("%c",kata.TabWord[i]);
-//     }
+// }
 //     printf("\n");   
 // }
 
@@ -65,8 +65,9 @@ void loadKicauanConfig(char filename[], ListDinKicauan *l)
     STARTWORDFILE(filename);
     int capacity = wordToInt(currentWord);
     CreateListKicauan(l,capacity);
+    printf("CAPACITY = %d\n",CAPACITYKICAUAN(*l));
 
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < CAPACITYKICAUAN(*l); i++)
     {
         ADVWORDFILE();
         IDKICAUAN(ELMTKICAUAN(*l,i)) = wordToInt(currentWord);
@@ -79,6 +80,7 @@ void loadKicauanConfig(char filename[], ListDinKicauan *l)
         ADVWORDFILE();
         DATETIMEKICAUAN(ELMTKICAUAN(*l,i)) = currentWord;
     }
+    NEFFKICAUAN(*l) == CAPACITYKICAUAN(*l);
 }
 
 /* ********** MEMBACA KICAUAN ********** */
@@ -111,7 +113,10 @@ void displayKicauan(KICAUAN T)
 {
     printf("%d\n",IDKICAUAN(T));
     printWord(TEXTKICAUAN(T));
+    printf("\n");
     printf("%d\n",LIKEKICAUAN(T));
     printWord(AUTHORKICAUAN(T));
+    printf("\n");
     printWord(DATETIMEKICAUAN(T));
+    printf("\n");
 }

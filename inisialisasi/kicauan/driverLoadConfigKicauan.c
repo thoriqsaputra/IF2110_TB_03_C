@@ -8,6 +8,7 @@ int main()
     loadKicauanConfig("../../configs/config-1/kicauan.config", &LKD);
     displayKicauan(ELMTKICAUAN(LKD,0));
     displayKicauan(ELMTKICAUAN(LKD,1));
+    displayKicauan(ELMTKICAUAN(LKD,2));
     dealocateListKicauan(&LKD);
 }
 

@@ -109,45 +109,42 @@ void ADVWORDINPUT()
 void CopyWord()
 {
     int i = 0;
-    while (currentChar != MARKC && currentChar != BLANK)
+    while (currentChar != MARKC && currentChar != BLANK && retval == 1)
     {
-        currentWord.TabWord[i] = currentChar;
+        if (i < NMax)
+        {
+            currentWord.TabWord[i] = currentChar;
+            i++;
+        }  
         ADV();
-        i++;
-    }
-    if (i > NMax)
-    {
-        i = NMax;
     }
     currentWord.Length = i;
 }
 void CopyWordFile()
 {
     int i = 0;
-    while ( currentChar != newLine && retval == 1)
+    while ( currentChar != newLine && retval == 1 )
     {
-        currentWord.TabWord[i] = currentChar;
+        if (i < NMax) //supaya tidak melewati addressnya
+        {
+            currentWord.TabWord[i] = currentChar;
+            i++;
+        }  
         ADV();
-        i++;
-    }
-    if (i > NMax)
-    {
-        i = NMax;
     }
     currentWord.Length = i;
 }
 void CopyWordInput()
 {
     int i = 0;
-    while (currentChar != MARKINPUT)
+    while ( currentChar != newLine && retval == 1 )
     {
-        currentWord.TabWord[i] = currentChar;
+        if (i < NMax)
+        {
+            currentWord.TabWord[i] = currentChar;
+            i++;
+        }  
         ADV();
-        i++;
-    }
-    if (i > NMax)
-    {
-        i = NMax;
     }
     currentWord.Length = i;
 }

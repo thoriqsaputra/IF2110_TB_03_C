@@ -8,7 +8,7 @@
 #include "charmachine.h"
 
 #define newLine '\n'
-#define NMax 100
+#define NMax 280
 #define BLANK ' '
 
 

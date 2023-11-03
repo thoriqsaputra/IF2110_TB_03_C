@@ -137,7 +137,7 @@ void CopyWordFile()
 void CopyWordInput()
 {
     int i = 0;
-    while ( currentChar != newLine && retval == 1 )
+    while ( currentChar != MARKINPUT && retval == 1 )
     {
         if (i < NMax)
         {

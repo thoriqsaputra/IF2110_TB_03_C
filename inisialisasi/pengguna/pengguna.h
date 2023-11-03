@@ -6,6 +6,7 @@ listWord juga menggunakan dasar dari listatik
 */
 
 #define CAPACITYUSER 20
+#define CAPACITYWORD 500 
 #define IDX_TAIL(q) (q).idxTail
 #define NAMA_USER(l, q) (l).buffer[q].nama
 #define PASSWORD_USER(l, q) (l).buffer[q].password
@@ -32,12 +33,13 @@ typedef struct
 
 typedef struct
 {
-    Pengguna buffer[20]; // maks user 20
+    Pengguna buffer[CAPACITYUSER]; // maks user 20
     int capacity;
 } ListUserStatik;
 typedef struct
 {
-    Word contents[10000]; /* memori tempat penyimpan elemen (container) , coba coba temp 10rb */
+    Word contents[CAPACITYWORD]; /* memori tempat penyimpan elemen (container) , coba coba temp 10rb */
+    //jumlah user fixed, jadi capacity word pasti fixed juga, <= 20 x 11
 } listWord;
 typedef struct
 {

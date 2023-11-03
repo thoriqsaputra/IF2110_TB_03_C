@@ -13,6 +13,7 @@ int main()
     for (int i = 0; i < LU.capacity; i++)
     {
         tulisDataPengguna(&LU.buffer[i]);
+        
     }
 
     return 0;

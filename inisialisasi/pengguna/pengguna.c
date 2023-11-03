@@ -96,87 +96,94 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU)
 
     STARTWORDFILE(filename);
     UserCount(*LU) = wordToInt(currentWord);
-    countWord++;
-    while (getN)
+    if ( UserCount(*LU) > 0)
     {
-        ADVWORDFILE();
-        (LW).contents[countWord] = currentWord;
         countWord++;
-        if (countWord == ((*LU).capacity * 11) + 1)
+        while (getN)
         {
-            getN = false;
-        }
-    }
-    // opsional, nanti di akhir program aja
-    //  fclose(pita);
-
-    int j = 0;
-    for (int i = 1; i < countWord; i++)
-    {
-        if (i % 11 == 1)
-        {
-            NAMA_USER(*LU, j) = (LW).contents[i];
-        }
-        else if (i % 11 == 2)
-        {
-            PASSWORD_USER(*LU, j) = (LW).contents[i];
-        }
-        else if (i % 11 == 3)
-        {
-            BIO_USER(*LU, j) = (LW).contents[i];
-        }
-        else if (i % 11 == 4)
-        {
-            NOHP_USER(*LU, j) = (LW).contents[i];
-        }
-        else if (i % 11 == 5)
-        {
-            WETON_USER(*LU, j) = (LW).contents[i];
-        }
-        else if (i % 11 == 6)
-        {
-            if(isWordEqual((LW).contents[i],privateFlag))
+            ADVWORDFILE();
+            (LW).contents[countWord] = currentWord;
+            countWord++;
+            if (countWord == ((*LU).capacity * 11) + 1)
             {
-                JENIS_USER(*LU, j) = 0;
+                getN = false;
             }
-            else
-            {
-                JENIS_USER(*LU, j) = 1;
-            }
-            
         }
-        else if (i % 11 == 7)
-        { // Matriks ntar disini
-
-            int rowProfile;
-            int colProfile;
-            int counterRow;
-            createMatrix(5, 10, &(*LU).buffer[j].fotoProfil);
-            counterRow = i;
-            colProfile = 0;
-            rowProfile = 0;
-            while (counterRow % 11 != 1)
+        // opsional, nanti di akhir program aja
+        //  fclose(pita);
+        printf("countword = %d\n",countWord);
+        int j = 0;
+        for (int i = 1; i < countWord; i++)
+        {
+            if (i % 11 == 1)
             {
-                colProfile = 0;
-                for (int k = 0; k < (LW).contents[i].Length; k++)
+                NAMA_USER(*LU, j) = (LW).contents[i];
+            }
+            else if (i % 11 == 2)
+            {
+                PASSWORD_USER(*LU, j) = (LW).contents[i];
+            }
+            else if (i % 11 == 3)
+            {
+                BIO_USER(*LU, j) = (LW).contents[i];
+            }
+            else if (i % 11 == 4)
+            {
+                NOHP_USER(*LU, j) = (LW).contents[i];
+            }
+            else if (i % 11 == 5)
+            {
+                WETON_USER(*LU, j) = (LW).contents[i];
+            }
+            else if (i % 11 == 6)
+            {
+                if(isWordEqual((LW).contents[i],privateFlag))
                 {
-                    if ((LW).contents[counterRow].TabWord[k] != BLANK)
-                    {
-
-                        ELMTMatrix(FOTO_USER(*LU, j), rowProfile, colProfile) = (LW).contents[counterRow].TabWord[k];
-                        colProfile++;
-                    }
+                    JENIS_USER(*LU, j) = 0;
                 }
-                counterRow++;
-                rowProfile++;
+                else
+                {
+                    JENIS_USER(*LU, j) = 1;
+                }
+                
+            }
+            else if (i % 11 == 7)
+            { // Matriks ntar disini
+
+                int rowProfile;
+                int colProfile;
+                int counterRow;
+                createMatrix(5, 10, &(*LU).buffer[j].fotoProfil);
+                counterRow = i;
+                colProfile = 0;
+                rowProfile = 0;
+                while (counterRow % 11 != 1)
+                {
+                    colProfile = 0;
+                    for (int k = 0; k < (LW).contents[i].Length; k++)
+                    {
+                        if ((LW).contents[counterRow].TabWord[k] != BLANK)
+                        {
+
+                            ELMTMatrix(FOTO_USER(*LU, j), rowProfile, colProfile) = (LW).contents[counterRow].TabWord[k];
+                            colProfile++;
+                        }
+                    }
+                    counterRow++;
+                    rowProfile++;
+                }
+            }
+            else if (i % 11 == 0) // reset
+            {
+                j++;
             }
         }
-        else if (i % 11 == 0) // reset
-        {
-            j++;
-        }
+        
+
     }
-    printf("Berhasil Konfigurasi!\n");
+    printf("Berhasil Konfigurasi! , jumlah user di data = %d\n" , UserCount(*LU));
+    
+
 }
 void CreateEmptyPengguna(ListUserStatik *l)
 {
@@ -334,6 +341,7 @@ void Masuk(ListUserStatik *LU, currentUser *CU,boolean *isLog)
 {
     printf("Masukkan nama: \n");
     STARTWORDINPUT();
+    printWord(currentWord);
     while ((cekSameNama(*LU, currentWord) == false))
     {
         printf("Wah, nama yang Anda cari tidak ada. Masukkan nama lain!\n\n");

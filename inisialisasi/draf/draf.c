@@ -1,36 +1,27 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "draf.h"
 
-int wordToInt(Word kata)
+void CreateListDraf(ListDinDraf *l, int capacity)
 {
-    return (kata.TabWord[0] - '0');
+    NEFFDRAF(*l) = 0;
+    BUFFERDRAF(*l) = (Draf *)malloc(capacity * sizeof(Draf));
+    CAPACITYDRAF(*l) = capacity;
 }
 
-void CreateEmptyDraf(ListDrafStatik *l)
+void dealocateListDraf(ListDinDraf *l)
 {
-    (*l).capacity = 0;
+    free(BUFFERDRAF(*l));
+    NEFFDRAF(*l) = 0;
+    CAPACITYDRAF(*l) = 0;
 }
 
-void displayDataDraf(Draf *id)
-{
-    printf("| id: ");
-    printf("%d\n", (*id).id);
-    printf("| Text: ");
-    printWord((*id).text);
-    printf("\n");
-    printf("| Author: ");
-    printWord((*id).author);
-    printf("\n");
-    printf("| Datetime: ");
-    TulisDATETIME((*id).datetime);
-    printf("\n");
-}
-
-void loadDrafConfig(char filename[], ListDrafStatik *LD)
+void loadDrafConfig(char filename[], ListDinDraf *LD)
 {
     boolean getN = true;
     STARTWORDFILE(filename);
-    (*LD).capacity = wordToInt(currentWord);
+    int capacity = currentWord.TabWord[0] % 48;
+    CreateListDraf(LD, capacity);
     int i = 1, j = 0;
     while (getN)
     {
@@ -56,7 +47,7 @@ void loadDrafConfig(char filename[], ListDrafStatik *LD)
         }
         if (i % 4 == 1)
         {
-            (*LD).buffer[j].id = wordToInt(currentWord);
+            (*LD).buffer[j].id = (int)(currentWord.TabWord[0] % 48);
         }
         else if (i % 4 == 2)
         {
@@ -82,5 +73,67 @@ void loadDrafConfig(char filename[], ListDrafStatik *LD)
         }
         i++;
     }
+    NEFF((*LD)) = j;
     printf("Draf berhasil di load\n");
+}
+
+void displayDataDraf(Draf *id)
+{
+    printf("| id: ");
+    printf("%d\n", (*id).id);
+    printf("| Text: ");
+    printWord((*id).text);
+    printf("\n");
+    printf("| Author: ");
+    printWord((*id).author);
+    printf("\n");
+    printf("| Datetime: ");
+    TulisDATETIME((*id).datetime);
+    printf("\n");
+}
+
+/* ********** MENAMBAH DRAF DI AKHIR ********** */
+void addDraf(ListDinDraf *l, Draf d)
+{
+    if (isFullOfDraf(*l))
+    {
+        if (CAPACITYDRAF(*l) == 0)
+        {
+            CAPACITYDRAF(*l) = 1;
+        }
+        else
+        {
+            CAPACITYDRAF(*l) *= 2;
+        }
+        BUFFERDRAF(*l) = (Draf *)realloc(BUFFERDRAF(*l), CAPACITYDRAF(*l) * sizeof(Draf));
+    }
+    ELMTDRAF(*l, NEFFDRAF(*l)) = d;
+    NEFFDRAF(*l) += 1;
+}
+
+void deleteDrafById(ListDinDraf *l, int id)
+{
+    int i = 0;
+    while (i < NEFFDRAF(*l) && ELMTDRAF(*l, i).id != id)
+    {
+        i++;
+    }
+    if (i < NEFFDRAF(*l))
+    {
+        for (int j = i; j < NEFFDRAF(*l); j++)
+        {
+            ELMTDRAF(*l, j) = ELMTDRAF(*l, j + 1);
+        }
+        NEFFDRAF(*l) -= 1;
+    }
+    if (CAPACITYDRAF(*l) > 1 && NEFFDRAF(*l) <= CAPACITYDRAF(*l) / 2)
+    {
+        CAPACITYDRAF(*l) /= 2;
+        BUFFERDRAF(*l) = (Draf *)realloc(BUFFERDRAF(*l), CAPACITYDRAF(*l) * sizeof(Draf));
+    }
+}
+
+boolean isFullOfDraf(ListDinDraf l)
+{
+    return (NEFFDRAF(l) == CAPACITYDRAF(l));
 }

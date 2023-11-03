@@ -77,10 +77,10 @@ void displayMatrix(Matrix m)
                 printf("%d ", ELMTMatrix(m, i, j));
             }
         }
-        printf("\n", ELMTMatrix(m, i, j));
+        printf("\n");
     }
 }
-//ADISI UNTUK PRINT PROFIL
+// ADISI UNTUK PRINT PROFIL
 void displayMatrixChar(Matrix m)
 {
     int i, j;
@@ -97,7 +97,7 @@ void displayMatrixChar(Matrix m)
                 printf("%c ", ELMTMatrix(m, i, j));
             }
         }
-        printf("\n", ELMTMatrix(m, i, j));
+        printf("\n");
     }
 }
 

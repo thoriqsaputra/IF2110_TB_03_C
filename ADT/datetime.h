@@ -6,7 +6,7 @@
 #define DATETIME_H
 
 #include "boolean.h"
-#include "time.h"
+#include "waktu.h"
 
 /* *** Definisi TYPE DATETIME <DD/MM/YY HH:MM:SS> *** */
 typedef struct

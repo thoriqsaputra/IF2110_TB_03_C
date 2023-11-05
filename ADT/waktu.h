@@ -1,9 +1,9 @@
-/* File: time.h */
+/* File: WAKTU.h */
 /* Tanggal: 3 September 2022 */
 /* Definisi ADT TIME */
 
-#ifndef TIME_H
-#define TIME_H
+#ifndef WAKTU_H
+#define WAKTU_H
 
 #include "boolean.h"
 

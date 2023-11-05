@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "time.h"
+#include "waktu.h"
 
 boolean IsTIMEValid(int H, int M, int S)
 {

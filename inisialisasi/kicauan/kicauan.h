@@ -1,12 +1,11 @@
 /* File: kicauan.h */
-/* Definisi ADT Kicauan? */
+/* Definisi ADT Kicauan */
 
-#ifndef __KICAUAN__
-#define __KICAUAN__
+#ifndef KICAUAN_H
+#define KICAUAN_H
 
 #include "../../ADT/wordmachine.h"
-// #include "../../ADT/datetime.h" dikomen dulu, di spesifikasi include time.h dari library c?
-#include "../../ADT/listdin.h"
+#include "../../ADT/datetime.h"
 
 /*  Kamus Umum */
 #define IDX_MIN 0
@@ -21,7 +20,7 @@ typedef struct
     Word Text;
     int Like;
     Word Author;
-    Word Datetime; // Untuk sementara pakai Word dulu
+    DATETIME Datetime;
 } KICAUAN;
 
 /* ********** SELEKTOR KICAUAN********** */
@@ -43,13 +42,6 @@ typedef struct
 #define CONTENTKICAUAN(l) (l).contentKicauan
 #define ELMTKICAUAN(l, i) (l).contentKicauan[i]
 #define CAPACITYKICAUAN(l) (l).capacityKicauan
-
-/* ********** SELEKTOR KE DALAM KICAUAN********** */
-// #define IDKICAUAN(l, i) (l).contentKicauan[i].ID
-// #define TEXTKICAUAN(l, i) (l).contentKicauan[i].Text
-// #define LIKEKICAUAN(l, i) (l).contentKicauan[i].Like
-// #define AUTHORKICAUAN(l, i) (l).contentKicauan[i].Author
-// #define DATETIMEKICAUAN(l, i) (l).contentKicauan[i].Datetime
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create list kosong  */

@@ -2,34 +2,6 @@
 #include <stdlib.h>
 #include "kicauan.h"
 
-// void printWord(Word kata)
-// {
-//     for (int i = 0; i < kata.Length; i++)
-// {
-//         printf("%c",kata.TabWord[i]);
-// }
-//     printf("\n");   
-// }
-
-boolean isWordEqual(Word input, Word cek)
-{
-    if (input.Length != cek.Length)
-    {
-        return false;
-    }
-    else
-    {
-        for (int i = 0; i < input.Length; i++)
-        {
-            if (input.TabWord[i] != cek.TabWord[i])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
 int wordToInt(Word kata)
 {
     int res = 0;
@@ -41,6 +13,18 @@ int wordToInt(Word kata)
         i++;
     }
     return res;
+}
+
+void CreateDATETIMEfromWord(DATETIME *D, Word kata)
+{
+    int day, month, year, hour, minute, second;
+    day = (kata.TabWord[0] % 48 ) * 10 + (kata.TabWord[1] % 48 );
+    month = (kata.TabWord[3] % 48) * 10 + (kata.TabWord[4] % 48);
+    year = (kata.TabWord[6] % 48) * 1000 + (kata.TabWord[7] % 48) * 100 + (kata.TabWord[8] % 48) * 10 + (kata.TabWord[9] % 48);
+    hour = (kata.TabWord[11] % 48) * 10 + (kata.TabWord[12] % 48);
+    minute = (kata.TabWord[14] % 48) * 10 + (kata.TabWord[15] % 48);
+    second = (kata.TabWord[17] % 48) * 10 + (kata.TabWord[18] % 48);
+    CreateDATETIME(D, day, month, year, hour, minute, second);
 }
 
 // Dari pengguna.c
@@ -65,7 +49,6 @@ void loadKicauanConfig(char filename[], ListDinKicauan *l)
     STARTWORDFILE(filename);
     int capacity = wordToInt(currentWord);
     CreateListKicauan(l,capacity);
-    printf("CAPACITY = %d\n",CAPACITYKICAUAN(*l));
 
     for (int i = 0; i < CAPACITYKICAUAN(*l); i++)
     {
@@ -78,12 +61,13 @@ void loadKicauanConfig(char filename[], ListDinKicauan *l)
         ADVWORDFILE();
         AUTHORKICAUAN(ELMTKICAUAN(*l,i)) = currentWord;
         ADVWORDFILE();
-        DATETIMEKICAUAN(ELMTKICAUAN(*l,i)) = currentWord;
+        CreateDATETIMEfromWord(&DATETIMEKICAUAN(ELMTKICAUAN(*l,i)),currentWord);
     }
-    NEFFKICAUAN(*l) == CAPACITYKICAUAN(*l);
+    NEFFKICAUAN(*l) = CAPACITYKICAUAN(*l);
 }
 
-/* ********** MEMBACA KICAUAN ********** */
+/* ********** MEMBUAT KICAUAN ********** */
+KICAUAN createNewKicauan(Word text);
 
 
 /* ********** MENAMBAH KICAUAN DI AKHIR ********** */
@@ -111,12 +95,21 @@ boolean isFullOfKicauan(ListDinKicauan l)
 
 void displayKicauan(KICAUAN T)
 {
+    printf("| ID : ");
     printf("%d\n",IDKICAUAN(T));
-    printWord(TEXTKICAUAN(T));
-    printf("\n");
-    printf("%d\n",LIKEKICAUAN(T));
+
+    printf("| @");
     printWord(AUTHORKICAUAN(T));
     printf("\n");
-    printWord(DATETIMEKICAUAN(T));
+
+    printf("| ");
+    printWord(TEXTKICAUAN(T));
+    printf("\n");
+
+    printf("| Disukai : ");
+    printf("%d\n",LIKEKICAUAN(T));
+
+    printf("| ");
+    TulisDATETIME(DATETIMEKICAUAN(T));
     printf("\n");
 }

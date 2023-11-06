@@ -28,4 +28,6 @@ void ADV();
           Jika  currentChar = MARK maka EOP akan menyala (true) */
 void STARTFILE(char filename[]);
 
+boolean retValues();
+
 #endif

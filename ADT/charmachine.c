@@ -46,3 +46,9 @@ void ADV()
     //     fclose(pita);
     // }
 }
+
+boolean retValues()
+{
+    return (retval == 1);
+    // ganti retval jadi akses valuesnya dari retValues()
+}

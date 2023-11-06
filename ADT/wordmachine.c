@@ -109,7 +109,7 @@ void ADVWORDINPUT()
 void CopyWord()
 {
     int i = 0;
-    while (currentChar != MARKC && currentChar != BLANK && retval == 1)
+    while (currentChar != MARKC && currentChar != BLANK && retValues())
     {
         if (i < NMax)
         {
@@ -123,7 +123,7 @@ void CopyWord()
 void CopyWordFile()
 {
     int i = 0;
-    while ( currentChar != newLine && retval == 1 )
+    while ( currentChar != newLine && retValues() )
     {
         if (i < NMax) //supaya tidak melewati addressnya
         {
@@ -137,7 +137,7 @@ void CopyWordFile()
 void CopyWordInput()
 {
     int i = 0;
-    while ( currentChar != MARKINPUT && retval == 1 )
+    while ( currentChar != MARKINPUT && retValues() )
     {
         if (i < NMax)
         {

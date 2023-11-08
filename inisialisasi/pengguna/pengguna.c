@@ -32,6 +32,8 @@ int wordToInt(Word kata)
 }
 void tulisDataPengguna(Pengguna *user)
 {
+    printf("| ID  ");
+    printf("%d\n",(*user).id);
     printf("| Nama: ");
     printWord((*user).nama);
     printf("\n");
@@ -175,6 +177,7 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU)
             }
             else if (i % 11 == 0) // reset
             {
+                ID_USER(*LU,j) = j + 1;
                 j++;
             }
         }

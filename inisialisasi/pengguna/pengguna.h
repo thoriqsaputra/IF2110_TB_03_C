@@ -15,6 +15,7 @@ listWord juga menggunakan dasar dari listatik
 #define WETON_USER(l, q) (l).buffer[q].weton
 #define JENIS_USER(l, q) (l).buffer[q].jenisAkun
 #define FOTO_USER(l, q) (l).buffer[q].fotoProfil
+#define ID_USER(l,q) (l).buffer[q].id
 #define UserCount(l) (l).capacity
 #define idUser(c) (c).idUser
 #define nameUser(c) (c).nama
@@ -22,6 +23,7 @@ listWord juga menggunakan dasar dari listatik
 // l -> LU (ListUserStatik)  c -> CU (currentUser)
 typedef struct
 {
+    int id;
     Word nama;
     Word password;
     Word bio;

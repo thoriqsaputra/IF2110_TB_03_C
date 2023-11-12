@@ -28,8 +28,16 @@ boolean isWordEqual(Word input, Word cek)
 }
 int wordToInt(Word kata)
 {
-    return (kata.TabWord[0] - '0');
+    int res = 0;
+    int i = 0;
+    while (kata.TabWord[i] >= '0' && kata.TabWord[i] <= '9' && i < kata.Length) 
+    {
+        res = res * 10 + (kata.TabWord[i] - '0');
+        i++;
+    }
+    return res;
 }
+
 void tulisDataPengguna(Pengguna *user)
 {
     printf("| ID  ");
@@ -239,10 +247,34 @@ boolean cekEmptyInput(char CC)
 {
     return (CC == MARKINPUT && currentWord.Length == 0);
 }
-void getInputProfil()
+void getInputProfil(int Nmax)
 {
-    STARTWORDINPUT();
-    if (EndInput)
+    //STARTWORDINPUT tapi di modif di bagian NMAX
+    START();
+    IgnoreBlanks();
+    ignoreNewLine();
+    if (currentChar == MARKINPUT)
+    {
+        EndInput = true;
+    }
+    else
+    {
+        EndInput = false;
+        int i = 0;
+        while ( currentChar != MARKINPUT && retValues() )
+        {
+            if (i < Nmax)
+            {
+                currentWord.TabWord[i] = currentChar;
+                i++;
+            }  
+            ADV();
+        }
+        currentWord.Length = i;
+    }
+    
+
+    if (EndInput) // langsung ; jawabannya, jadi pasti string kosong
     {
         currentWord.TabWord[0] = ' ';
         currentWord.Length = 1;
@@ -267,22 +299,52 @@ boolean isValidWeton(Word inputWeton)
         return false;
     }
 }
+boolean isValidHP(Word inputHP)
+//Mengembalikan nilai true apabila sesuai data No HP
+// integer max 15 char
+{
+    
+    if (inputHP.Length > 15)
+    {
+        return false;
+    }
+    else
+    {
+        for (int i = 0; i < inputHP.Length; i++)
+        {
+            if(inputHP.TabWord[i] == BLANK || !(inputHP.TabWord[i] >= '0' && inputHP.TabWord[i] <= '9'))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+}
 void gantiProfil(ListUserStatik *LU,currentUser *CU)
 {
-    printf("Masukkan Bio Akun:\n");
-    getInputProfil();
+    printf("Masukkan Bio Akun *maks 135 char* :\n");
+    getInputProfil(135); // bio maks 135 char
     // misal skrg profil 1
     BIO_USER(*LU,idUser(*CU)) = currentWord;
-    printf("Masukkan No HP:\n");
-    getInputProfil();
+    printf("Masukkan No HP  :\n");
+    getInputProfil(NMax); 
+    while (isValidHP(currentWord) == false && EndInput == false)
+    {
+        printf("No HP tidak valid. Masukkan lagi yuk!\n\n");
+        printf("Masukkan No HP :\n");
+        getInputProfil(NMax);
+    }
+    
     NOHP_USER(*LU,idUser(*CU)) = currentWord;
     printf("Masukkan Weton:\n");
-    getInputProfil();
+    getInputProfil(NMax);
     while (isValidWeton(currentWord) == false &&  EndInput == false)
     {
         printf("Weton anda tidak valid.\n\n");
         printf("Masukkan Weton:\n");
-        getInputProfil();
+        getInputProfil(NMax);
     }
     WETON_USER(*LU,idUser(*CU)) = currentWord;
 

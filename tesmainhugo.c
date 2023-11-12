@@ -5,6 +5,7 @@
 #include "inisialisasi/pengguna/pengguna.c"
 int main()
 {
+    printf("%d", 'd' > '0');
     boolean isLogged = false; // sementara true
     // Inisialiasi
     ListUserStatik LU;

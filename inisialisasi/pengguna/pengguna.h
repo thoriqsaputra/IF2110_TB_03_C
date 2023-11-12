@@ -91,6 +91,8 @@ int getUserId(Word inputNama, ListUserStatik LU);
 // void printWord(Word kata);
 /*Print ADT Word*/
 
+boolean isValidHP(Word inputHP);
+
 int wordToInt(Word kata);
 /*Ubah ADT Word to Int*/
 
@@ -98,7 +100,7 @@ void tulisDataPengguna(Pengguna *user);
 /*I.S Menulis dari
   F.S
 */
-void getInputProfil();
+void getInputProfil(int Nmax);
 
 boolean cekSameNama(ListUserStatik LU, Word inputWord);
 

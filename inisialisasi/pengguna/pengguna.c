@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "pengguna.h"
+#include "pcolor.h"
+#include "pcolor.c"
 // void printWord(Word kata)
 // {
 //     for (int i = 0; i < kata.Length; i++)
@@ -68,7 +70,7 @@ void tulisDataPengguna(Pengguna *user)
     }
     printf("\n");
     printf("| FotoProfil: \n");
-    displayMatrixChar((*user).fotoProfil);
+    displayColorMatrix((*user).fotoProfil);
 }
 Matrix createMatrixDefault()
 /*
@@ -80,7 +82,6 @@ Matrix createMatrixDefault()
 */
 {
     Matrix newM;
-    ListDin listD;
     char temp[50] = {'R','*','R','*','R','*','R','*','R','*',
                         'R','*','G','@','B','*','G','@','R','*'
                         ,'R','*','G','@','B','@','G','@','R','*'
@@ -94,6 +95,31 @@ Matrix createMatrixDefault()
         cnt ++;
     }
     return newM;
+
+}
+void displayColorMatrix(Matrix m)
+{
+    for (int i = 0; i < ROW_EFF(m); i++)
+    {
+        for (int j = 0; j < COL_EFF(m); j++)
+        {
+            if(ELMTMatrix(m,i,j) == 'R')
+            {
+                print_red(ELMTMatrix(m,i,j+1));
+            }
+            else if(ELMTMatrix(m,i,j) == 'G')
+            {
+                print_green(ELMTMatrix(m,i,j+1));
+            }
+            else if(ELMTMatrix(m,i,j) == 'B')
+            {
+                print_blue(ELMTMatrix(m,i,j+1));
+            }
+        }
+        printf("\n");
+        
+    }
+    
 
 }
 void loadPenggunaConfig(char filename[], ListUserStatik *LU)
@@ -463,7 +489,7 @@ void lihatUser(ListUserStatik *LU, Word namaProfil)
         printWord((*LU).buffer[iduser].weton);
         printf("\n");
         printf("| FotoProfil: \n");
-        displayMatrixChar((*LU).buffer[iduser].fotoProfil);
+        displayColorMatrix((*LU).buffer[iduser].fotoProfil);
     }
     
 }
@@ -536,7 +562,7 @@ void ubahFotoProfil(ListUserStatik * LU, currentUser *CU)
     else
     {
         printf("\n\n\n");
-        printWord(currentWord);
+        // printWord(currentWord);
         printf("\n\n\n");
         createMatrix(5,10,&newMatrix);
 
@@ -545,8 +571,8 @@ void ubahFotoProfil(ListUserStatik * LU, currentUser *CU)
         {
             if(currentWord.TabWord[i] != BLANK && currentWord.TabWord[i] != newLine)
             {
-                printf("%c ",currentWord.TabWord[i]);
-                printf("baris %d , kolom %d\n", i / 20, i % 20 / 2);
+                // printf("%c ",currentWord.TabWord[i]);
+                // printf("baris %d , kolom %d\n", i / 20, i % 20 / 2);
                 
                 ELMTMatrix(newMatrix,i / 20, i % 20 / 2) = currentWord.TabWord[i];
             }

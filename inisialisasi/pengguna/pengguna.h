@@ -20,6 +20,8 @@ listWord juga menggunakan dasar dari listatik
 #define idUser(c) (c).idUser
 #define nameUser(c) (c).nama
 
+
+
 // l -> LU (ListUserStatik)  c -> CU (currentUser)
 typedef struct
 {
@@ -107,6 +109,8 @@ boolean cekSameNama(ListUserStatik LU, Word inputWord);
 boolean isWordEqual(Word input, Word cek);
 // cek word sama
 boolean isValidWeton(Word inputWeton);
+
+void displayColorMatrix(Matrix m);
 //=========================LOADCONFIG=========================================
 void loadPenggunaConfig(char filename[], ListUserStatik *LU);
 /*Load Config Pengguna dari pengguna.config, lalu mengassign data data sesuai dengan kebutuhan typedef Pengguna

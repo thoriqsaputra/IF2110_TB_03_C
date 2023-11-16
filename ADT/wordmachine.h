@@ -19,6 +19,7 @@ typedef struct
 
 /* State Mesin Word */
 extern boolean EndWord;
+extern boolean EndInput;
 extern Word currentWord;
 
 void IgnoreBlanks();

@@ -347,7 +347,35 @@ void simpan(ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKica
     file = fopen(pathDraf, "w");
     if (file != NULL)
     {
-        // draf
+        fprintf(file, "%d\n", LD->nEff);
+        for (int i = 0; i < LD->nEff; i++)
+        {
+            fprintf(file, "%d\n", LD->buffer[i].id);
+            fprintf(file, "%d\n", LD->buffer[i].author.Length);
+            for (int j = 0; j < LD->buffer[i].author.Length; j++)
+            {
+                fprintf(file, "%c", LD->buffer[i].author.TabWord[j]);
+            }
+            fprintf(file, "\n");
+            fprintf(file, "%d\n", LD->buffer[i].text.Length);
+            for (int j = 0; j < LD->buffer[i].text.Length; j++)
+            {
+                fprintf(file, "%c", LD->buffer[i].text.TabWord[j]);
+            }
+            fprintf(file, "\n");
+            fprintf(file, "%d", LD->buffer[i].datetime.DD);
+            fprintf(file, "/");
+            fprintf(file, "%d", LD->buffer[i].datetime.MM);
+            fprintf(file, "/");
+            fprintf(file, "%d ", LD->buffer[i].datetime.YYYY);
+            fprintf(file, "%d", LD->buffer[i].datetime.T.HH);
+            fprintf(file, "%d", LD->buffer[i].datetime.T.MM);
+            fprintf(file, "%d", LD->buffer[i].datetime.T.SS);
+            if (i != LD->nEff - 1)
+            {
+                fprintf(file, "\n");
+            }
+        }
         fclose(file);
     }
 

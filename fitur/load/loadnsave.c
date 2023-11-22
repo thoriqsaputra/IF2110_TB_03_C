@@ -3,12 +3,8 @@
 #include <sys/types.h>
 #include "../../Lib/includeall.h"
 
-void muat(ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKicauan *LK)
+void muat(Word folder, ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKicauan *LK)
 {
-    printf("Masukkan nama folder yang hendak dimuat.");
-    STARTWORDINPUT();
-
-    Word folder = currentWord;
 
     // Ubah word ke array of char
     char namaFolder[folder.Length];
@@ -164,7 +160,7 @@ void muat(ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKicaua
     loadPenggunaConfig(pathPengguna, LU);
     loadDrafConfig(pathDraf, LD);
     loadKicauanConfig(pathKicauan, LK);
-    loadBalasanConfig(pathBalasan, LB);
+    // loadBalasanConfig(pathBalasan, LB);
     // loadUtasConfig(pathUtas, LT);
 }
 
@@ -396,6 +392,8 @@ void simpan(ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKica
     if (file != NULL)
     {
         // balasan
+        fprintf(file, "%d\n", LB->nEffBalasan);
+
         fclose(file);
     }
 
@@ -438,6 +436,36 @@ void simpan(ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKica
     if (file != NULL)
     {
         // kicauan
+        fprintf(file, "%d\n", LK->nEffKicauan);
+        for (int i = 0; i < LK->nEffKicauan; i++)
+        {
+            fprintf(file, "%d\n", LK->contentKicauan[i].ID);
+            for (int j = 0; j < LK->contentKicauan[i].Text.Length; j++)
+            {
+                fprintf(file, "%c", LK->contentKicauan[i].Text.TabWord[j]);
+            }
+            fprintf(file, "\n");
+            fprintf(file, "%d\n", LK->contentKicauan[i].Like);
+            for (int j = 0; j < LK->contentKicauan[i].Author.Length; j++)
+            {
+                fprintf(file, "%c", LK->contentKicauan[i].Author.TabWord[j]);
+            }
+            fprintf(file, "\n");
+            fprintf(file, "%02d", LK->contentKicauan[i].Datetime.DD);
+            fprintf(file, "/");
+            fprintf(file, "%02d", LK->contentKicauan[i].Datetime.MM);
+            fprintf(file, "/");
+            fprintf(file, "%04d ", LK->contentKicauan[i].Datetime.YYYY);
+            fprintf(file, "%02d", LK->contentKicauan[i].Datetime.T.HH);
+            fprintf(file, ":");
+            fprintf(file, "%02d", LK->contentKicauan[i].Datetime.T.MM);
+            fprintf(file, ":");
+            fprintf(file, "%02d", LK->contentKicauan[i].Datetime.T.SS);
+            if (i != LK->nEffKicauan - 1)
+            {
+                fprintf(file, "\n");
+            }
+        }
         fclose(file);
     }
 

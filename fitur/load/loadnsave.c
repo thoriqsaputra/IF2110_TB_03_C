@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "../../main.c"
 #include "../../Lib/includeall.h"
 
 void muat(ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKicauan *LK)
@@ -162,11 +161,11 @@ void muat(ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKicaua
     pathUtas[folder.Length + 8 + 10] = 'i';
     pathUtas[folder.Length + 8 + 11] = 'g';
 
-    loadPenggunaConfig(pathPengguna, &LU);
-    loadDrafConfig(pathDraf, &LD);
-    loadKicauanConfig(pathKicauan, &LK);
-    loadBalasanConfig(pathBalasan, &LB);
-    // loadUtasConfig(pathUtas, &LT);
+    loadPenggunaConfig(pathPengguna, LU);
+    loadDrafConfig(pathDraf, LD);
+    loadKicauanConfig(pathKicauan, LK);
+    loadBalasanConfig(pathBalasan, LB);
+    // loadUtasConfig(pathUtas, LT);
 }
 
 void simpan(ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKicauan *LK)
@@ -334,6 +333,62 @@ void simpan(ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKica
     if (file != NULL)
     {
         // pengguna
+        fprintf(file, "%d\n", LU->capacity);
+        for (int i = 0; i < LU->capacity; i++)
+        {
+            for (int j = 0; j < LU->buffer[i].nama.Length; j++)
+            {
+                fprintf(file, "%c", LU->buffer[i].nama.TabWord[j]);
+            }
+            fprintf(file, "\n");
+            for (int j = 0; j < LU->buffer[i].password.Length; j++)
+            {
+                fprintf(file, "%c", LU->buffer[i].password.TabWord[j]);
+            }
+            fprintf(file, "\n");
+            for (int j = 0; j < LU->buffer[i].bio.Length; j++)
+            {
+                fprintf(file, "%c", LU->buffer[i].bio.TabWord[j]);
+            }
+            fprintf(file, "\n");
+            for (int j = 0; j < LU->buffer[i].noHp.Length; j++)
+            {
+                fprintf(file, "%c", LU->buffer[i].noHp.TabWord[j]);
+            }
+            fprintf(file, "\n");
+            for (int j = 0; j < LU->buffer[i].weton.Length; j++)
+            {
+                fprintf(file, "%c", LU->buffer[i].weton.TabWord[j]);
+            }
+            fprintf(file, "\n");
+            if (LU->buffer[i].jenisAkun == 1)
+            {
+                fprintf(file, "Publik\n");
+            }
+            else
+            {
+                fprintf(file, "Privat\n");
+            }
+            for (int j = 0; j < LU->buffer[i].fotoProfil.rowEff; j++)
+            {
+                for (int k = 0; k < LU->buffer[i].fotoProfil.colEff; k++)
+                {
+                    fprintf(file, "%c", LU->buffer[i].fotoProfil.mem[j][k]);
+                    if (k != LU->buffer[i].fotoProfil.colEff - 1)
+                    {
+                        fprintf(file, " ");
+                    }
+                }
+                if (j != LU->buffer[i].fotoProfil.rowEff - 1)
+                {
+                    fprintf(file, "\n");
+                }
+            }
+            if (i != LU->capacity - 1)
+            {
+                fprintf(file, "\n");
+            }
+        }
         fclose(file);
     }
 
@@ -351,26 +406,26 @@ void simpan(ListUserStatik *LU, ListDinBalasan *LB, ListDinDraf *LD, ListDinKica
         for (int i = 0; i < LD->nEff; i++)
         {
             fprintf(file, "%d\n", LD->buffer[i].id);
-            fprintf(file, "%d\n", LD->buffer[i].author.Length);
             for (int j = 0; j < LD->buffer[i].author.Length; j++)
             {
                 fprintf(file, "%c", LD->buffer[i].author.TabWord[j]);
             }
             fprintf(file, "\n");
-            fprintf(file, "%d\n", LD->buffer[i].text.Length);
             for (int j = 0; j < LD->buffer[i].text.Length; j++)
             {
                 fprintf(file, "%c", LD->buffer[i].text.TabWord[j]);
             }
             fprintf(file, "\n");
-            fprintf(file, "%d", LD->buffer[i].datetime.DD);
+            fprintf(file, "%02d", LD->buffer[i].datetime.DD);
             fprintf(file, "/");
-            fprintf(file, "%d", LD->buffer[i].datetime.MM);
+            fprintf(file, "%02d", LD->buffer[i].datetime.MM);
             fprintf(file, "/");
-            fprintf(file, "%d ", LD->buffer[i].datetime.YYYY);
-            fprintf(file, "%d", LD->buffer[i].datetime.T.HH);
-            fprintf(file, "%d", LD->buffer[i].datetime.T.MM);
-            fprintf(file, "%d", LD->buffer[i].datetime.T.SS);
+            fprintf(file, "%04d ", LD->buffer[i].datetime.YYYY);
+            fprintf(file, "%02d", LD->buffer[i].datetime.T.HH);
+            fprintf(file, ":");
+            fprintf(file, "%02d", LD->buffer[i].datetime.T.MM);
+            fprintf(file, ":");
+            fprintf(file, "%02d", LD->buffer[i].datetime.T.SS);
             if (i != LD->nEff - 1)
             {
                 fprintf(file, "\n");

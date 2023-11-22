@@ -131,7 +131,7 @@ void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf l)
     STARTWORDINPUT();
 
     Word pil = currentWord;
-    Draf draf = {NEFFDRAF(l) + 1, text, u.nama, dt};
+    Draf draf = {ELMTDRAF(l, NEFFDRAF(l) - 1).id + 1, text, u.nama, dt};
     if (isWordEqual(pil, hapus))
     {
         printf("Draf berhasil dihapus!\n");
@@ -139,6 +139,7 @@ void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf l)
     else if (isWordEqual(pil, simpan))
     {
         pushDraf(s, draf);
+        addDraf(&l, draf); // Tambahkan ke raw data draf
         printf("Draf berhasil disimpan!\n");
     }
     else if (isWordEqual(pil, terbit))
@@ -175,7 +176,8 @@ void lihatDraf(DrafKicauan s, ListDinDraf l, currentUser u)
         if (isWordEqual(pil, hapus))
         {
             Draf temp;
-            popDraf(&s, &temp);
+            popDraf(&s, &temp);          // Hapus dalam stack draf current user
+            deleteDrafById(&l, temp.id); // Hapus dalam raw data draf
             printf("Draf telah berhasil dihapus!\n");
         }
         else if (isWordEqual(pil, ubah))

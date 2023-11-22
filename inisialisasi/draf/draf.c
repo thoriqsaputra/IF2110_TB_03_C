@@ -16,6 +16,14 @@ void dealocateListDraf(ListDinDraf *l)
     CAPACITYDRAF(*l) = 0;
 }
 
+void createDraf(Draf *d, Word text, Word author, DATETIME datetime)
+{
+    (*d).id = 0;
+    (*d).text = text;
+    (*d).author = author;
+    (*d).datetime = datetime;
+}
+
 void loadDrafConfig(char filename[], ListDinDraf *LD)
 {
     boolean getN = true;
@@ -73,7 +81,7 @@ void loadDrafConfig(char filename[], ListDinDraf *LD)
         }
         i++;
     }
-    NEFF((*LD)) = j;
+    NEFFDRAF((*LD)) = j;
     printf("Draf berhasil di load\n");
 }
 

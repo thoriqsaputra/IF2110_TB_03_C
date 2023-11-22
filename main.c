@@ -59,10 +59,12 @@ int main()
     boolean runProgram = true;
     while (runProgram)
     {
+        printf("\n");
         printf(">> ");
 
         STARTWORD(); // gapake STARTWORDINPUT() aja?
         // command.tabword = currentWord.tabword  & command.length = currentWord.length
+        printf("\n");
         Word command = currentWord;
         Word lu = {"lu", 2};
 
@@ -71,6 +73,7 @@ int main()
             if (isWordEqual(command, masukCmd))
             {
                 Masuk(&LU, &CU, &isLogged);
+                CreateDrafKicauan(&DK);
                 loadDrafKicauan(LD, &DK, CU); // Load draf dari raw data sesuai dengan current user
             }
             else if (isWordEqual(command, daftarCmd))
@@ -94,9 +97,11 @@ int main()
             {
                 printf("Anda Belum Login, silahkan MASUK terlebih dahulu!\n");
             }
+            printf("\n");
             printf(">> ");
             STARTWORD();
             command = currentWord;
+            printf("\n");
         }
 
         // Udah login

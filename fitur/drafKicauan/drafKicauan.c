@@ -64,26 +64,13 @@ void CreateDrafKicauan(DrafKicauan *s)
 
 void DisplayDraf(DrafKicauan s)
 {
-    // Gadigunain
-    // if (isEmptyDraf(s))
-    // {
-    //     printf("[]");
-    // }
-    // else
-    // {
-    //     Address P = ADDR_TOPDRAF(s);
-    //     printf("[");
-    //     while (P != NULL)
-    //     {
-    //         displayDataDraft(INFODRAF(P));
-    //         if (NEXTDRAF(P) != NULL)
-    //         {
-    //             printf(",");
-    //         }
-    //         P = NEXTDRAF(P);
-    //     }
-    //     printf("]");
-    // }
+    Draf d = TOPDRAF(s);
+    printf("| ");
+    TulisDATETIME((d).datetime);
+    printf("\n");
+    printf("| ");
+    printWord((d).text);
+    printf("\n");
 }
 
 void pushDraf(DrafKicauan *s, Draf x)
@@ -179,7 +166,7 @@ void lihatDraf(DrafKicauan *s, ListDinDraf *l, currentUser u)
 
         printf("Ini draf terakhir anda:\n");
 
-        displayDataDraf(TOPDRAF(*s));
+        DisplayDraf(*s);
         printf("\n");
 
         int ulang = 1;
@@ -204,6 +191,7 @@ void lihatDraf(DrafKicauan *s, ListDinDraf *l, currentUser u)
                 Draf temp;
                 popDraf(s, &temp);
                 printf("Masukkan draf yang baru:\n");
+
                 STARTWORDINPUT();
 
                 Word text = currentWord;

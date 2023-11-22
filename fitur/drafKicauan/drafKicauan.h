@@ -67,10 +67,10 @@ void popDraf(DrafKicauan *s, Draf *x);
 /*      elemen Top yang lama didealokasi */
 /* Pada dasarnya adalah operasi deleteFirst pada list linier */
 
-void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf l);
+void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf *l);
 /* Command BUAT_DRAF */
 
-void lihatDraf(DrafKicauan s, ListDinDraf l, currentUser u);
+void lihatDraf(DrafKicauan *s, ListDinDraf *l, currentUser u);
 /* Command LIHAT_DRAF */
 
 void loadDrafKicauan(ListDinDraf l, DrafKicauan *d, currentUser u);

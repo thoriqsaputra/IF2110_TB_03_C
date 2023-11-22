@@ -14,6 +14,8 @@ int main()
     ListUserStatik LU;
     ListDinDraf LD;
     currentUser CU;
+    DrafKicauan DK;
+    CreateDrafKicauan(&DK);
     CreateEmptyPengguna(&LU);
     loadPenggunaConfig("configs/config-1/pengguna.config", &LU);
     loadDrafConfig("configs/config-1/draf.config", &LD);
@@ -28,11 +30,12 @@ int main()
         // command.tabword = currentWord.tabword  & command.length = currentWord.length
         Word command = currentWord;
         Word lu = {"lu", 2};
-        while ((isLogged == false))
+        while ((!isLogged))
         {
             if (isWordEqual(command, masukCmd))
             {
                 Masuk(&LU, &CU, &isLogged);
+                loadDrafKicauan(LD, &DK, CU);
             }
             else if (isWordEqual(command, daftarCmd))
             {
@@ -59,8 +62,6 @@ int main()
             STARTWORD();
             command = currentWord;
         }
-        DrafKicauan DK;
-        loadDrafKicauan(LD, &DK, CU);
         if (isWordEqual(command, tutupProgramCmd))
         {
             fclose(pita);
@@ -108,11 +109,11 @@ int main()
         }
         else if (isWordEqual(command, buatDrafCmd))
         {
-            buatDraf(&DK, CU, LD);
+            buatDraf(&DK, CU, &LD);
         }
         else if (isWordEqual(command, lihatDrafCmd))
         {
-            lihatDraf(DK, LD, CU);
+            lihatDraf(&DK, &LD, CU);
         }
 
         else

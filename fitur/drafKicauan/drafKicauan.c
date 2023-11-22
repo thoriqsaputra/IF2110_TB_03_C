@@ -100,13 +100,20 @@ void popDraf(DrafKicauan *s, Draf *x)
 {
     Address P = ADDR_TOPDRAF(*s);
     *x = INFODRAF(P);
-    ADDR_TOPDRAF(*s) = NEXTDRAF(P);
-    NEXTDRAF(P) = NULL;
+    if (NEXTDRAF(P) == NULL)
+    {
+        ADDR_TOPDRAF(*s) = NULL;
+    }
+    else
+    {
+        ADDR_TOPDRAF(*s) = NEXTDRAF(P);
+        NEXTDRAF(P) = NULL;
+    }
     free(P);
 }
 
 // Command BUAT_DRAF
-void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf l)
+void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf *l)
 {
     Word hapus = {"HAPUS", 5};
     Word simpan = {"SIMPAN", 6};
@@ -133,7 +140,7 @@ void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf l)
     STARTWORDINPUT();
 
     Word pil = currentWord;
-    Draf draf = {ELMTDRAF(l, NEFFDRAF(l) - 1).id + 1, text, u.nama, dt};
+    Draf draf = {ELMTDRAF(*l, NEFFDRAF(*l) - 1).id + 1, text, u.nama, dt};
     if (isWordEqual(pil, hapus))
     {
         printf("Draf berhasil dihapus!\n");
@@ -141,7 +148,7 @@ void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf l)
     else if (isWordEqual(pil, simpan))
     {
         pushDraf(s, draf);
-        addDraf(&l, draf); // Tambahkan ke raw data draf
+        addDraf(l, draf); // Tambahkan ke raw data draf
         printf("Draf berhasil disimpan!\n");
     }
     else if (isWordEqual(pil, terbit))
@@ -157,9 +164,9 @@ void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf l)
 }
 
 // Command LIHAT_DRAF
-void lihatDraf(DrafKicauan s, ListDinDraf l, currentUser u)
+void lihatDraf(DrafKicauan *s, ListDinDraf *l, currentUser u)
 {
-    if (isEmptyDraf(s))
+    if (isEmptyDraf(*s))
     {
         printf("Yah, anda belum memiliki draf apapun! Buat dulu ya :D\n");
     }
@@ -169,63 +176,72 @@ void lihatDraf(DrafKicauan s, ListDinDraf l, currentUser u)
         Word ubah = {"UBAH", 4};
         Word terbit = {"TERBIT", 6};
         Word kembali = {"KEMBALI", 7};
-        displayDataDraf(TOPDRAF(s));
 
-        printf("Apakah anda ingin mengubah, menghapus, atau menerbitkan draf ini? (KEMBALI jika ingin kembali)\n");
-        STARTWORDINPUT();
+        printf("Ini draf terakhir anda:\n");
 
-        Word pil = currentWord;
+        displayDataDraf(TOPDRAF(*s));
+        printf("\n");
 
-        if (isWordEqual(pil, hapus))
+        int ulang = 1;
+
+        while (ulang)
         {
-            Draf temp;
-            popDraf(&s, &temp);          // Hapus dalam stack draf current user
-            deleteDrafById(&l, temp.id); // Hapus dalam raw data draf
-            printf("Draf telah berhasil dihapus!\n");
-        }
-        else if (isWordEqual(pil, ubah))
-        {
-            Draf temp;
-            popDraf(&s, &temp);
-            printf("Masukkan draf yang baru:\n");
+            ulang = 0;
+            printf("Apakah anda ingin mengubah, menghapus, atau menerbitkan draf ini? (KEMBALI jika ingin kembali)\n");
             STARTWORDINPUT();
 
-            Word text = currentWord;
+            Word pil = currentWord;
 
-            // Ambil waktu sekarang
-            DATETIME dt;
-            time_t t = time(NULL);
-            struct tm *tm_info = localtime(&t);
-            int YY = 1900 + tm_info->tm_year;
-            int MM = 1 + tm_info->tm_mon;
-            int DD = tm_info->tm_mday;
-            int hh = tm_info->tm_hour;
-            int mm = tm_info->tm_min;
-            int ss = tm_info->tm_sec;
-            CreateDATETIME(&dt, DD, MM, YY, hh, mm, ss);
+            if (isWordEqual(pil, hapus))
+            {
+                Draf temp;
+                popDraf(s, &temp);          // Hapus dalam stack draf current user
+                deleteDrafById(l, temp.id); // Hapus dalam raw data draf
+                printf("Draf telah berhasil dihapus!\n");
+            }
+            else if (isWordEqual(pil, ubah))
+            {
+                Draf temp;
+                popDraf(s, &temp);
+                printf("Masukkan draf yang baru:\n");
+                STARTWORDINPUT();
 
-            Draf draf = {temp.id, text, u.nama, dt};
-            pushDraf(&s, draf);
+                Word text = currentWord;
 
-            printf("Draf telah berhasil diubah!\n");
-        }
-        else if (isWordEqual(pil, terbit))
-        {
-            // TODO
-            // Masuk ke fungsi terbitnya kicauan
-            printf("Selamat! Draf kicauan telah diterbitkan!\n");
-        }
-        else if (isWordEqual(pil, kembali))
-        {
-            printf("Kembali ke menu..\n");
-        }
-        else
-        {
-            printf("Perintah tidak dikenali\n");
-        }
+                // Ambil waktu sekarang
+                DATETIME dt;
+                time_t t = time(NULL);
+                struct tm *tm_info = localtime(&t);
+                int YY = 1900 + tm_info->tm_year;
+                int MM = 1 + tm_info->tm_mon;
+                int DD = tm_info->tm_mday;
+                int hh = tm_info->tm_hour;
+                int mm = tm_info->tm_min;
+                int ss = tm_info->tm_sec;
+                CreateDATETIME(&dt, DD, MM, YY, hh, mm, ss);
 
-        displayDataDraf(TOPDRAF(s));
-        printf("\n");
+                Draf draf = {temp.id, text, u.nama, dt};
+
+                pushDraf(s, draf);
+
+                printf("Draf telah berhasil diubah!\n\n");
+                ulang = 1;
+            }
+            else if (isWordEqual(pil, terbit))
+            {
+                // TODO
+                // Masuk ke fungsi terbitnya kicauan
+                printf("Selamat! Draf kicauan telah diterbitkan!\n");
+            }
+            else if (isWordEqual(pil, kembali))
+            {
+                printf("Kembali ke menu..\n");
+            }
+            else
+            {
+                printf("Perintah tidak dikenali\n");
+            }
+        }
     }
 }
 

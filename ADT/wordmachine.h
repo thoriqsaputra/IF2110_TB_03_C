@@ -34,7 +34,7 @@ void STARTWORD();
           currentChar karakter pertama sesudah karakter terakhir kata */
 void STARTWORDINPUT();
 
-void STARTWORDFILE();
+void STARTWORDFILE(char filename[]);
 
 void ADVWORD();
 /* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi

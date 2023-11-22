@@ -66,11 +66,7 @@ void loadKicauanConfig(char filename[], ListDinKicauan *l)
     NEFFKICAUAN(*l) = CAPACITYKICAUAN(*l);
 }
 
-/* ********** MEMBUAT KICAUAN ********** */
-KICAUAN createNewKicauan(Word text);
-
-
-/* ********** MENAMBAH KICAUAN DI AKHIR ********** */
+/* ********** MENAMBAH KICAUAN BARU DI AKHIR ********** */
 void addKicauan(ListDinKicauan *l, KICAUAN t)
 {
     if (isFullOfKicauan(*l))
@@ -86,6 +82,24 @@ void addKicauan(ListDinKicauan *l, KICAUAN t)
     }
     ELMTKICAUAN(*l,NEFFKICAUAN(*l)) = t;
     NEFFKICAUAN(*l)++;
+}
+
+KICAUAN createNewKicauan(ListDinKicauan l, Word text, currentUser CU)
+{
+    KICAUAN nKicauan;
+    IDKICAUAN(nKicauan) = NEFFKICAUAN(l) + 1;
+    TEXTKICAUAN(nKicauan) = text;
+    LIKEKICAUAN(nKicauan) = 0;
+    AUTHORKICAUAN(nKicauan) = CU.nama;
+    DATETIMEKICAUAN(nKicauan) = grabCurrentDateTime();
+    return nKicauan;
+}
+
+void berkicau(ListDinKicauan *l, Word text, currentUser CU)
+{
+    KICAUAN newKicauan;
+    newKicauan = createNewKicauan(*l,text,CU);
+    addKicauan(l,newKicauan);
 }
 
 boolean isFullOfKicauan(ListDinKicauan l)

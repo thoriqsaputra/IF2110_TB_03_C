@@ -6,6 +6,7 @@
 
 #include "../../ADT/wordmachine.h"
 #include "../../ADT/datetime.h"
+#include "../pengguna/pengguna.h"
 
 /*  Kamus Umum */
 #define IDX_MIN 0
@@ -43,6 +44,9 @@ typedef struct
 #define ELMTKICAUAN(l, i) (l).contentKicauan[i]
 #define CAPACITYKICAUAN(l) (l).capacityKicauan
 
+/* ********** List Dinamis Kicauan Program ********** */
+extern ListDinKicauan ListKicauan; 
+
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create list kosong  */
 void CreateListKicauan(ListDinKicauan *l, int capacity);
@@ -66,7 +70,9 @@ boolean isFullOfKicauan(ListDinKicauan l);
 /* return true jika penuh */
 
 /* ********** FUNGSI KICAUAN ********** */
-void berkicau(ListDinKicauan *l, Word message);
+KICAUAN createNewKicauan(ListDinKicauan l, Word text, currentUser CU);
+
+void berkicau(ListDinKicauan *l, Word message, currentUser CU);
 /* I.S. l terdefinisi; */
 /* F.S. anggota l bertambah 1 dengan teks <= 280 kata*/
 
@@ -86,5 +92,9 @@ void printWord(Word kata);
 void displayKicauan(KICAUAN T);
 
 int wordToInt(Word kata);
+
+void CreateDATETIMEfromWord(DATETIME *D, Word kata);
+/* Membentuk sebuah DATETIME dari komponen-komponennya yang valid dari kata */
+/* Prekondisi : Format word (DD/MM/YYYY hh:mm:ss) */
 
 #endif

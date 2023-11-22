@@ -15,6 +15,34 @@ int main()
     printf("NEFF = %d\n",NEFFKICAUAN(LKD));
     printf("CAPACITY = %d\n",CAPACITYKICAUAN(LKD));
 
+    printf("============= TEST ADD =============\n");
+    FILE * newString = stdin;
+    char currentC; Word currentSentence;
+    int returned; int i = 0;
+    returned = fscanf(newString,"%c",&currentC);
+    while (returned == 1 && currentC != MARKC && currentC != newLine)
+    {
+        if (i < NMax)
+        {
+            currentSentence.TabWord[i] = currentC;
+            i++;
+        }  
+        returned = fscanf(newString,"%c",&currentC);
+    }
+    currentSentence.Length = i;
+    fclose(newString);
+
+    currentUser cUser =  {{"Ertiga", 6}, 3};
+    // CreateEmptyCurrentUser(&cUser);
+    berkicau(&LKD, currentSentence, cUser);
+
+    for (int j = 0; j < NEFFKICAUAN(LKD); j++)
+    {
+        displayKicauan(ELMTKICAUAN(LKD,j));
+    }
+
+    printf("NEFF = %d\n",NEFFKICAUAN(LKD));
+    printf("CAPACITY = %d\n",CAPACITYKICAUAN(LKD));
     dealocateListKicauan(&LKD);
 }
 

@@ -250,3 +250,18 @@ long int DATETIMEDurasi(DATETIME DAw, DATETIME DAkh)
 
     return (DayAkh - DayAw) * 86400 + TIMEToDetik(Time(DAkh)) - TIMEToDetik(Time(DAw));
 }
+DATETIME grabCurrentDateTime()
+{
+    DATETIME dt;
+    time_t t = time(NULL);
+    struct tm *tm_info = localtime(&t);
+    int YY = 1900 + tm_info->tm_year;
+    int MM = 1 + tm_info->tm_mon;
+    int DD = tm_info->tm_mday;
+    int hh = tm_info->tm_hour;
+    int mm = tm_info->tm_min;
+    int ss = tm_info->tm_sec;
+    CreateDATETIME(&dt, DD, MM, YY, hh, mm, ss);
+
+    return dt;
+}

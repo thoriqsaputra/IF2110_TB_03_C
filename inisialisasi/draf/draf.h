@@ -16,10 +16,10 @@
 /* Definisi elemen dan koleksi objek */
 typedef struct
 {
-    int id;
-    Word text;
-    Word author;
-    DATETIME datetime;
+  int id;
+  Word text;
+  Word author;
+  DATETIME datetime;
 } Draf;
 
 /* ********** SELEKTOR DRAF********** */
@@ -30,9 +30,9 @@ typedef struct
 
 typedef struct
 {
-    Draf *buffer;
-    int nEff;
-    int capacity;
+  Draf *buffer;
+  int nEff;
+  int capacity;
 } ListDinDraf;
 
 /* ********** SELEKTOR List Dinamis********** */
@@ -51,7 +51,7 @@ void dealocateListDraf(ListDinDraf *l);
 /* I.S. l terdefinisi; */
 /* F.S. (l) dikembalikan ke system, CAPACITY(l)=0; NEFF(l)=0 */
 
-void displayDataDraf(Draf *id);
+void displayDataDraf(Draf id);
 /*I.S Menulis dari
   F.S
 */
@@ -66,5 +66,7 @@ void addDraf(ListDinDraf *l, Draf d);
 /* ********** BOOLEAN ********** */
 boolean isFullOfDraf(ListDinDraf l);
 /* return true jika penuh */
+
+void deleteDrafById(ListDinDraf *l, int id);
 
 #endif

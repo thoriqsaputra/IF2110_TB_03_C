@@ -1,17 +1,22 @@
 #include "ADT/tempRun.h"
 #include "Lib/commands.h"
 #include <stdio.h>
+#include <stdlib.h>
 // #include "Lib/ganti_profil/gantiprofil.h"
-#include "inisialisasi/pengguna/pengguna.c"
+#include "inisialisasi/pengguna/pengguna.h"
+#include "inisialisasi/draf/draf.h"
+#include "fitur/drafKicauan/drafKicauan.h"
+
 int main()
 {
-    printf("%d", 'd' > '0');
     boolean isLogged = false; // sementara true
     // Inisialiasi
     ListUserStatik LU;
+    ListDinDraf LD;
     currentUser CU;
     CreateEmptyPengguna(&LU);
     loadPenggunaConfig("configs/config-1/pengguna.config", &LU);
+    loadDrafConfig("configs/config-1/draf.config", &LD);
 
     boolean runProgram = true;
     CreateEmptyCurrentUser(&CU);
@@ -22,12 +27,12 @@ int main()
         STARTWORD();
         // command.tabword = currentWord.tabword  & command.length = currentWord.length
         Word command = currentWord;
-        Word lu = {"lu",2};
+        Word lu = {"lu", 2};
         while ((isLogged == false))
         {
             if (isWordEqual(command, masukCmd))
             {
-                Masuk(&LU, &CU,&isLogged);
+                Masuk(&LU, &CU, &isLogged);
             }
             else if (isWordEqual(command, daftarCmd))
             {
@@ -39,13 +44,12 @@ int main()
                 command = currentWord;
                 break;
             }
-            else if(isWordEqual(command,lu))
+            else if (isWordEqual(command, lu))
             {
                 for (int i = 0; i < LU.capacity; i++)
                 {
                     tulisDataPengguna(&LU.buffer[i]);
                 }
-                
             }
             else
             {
@@ -55,6 +59,8 @@ int main()
             STARTWORD();
             command = currentWord;
         }
+        DrafKicauan DK;
+        loadDrafKicauan(LD, &DK, CU);
         if (isWordEqual(command, tutupProgramCmd))
         {
             fclose(pita);
@@ -75,32 +81,40 @@ int main()
         }
         else if (isWordEqual(command, gantiProfilCmd))
         {
-            gantiProfil(&LU,&CU);
+            gantiProfil(&LU, &CU);
         }
-        //Buat Debugging
-        else if (isWordEqual(command,currentU))
+        // Buat Debugging
+        else if (isWordEqual(command, currentU))
         {
             tulisDataPengguna(&LU.buffer[idUser(CU)]);
         }
-        else if (isWordEqual(command,lihatProfilCmd))
+        else if (isWordEqual(command, lihatProfilCmd))
         {
             STARTWORDINPUT();
             Word findusername = currentWord;
-            lihatUser(&LU,findusername);
+            lihatUser(&LU, findusername);
         }
-        else if(isWordEqual(command,keluarCmd))
+        else if (isWordEqual(command, keluarCmd))
         {
-            Keluar(&LU,&CU,&isLogged);
+            Keluar(&LU, &CU, &isLogged);
         }
-        else if(isWordEqual(command,aturJenisAkunCmd))
+        else if (isWordEqual(command, aturJenisAkunCmd))
         {
-            aturJenisAkun(&LU,&CU);
+            aturJenisAkun(&LU, &CU);
+        }
+        else if (isWordEqual(command, ubahFotoProfilCmd))
+        {
+            ubahFotoProfil(&LU, &CU);
+        }
+        else if (isWordEqual(command, buatDrafCmd))
+        {
+            buatDraf(&DK, CU, LD);
+        }
+        else if (isWordEqual(command, lihatDrafCmd))
+        {
+            lihatDraf(DK, LD, CU);
+        }
 
-        }
-        else if (isWordEqual(command,ubahFotoProfilCmd))
-        {
-            ubahFotoProfil(&LU,&CU);
-        }
         else
         {
             printf("Tidak ada command itu\n\n");
@@ -108,3 +122,4 @@ int main()
     }
     return 0;
 }
+// gcc -o tesmainhugo tesmainhugo.c inisialisasi/draf/draf.c inisialisasi/pengguna/pengguna.c fitur/drafKicauan/drafKicauan.c

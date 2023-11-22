@@ -1,6 +1,8 @@
 #include "drafKicauan.h"
 #include "../../inisialisasi/pengguna/pengguna.h"
+#include "../../inisialisasi/draf/draf.h"
 #include <time.h>
+#include <stdlib.h>
 #include "../../ADT/datetime.h"
 
 boolean isWordEqual(Word input, Word cek)
@@ -167,6 +169,7 @@ void lihatDraf(DrafKicauan s, ListDinDraf l, currentUser u)
         Word ubah = {"UBAH", 4};
         Word terbit = {"TERBIT", 6};
         Word kembali = {"KEMBALI", 7};
+        displayDataDraf(TOPDRAF(s));
 
         printf("Apakah anda ingin mengubah, menghapus, atau menerbitkan draf ini? (KEMBALI jika ingin kembali)\n");
         STARTWORDINPUT();
@@ -221,7 +224,7 @@ void lihatDraf(DrafKicauan s, ListDinDraf l, currentUser u)
             printf("Perintah tidak dikenali\n");
         }
 
-        DisplayDataDraf(TOPDRAF(s));
+        displayDataDraf(TOPDRAF(s));
         printf("\n");
     }
 }

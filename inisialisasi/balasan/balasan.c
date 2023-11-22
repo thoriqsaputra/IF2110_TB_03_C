@@ -29,7 +29,6 @@ void dealocateBalasan(ListDinBalasan *l)
 
 // }
 
-
 /* ********** KONSTRUKTOR ListDinBalasan ********** */
 /* Konstruktor : create list kosong  */
 void CreateListDinB(ListDinListB *lb, int capacity)
@@ -60,13 +59,13 @@ void loadBalasanConfig(char filename[], ListDinListB *lb)
     // Kamus Lokal
     int i, j, CapListB, CapB, IDKicauan;
 
-
     // ALGORITMA
     STARTWORDFILE(filename);
     CapListB = wordToInt(currentWord);
     CreateListDinB(lb, CapListB);
 
-    for ( i = 0; i < CAPACITYListB(*lb); i++) {
+    for (i = 0; i < CAPACITYListB(*lb); i++)
+    {
         ListDinBalasan l;
         ADVWORDFILE();
         IDKicauan = wordToInt(currentWord);
@@ -75,9 +74,10 @@ void loadBalasanConfig(char filename[], ListDinListB *lb)
         CreateListBalasan(&l, CapB);
         IDKicauB(l) = IDKicauan;
 
-        for (j = 0; j < CAPACITYBalasan(l); j++) {
+        for (j = 0; j < CAPACITYBalasan(l); j++)
+        {
             ADVWORDFILE();
-            IDBalasan(ELMTBalasan(l, j)) = currentWord; //baru dalam Word, perlu dipisah kedua IDs -1 1
+            IDBalasan(ELMTBalasan(l, j)) = currentWord; // baru dalam Word, perlu dipisah kedua IDs -1 1
             ADVWORDFILE();
             TxtBalasan(ELMTBalasan(l, j)) = currentWord;
             ADVWORDFILE();
@@ -89,7 +89,6 @@ void loadBalasanConfig(char filename[], ListDinListB *lb)
         ELMTListB(*lb, i) = l;
     }
     NEFFListB(*lb) = CAPACITYListB(*lb);
-
 }
 /* ********** BOOLEAN ********** */
 boolean isFullBalasan(ListDinBalasan l)
@@ -110,9 +109,10 @@ void displayBalasan(ListDinBalasan B)
     int i;
 
     // ALGORITMA
-    printf("%d\n",IDKicauB(B));
-    printf("%d\n",CAPACITYBalasan(B));
-    for (i = 0; i < CAPACITYBalasan(B); i++) {
+    printf("%d\n", IDKicauB(B));
+    printf("%d\n", CAPACITYBalasan(B));
+    for (i = 0; i < CAPACITYBalasan(B); i++)
+    {
         printWord(IDBalasan(ELMTBalasan(B, i)));
         printf("\n");
         printWord(TxtBalasan(ELMTBalasan(B, i)));
@@ -136,15 +136,13 @@ void displayListB(ListDinListB lb)
         displayBalasan(ELMTListB(lb, i));
         printf("\n");
     }
-
-
 }
 
 int wordToInt(Word kata)
 {
     int res = 0;
     int i = 0;
-    while (kata.TabWord[i] >= '0' && kata.TabWord[i] <= '9' && i < kata.Length) 
+    while (kata.TabWord[i] >= '0' && kata.TabWord[i] <= '9' && i < kata.Length)
     // memeriksa jika char di antara kedua bilangan tersebut (Jika ditambah komen di kanan angka), dan i lebih kecil dari panjang (Jika tidak ada, karena tidak tahu mengapa begitu keluaran 24 untuk ID 2)
     {
         res = res * 10 + (kata.TabWord[i] - '0');

@@ -85,18 +85,18 @@ void loadDrafConfig(char filename[], ListDinDraf *LD)
     printf("Draf berhasil di load\n");
 }
 
-void displayDataDraf(Draf *id)
+void displayDataDraf(Draf id)
 {
     printf("| id: ");
-    printf("%d\n", (*id).id);
+    printf("%d\n", (id).id);
     printf("| Text: ");
-    printWord((*id).text);
+    printWord((id).text);
     printf("\n");
     printf("| Author: ");
-    printWord((*id).author);
+    printWord((id).author);
     printf("\n");
     printf("| Datetime: ");
-    TulisDATETIME((*id).datetime);
+    TulisDATETIME((id).datetime);
     printf("\n");
 }
 

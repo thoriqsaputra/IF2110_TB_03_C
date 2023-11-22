@@ -24,7 +24,7 @@ typedef struct
 #define AuthorBalasan(l) (l).Author
 #define DatetimeBalasan(l) (l).DT
 
-typedef struct 
+typedef struct
 {
     int IDKicau;
     Balasan *contentBalasan;
@@ -39,7 +39,8 @@ typedef struct
 #define NEFFBalasan(l) (l).nEffBalasan
 #define CAPACITYBalasan(l) (l).capacitybalasan
 
-typedef struct {
+typedef struct
+{
     ListDinBalasan *contentList;
     int capacityList;
     int nEffList;

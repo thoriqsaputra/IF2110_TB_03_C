@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "pengguna.h"
 #include "pcolor.h"
+#include "../../Lib/globalFunction.h"
 #include "pcolor.c"
 // void printWord(Word kata)
 // {
@@ -9,30 +10,12 @@
 //         printf("%c", kata.TabWord[i]);
 //     }
 // }
-boolean isWordEqual(Word input, Word cek)
-{
 
-    if (input.Length != cek.Length)
-    {
-        return false;
-    }
-    else
-    {
-        for (int i = 0; i < input.Length; i++)
-        {
-            if (input.TabWord[i] != cek.TabWord[i])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-}
 int wordToInt(Word kata)
 {
     int res = 0;
     int i = 0;
-    while (kata.TabWord[i] >= '0' && kata.TabWord[i] <= '9' && i < kata.Length) 
+    while (kata.TabWord[i] >= '0' && kata.TabWord[i] <= '9' && i < kata.Length)
     {
         res = res * 10 + (kata.TabWord[i] - '0');
         i++;
@@ -43,7 +26,7 @@ int wordToInt(Word kata)
 void tulisDataPengguna(Pengguna *user)
 {
     printf("| ID  ");
-    printf("%d\n",(*user).id);
+    printf("%d\n", (*user).id);
     printf("| Nama: ");
     printWord((*user).nama);
     printf("\n");
@@ -60,7 +43,7 @@ void tulisDataPengguna(Pengguna *user)
     printWord((*user).weton);
     printf("\n");
     printf("| Jenis Akun: ");
-    if((*user).jenisAkun == 1)
+    if ((*user).jenisAkun == 1)
     {
         printf("Publik");
     }
@@ -82,20 +65,16 @@ Matrix createMatrixDefault()
 */
 {
     Matrix newM;
-    char temp[50] = {'R','*','R','*','R','*','R','*','R','*',
-                        'R','*','G','@','B','*','G','@','R','*'
-                        ,'R','*','G','@','B','@','G','@','R','*'
-                        ,'R','*','G','@','B','*','G','@','R','*'
-                        ,'R','*','R','*','R','*','R','*','R','*'};
+    char temp[50] = {'R', '*', 'R', '*', 'R', '*', 'R', '*', 'R', '*',
+                     'R', '*', 'G', '@', 'B', '*', 'G', '@', 'R', '*', 'R', '*', 'G', '@', 'B', '@', 'G', '@', 'R', '*', 'R', '*', 'G', '@', 'B', '*', 'G', '@', 'R', '*', 'R', '*', 'R', '*', 'R', '*', 'R', '*', 'R', '*'};
     createMatrix(5, 10, &newM);
     int cnt = 0;
-    while ( cnt < 50)
+    while (cnt < 50)
     {
-        ELMTMatrix(newM,cnt / 10, cnt % 10) = temp[cnt];
-        cnt ++;
+        ELMTMatrix(newM, cnt / 10, cnt % 10) = temp[cnt];
+        cnt++;
     }
     return newM;
-
 }
 void displayColorMatrix(Matrix m)
 {
@@ -103,36 +82,33 @@ void displayColorMatrix(Matrix m)
     {
         for (int j = 0; j < COL_EFF(m); j++)
         {
-            if(ELMTMatrix(m,i,j) == 'R')
+            if (ELMTMatrix(m, i, j) == 'R')
             {
-                print_red(ELMTMatrix(m,i,j+1));
+                print_red(ELMTMatrix(m, i, j + 1));
             }
-            else if(ELMTMatrix(m,i,j) == 'G')
+            else if (ELMTMatrix(m, i, j) == 'G')
             {
-                print_green(ELMTMatrix(m,i,j+1));
+                print_green(ELMTMatrix(m, i, j + 1));
             }
-            else if(ELMTMatrix(m,i,j) == 'B')
+            else if (ELMTMatrix(m, i, j) == 'B')
             {
-                print_blue(ELMTMatrix(m,i,j+1));
+                print_blue(ELMTMatrix(m, i, j + 1));
             }
         }
         printf("\n");
-        
     }
-    
-
 }
 void loadPenggunaConfig(char filename[], ListUserStatik *LU)
 {
-    Word privateFlag = {"Private",7};
-    Word publicFlag = {"Public",6};
+    Word privateFlag = {"Private", 7};
+    Word publicFlag = {"Public", 6};
     listWord LW;
     int countWord = 0;
     boolean getN = true;
 
     STARTWORDFILE(filename);
     UserCount(*LU) = wordToInt(currentWord);
-    if ( UserCount(*LU) > 0)
+    if (UserCount(*LU) > 0)
     {
         countWord++;
         while (getN)
@@ -147,7 +123,7 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU)
         }
         // opsional, nanti di akhir program aja
         //  fclose(pita);
-        printf("countword = %d\n",countWord);
+        printf("countword = %d\n", countWord);
         int j = 0;
         for (int i = 1; i < countWord; i++)
         {
@@ -173,7 +149,7 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU)
             }
             else if (i % 11 == 6)
             {
-                if(isWordEqual((LW).contents[i],privateFlag))
+                if (isWordEqual((LW).contents[i], privateFlag))
                 {
                     JENIS_USER(*LU, j) = 0;
                 }
@@ -181,7 +157,6 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU)
                 {
                     JENIS_USER(*LU, j) = 1;
                 }
-                
             }
             else if (i % 11 == 7)
             { // Matriks ntar disini
@@ -211,16 +186,12 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU)
             }
             else if (i % 11 == 0) // reset
             {
-                ID_USER(*LU,j) = j + 1;
+                ID_USER(*LU, j) = j + 1;
                 j++;
             }
         }
-        
-
     }
-    printf("Berhasil Konfigurasi! , jumlah user di data = %d\n" , UserCount(*LU));
-    
-
+    printf("Berhasil Konfigurasi! , jumlah user di data = %d\n", UserCount(*LU));
 }
 void CreateEmptyPengguna(ListUserStatik *l)
 {
@@ -250,9 +221,9 @@ int getUserIdCurrent(currentUser CU, ListUserStatik LU)
         return i;
     }
 }
-int getUserId(Word inputNama,ListUserStatik LU)
-//Mengembalikan nilai id sesuai dengan inputNama di database pengguna
-// IDX_UNDEF apabila tidak ditemukan
+int getUserId(Word inputNama, ListUserStatik LU)
+// Mengembalikan nilai id sesuai dengan inputNama di database pengguna
+//  IDX_UNDEF apabila tidak ditemukan
 {
     int i = 0;
     while (isWordEqual(NAMA_USER(LU, i), inputNama) == false && i < UserCount(LU)) // kalau nama gak sama, next i
@@ -275,7 +246,7 @@ boolean cekEmptyInput(char CC)
 }
 void getInputProfil(int Nmax)
 {
-    //STARTWORDINPUT tapi di modif di bagian NMAX
+    // STARTWORDINPUT tapi di modif di bagian NMAX
     START();
     IgnoreBlanks();
     ignoreNewLine();
@@ -287,18 +258,17 @@ void getInputProfil(int Nmax)
     {
         EndInput = false;
         int i = 0;
-        while ( currentChar != MARKINPUT && retValues() )
+        while (currentChar != MARKINPUT && retValues())
         {
             if (i < Nmax)
             {
                 currentWord.TabWord[i] = currentChar;
                 i++;
-            }  
+            }
             ADV();
         }
         currentWord.Length = i;
     }
-    
 
     if (EndInput) // langsung ; jawabannya, jadi pasti string kosong
     {
@@ -307,16 +277,16 @@ void getInputProfil(int Nmax)
     }
 }
 boolean isValidWeton(Word inputWeton)
-//Mengembalikan nilai true apabila sesuai data Weton yang tersedia
-//Pahing, Kliwon, Wage, Pon, dan Legi
+// Mengembalikan nilai true apabila sesuai data Weton yang tersedia
+// Pahing, Kliwon, Wage, Pon, dan Legi
 {
-    Word pahing = {"Pahing",6};
-    Word Kliwon = {"Kliwon",6};
-    Word Wage = {"Wage",4};
-    Word Pon = {"Pon",3};
-    Word Legi = {"Legi",4};
+    Word pahing = {"Pahing", 6};
+    Word Kliwon = {"Kliwon", 6};
+    Word Wage = {"Wage", 4};
+    Word Pon = {"Pon", 3};
+    Word Legi = {"Legi", 4};
 
-    if(isWordEqual(inputWeton,pahing) || isWordEqual(inputWeton,Kliwon)|| isWordEqual(inputWeton,Wage) || isWordEqual(inputWeton,Pon) || isWordEqual(inputWeton,Legi) || EndInput)
+    if (isWordEqual(inputWeton, pahing) || isWordEqual(inputWeton, Kliwon) || isWordEqual(inputWeton, Wage) || isWordEqual(inputWeton, Pon) || isWordEqual(inputWeton, Legi) || EndInput)
     {
         return true;
     }
@@ -326,10 +296,10 @@ boolean isValidWeton(Word inputWeton)
     }
 }
 boolean isValidHP(Word inputHP)
-//Mengembalikan nilai true apabila sesuai data No HP
-// integer max 15 char
+// Mengembalikan nilai true apabila sesuai data No HP
+//  integer max 15 char
 {
-    
+
     if (inputHP.Length > 15)
     {
         return false;
@@ -338,41 +308,39 @@ boolean isValidHP(Word inputHP)
     {
         for (int i = 0; i < inputHP.Length; i++)
         {
-            if(inputHP.TabWord[i] == BLANK || !(inputHP.TabWord[i] >= '0' && inputHP.TabWord[i] <= '9'))
+            if (inputHP.TabWord[i] == BLANK || !(inputHP.TabWord[i] >= '0' && inputHP.TabWord[i] <= '9'))
             {
                 return false;
             }
         }
         return true;
     }
-
-
 }
-void gantiProfil(ListUserStatik *LU,currentUser *CU)
+void gantiProfil(ListUserStatik *LU, currentUser *CU)
 {
     printf("Masukkan Bio Akun *maks 135 char* :\n");
     getInputProfil(135); // bio maks 135 char
     // misal skrg profil 1
-    BIO_USER(*LU,idUser(*CU)) = currentWord;
+    BIO_USER(*LU, idUser(*CU)) = currentWord;
     printf("Masukkan No HP  :\n");
-    getInputProfil(NMax); 
+    getInputProfil(NMax);
     while (isValidHP(currentWord) == false && EndInput == false)
     {
         printf("No HP tidak valid. Masukkan lagi yuk!\n\n");
         printf("Masukkan No HP :\n");
         getInputProfil(NMax);
     }
-    
-    NOHP_USER(*LU,idUser(*CU)) = currentWord;
+
+    NOHP_USER(*LU, idUser(*CU)) = currentWord;
     printf("Masukkan Weton:\n");
     getInputProfil(NMax);
-    while (isValidWeton(currentWord) == false &&  EndInput == false)
+    while (isValidWeton(currentWord) == false && EndInput == false)
     {
         printf("Weton anda tidak valid.\n\n");
         printf("Masukkan Weton:\n");
         getInputProfil(NMax);
     }
-    WETON_USER(*LU,idUser(*CU)) = currentWord;
+    WETON_USER(*LU, idUser(*CU)) = currentWord;
 
     printf("\n Profil Anda sudah berhasil diperbaharui! \n\n");
 }
@@ -396,7 +364,7 @@ boolean cekSameNama(ListUserStatik LU, Word inputWord)
 
 void Daftar(ListUserStatik *LU)
 {
-    
+
     printf("Masukkan Nama Akun:\n");
     STARTWORDINPUT();
     while ((cekSameNama(*LU, currentWord) == true))
@@ -406,18 +374,18 @@ void Daftar(ListUserStatik *LU)
         STARTWORDINPUT();
     }
     // handling masukin data input nama yang berhasil ke database pengguna
-    NAMA_USER(*LU,(*LU).capacity) = currentWord;
+    NAMA_USER(*LU, (*LU).capacity) = currentWord;
     printf("Masukkan kata sandi:\n");
     STARTWORDINPUT();
-    PASSWORD_USER(*LU,(*LU).capacity) = currentWord;
+    PASSWORD_USER(*LU, (*LU).capacity) = currentWord;
 
-    //DEFAULT SETTING SETELAH DAFTAR
-    BIO_USER(*LU,(*LU).capacity) = BlankWord;
-    NOHP_USER(*LU,(*LU).capacity) = BlankWord;
-    WETON_USER(*LU,(*LU).capacity) = BlankWord;
-    JENIS_USER(*LU,(*LU).capacity) = 1;
-    FOTO_USER(*LU,(*LU).capacity) = createMatrixDefault();
-    (*LU).capacity ++;
+    // DEFAULT SETTING SETELAH DAFTAR
+    BIO_USER(*LU, (*LU).capacity) = BlankWord;
+    NOHP_USER(*LU, (*LU).capacity) = BlankWord;
+    WETON_USER(*LU, (*LU).capacity) = BlankWord;
+    JENIS_USER(*LU, (*LU).capacity) = 1;
+    FOTO_USER(*LU, (*LU).capacity) = createMatrixDefault();
+    (*LU).capacity++;
     // input  password ke LU
 }
 // ========================================MASUK===================================
@@ -427,7 +395,7 @@ void Daftar(ListUserStatik *LU)
 //     int id = getUserIdCurrent(CU, LU);
 //     return (isWordEqual(inputPass, PASSWORD_USER(LU, id)));
 // }
-void Masuk(ListUserStatik *LU, currentUser *CU,boolean *isLog)
+void Masuk(ListUserStatik *LU, currentUser *CU, boolean *isLog)
 // Mengubah Current user dengan user yang berhasil login
 {
     printf("Masukkan nama: \n");
@@ -444,15 +412,15 @@ void Masuk(ListUserStatik *LU, currentUser *CU,boolean *isLog)
     idUser(*CU) = getUserIdCurrent(*CU, *LU); // dapetin ID si username yang masuk ke program
     printf("Ketik '-' apabila ingin keluar dari 'MASUK'! \n\n");
     printf("Masukkan kata sandi:\n");
-    
+
     STARTWORDINPUT();
-    while (isWordEqual(currentWord, PASSWORD_USER((*LU), idUser(*CU))) == false && currentWord.TabWord[0] != '-' )
+    while (isWordEqual(currentWord, PASSWORD_USER((*LU), idUser(*CU))) == false && currentWord.TabWord[0] != '-')
     {
         printf("Wah, Password tidak sesuai!\n\n");
         printf("Masukkan kata sandi:\n");
         STARTWORDINPUT();
     }
-    if(currentWord.TabWord[0] == '-')
+    if (currentWord.TabWord[0] == '-')
     {
         *isLog = false;
         printf("Keluar dari fitur Masuk\n");
@@ -462,13 +430,12 @@ void Masuk(ListUserStatik *LU, currentUser *CU,boolean *isLog)
         *isLog = true;
         printf("Berhasil Login!\n");
     }
-   
 }
 //=============================LIHAT PROFIL=====================================
 void lihatUser(ListUserStatik *LU, Word namaProfil)
 {
-    int iduser = getUserId(namaProfil,*LU);
-    if(iduser == IDX_UNDEF)
+    int iduser = getUserId(namaProfil, *LU);
+    if (iduser == IDX_UNDEF)
     {
         printf("Tidak ditemukan profil dengan nama '");
         printWord(namaProfil);
@@ -491,10 +458,9 @@ void lihatUser(ListUserStatik *LU, Word namaProfil)
         printf("| FotoProfil: \n");
         displayColorMatrix((*LU).buffer[iduser].fotoProfil);
     }
-    
 }
 //=========================KELUAR=========================
-void Keluar(ListUserStatik *LU, currentUser *CU,boolean * isLog)
+void Keluar(ListUserStatik *LU, currentUser *CU, boolean *isLog)
 {
     CreateEmptyCurrentUser(CU);
     idUser(*CU) = IDX_UNDEF;
@@ -503,38 +469,37 @@ void Keluar(ListUserStatik *LU, currentUser *CU,boolean * isLog)
 }
 
 //=========================ATUR JENIS AKUN=========================
-void aturJenisAkun(ListUserStatik *LU,currentUser *CU)
+void aturJenisAkun(ListUserStatik *LU, currentUser *CU)
 {
-    Word ya = {"YA",2};
-    Word tidak = {"TIDAK",5};
+    Word ya = {"YA", 2};
+    Word tidak = {"TIDAK", 5};
     printf("\nSaat ini, akun Anda adalah akun ");
-    if(JENIS_USER(*LU,getUserIdCurrent(*CU,*LU)) == 1)
+    if (JENIS_USER(*LU, getUserIdCurrent(*CU, *LU)) == 1)
     {
         printf("Publik.Ingin mengubah ke akun Privat?");
     }
     else
     {
-         printf("Private.Ingin mengubah ke akun Publik?");
+        printf("Private.Ingin mengubah ke akun Publik?");
     }
     printf("\n(YA/TIDAK)");
     STARTWORDINPUT();
-    if(isWordEqual(currentWord,ya))
+    if (isWordEqual(currentWord, ya))
     {
-        
+
         printf("Akun anda sudah diubah menjadi akun\n");
-        if(JENIS_USER(*LU,getUserIdCurrent(*CU,*LU)) == 1)
+        if (JENIS_USER(*LU, getUserIdCurrent(*CU, *LU)) == 1)
         {
             printf("Private");
-            JENIS_USER(*LU,getUserIdCurrent(*CU,*LU)) = 0;
+            JENIS_USER(*LU, getUserIdCurrent(*CU, *LU)) = 0;
         }
         else
         {
             printf("Publik");
-            JENIS_USER(*LU,getUserIdCurrent(*CU,*LU)) = 1;
+            JENIS_USER(*LU, getUserIdCurrent(*CU, *LU)) = 1;
         }
-       
     }
-    else if(isWordEqual(currentWord,tidak))
+    else if (isWordEqual(currentWord, tidak))
     {
         printf("Tidak ingin ubah, balik ke menu\n");
     }
@@ -543,19 +508,18 @@ void aturJenisAkun(ListUserStatik *LU,currentUser *CU)
         printf("Input tidak sesuai! keluar dari ATUR_JENIS_AKUN\n");
     }
     printf("\n");
-
 }
 
-void ubahFotoProfil(ListUserStatik * LU, currentUser *CU)
+void ubahFotoProfil(ListUserStatik *LU, currentUser *CU)
 {
-    
+
     Matrix newMatrix;
     printf("Foto profil anda saat ini adalah : \n");
-    displayMatrixChar(FOTO_USER(*LU, getUserIdCurrent(*CU,*LU)));
+    displayMatrixChar(FOTO_USER(*LU, getUserIdCurrent(*CU, *LU)));
     printf("\nMasukkan foto profil yang baru\n");
     STARTWORDINPUT();
-    printf("%d",currentWord.Length);
-    if(currentWord.Length != 99)
+    printf("%d", currentWord.Length);
+    if (currentWord.Length != 99)
     {
         printf("Foto profil tidak sesuai matrix 5 x 5!\n");
     }
@@ -564,23 +528,20 @@ void ubahFotoProfil(ListUserStatik * LU, currentUser *CU)
         printf("\n\n\n");
         // printWord(currentWord);
         printf("\n\n\n");
-        createMatrix(5,10,&newMatrix);
+        createMatrix(5, 10, &newMatrix);
 
-        
         for (int i = 0; i < currentWord.Length; i++)
         {
-            if(currentWord.TabWord[i] != BLANK && currentWord.TabWord[i] != newLine)
+            if (currentWord.TabWord[i] != BLANK && currentWord.TabWord[i] != newLine)
             {
                 // printf("%c ",currentWord.TabWord[i]);
                 // printf("baris %d , kolom %d\n", i / 20, i % 20 / 2);
-                
-                ELMTMatrix(newMatrix,i / 20, i % 20 / 2) = currentWord.TabWord[i];
+
+                ELMTMatrix(newMatrix, i / 20, i % 20 / 2) = currentWord.TabWord[i];
             }
-            
         }
-        copyMatrix(newMatrix,&FOTO_USER(*LU, getUserIdCurrent(*CU,*LU)));
+        copyMatrix(newMatrix, &FOTO_USER(*LU, getUserIdCurrent(*CU, *LU)));
         printf("\nFOTO PROFIL BARU ANDA:\n");
-        displayMatrixChar(FOTO_USER(*LU, getUserIdCurrent(*CU,*LU)));
+        displayMatrixChar(FOTO_USER(*LU, getUserIdCurrent(*CU, *LU)));
     }
-    
 }

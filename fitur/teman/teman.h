@@ -1,12 +1,11 @@
 #include "../../ADT/wordmachine.h"
 #include "../../ADT/graf.h"
-#include "pengguna/pengguna.h"
+#include "../../inisialisasi/pengguna/pengguna.h"
 
+int countTeman(Graph *graph, int userID);
 
-int countTeman(Graph* graph, int userID);
+boolean isTeman(Graph *graph, int IDUser, int IDTeman);
 
-boolean isTeman(Graph* graph, int IDUser, int IDTeman);
+int daftarFriend(Graph *graph, currentUser *CU, ListUserStatik *LU);
 
-int daftarFriend(Graph* graph, currentUser * CU, ListUserStatik * LU);
-
-void hapusFriend(Graph* graph, currentUser * CU, ListUserStatik * LU);
+void hapusFriend(Graph *graph, currentUser *CU, ListUserStatik *LU);

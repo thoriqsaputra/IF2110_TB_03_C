@@ -11,11 +11,11 @@
 
 typedef struct
 {
-    int idKicau;
-    int idUtas;
-    Word text;
-    Word author;
-    DATETIME datetime;
+  int idKicau;
+  int idUtas;
+  Word text;
+  Word author;
+  DATETIME datetime;
 } Utas;
 
 /* ********** SELEKTOR UTAS********** */
@@ -27,9 +27,9 @@ typedef struct
 
 typedef struct
 {
-    Utas *buffer;
-    int nEff;
-    int capacity;
+  Utas *buffer;
+  int nEff;
+  int capacity;
 } ListDinUtas;
 
 /* ********** SELEKTOR List Dinamis********** */
@@ -54,7 +54,7 @@ void displayDataUtas(Utas id);
 /*I.S Menulis dari
   F.S
 */
-void loadDrafConfig(char filename[], ListDinUtas *LD);
+void loadUtasConfig(char filename[], ListDinUtas *LD);
 /*Load Config Pengguna dari pengguna.config, lalu mengassign data data sesuai dengan kebutuhan typedef Pengguna
  */
 

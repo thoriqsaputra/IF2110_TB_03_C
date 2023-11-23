@@ -8,3 +8,4 @@
 #include "prioqueuechar.c"
 #include "datetime.c"
 #include "waktu.c"
+#include "graf.c"

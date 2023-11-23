@@ -3,6 +3,8 @@
 
 #include "../../ADT/wordmachine.h"
 #include "../../ADT/matrix.h"
+#include "../../ADT/graf.h"
+#include "../../Lib/globalFunction.h"
 
 #define IDX_UNDEF -1
 
@@ -109,13 +111,12 @@ void getInputProfil(int Nmax);
 
 boolean cekSameNama(ListUserStatik LU, Word inputWord);
 
-boolean isWordEqual(Word input, Word cek);
 // cek word sama
 boolean isValidWeton(Word inputWeton);
 
 void displayColorMatrix(Matrix m);
 //=========================LOADCONFIG=========================================
-void loadPenggunaConfig(char filename[], ListUserStatik *LU);
+void loadPenggunaConfig(char filename[], ListUserStatik *LU, Graph *GP);
 /*Load Config Pengguna dari pengguna.config, lalu mengassign data data sesuai dengan kebutuhan typedef Pengguna
  */
 
@@ -127,7 +128,7 @@ void Masuk(ListUserStatik *LU, currentUser *CU, boolean *isLog);
 
 void gantiProfil(ListUserStatik *LU, currentUser *CU);
 
-void lihatUser(ListUserStatik *LU, Word namaProfil);
+void lihatUser(ListUserStatik *LU, Word namaProfil, Graph *G, currentUser CU);
 
 void Keluar(ListUserStatik *LU, currentUser *CU, boolean *isLog);
 

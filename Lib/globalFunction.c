@@ -18,3 +18,15 @@ boolean isWordEqual(Word input, Word cek)
         return true;
     }
 }
+
+int wordToInt(Word kata)
+{
+    int res = 0;
+    int i = 0;
+    while (kata.TabWord[i] >= '0' && kata.TabWord[i] <= '9' && i < kata.Length)
+    {
+        res = res * 10 + (kata.TabWord[i] - '0');
+        i++;
+    }
+    return res;
+}

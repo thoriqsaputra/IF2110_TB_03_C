@@ -1,29 +1,30 @@
 #include "drafKicauan.h"
 #include "../../inisialisasi/pengguna/pengguna.h"
 #include "../../inisialisasi/draf/draf.h"
+#include "../../Lib/globalFunction.h"
 #include <time.h>
 #include <stdlib.h>
 #include "../../ADT/datetime.h"
 
-boolean isWordEqual(Word input, Word cek)
-{
+// boolean isWordEqual(Word input, Word cek)  pindah ke globalFunction
+// {
 
-    if (input.Length != cek.Length)
-    {
-        return false;
-    }
-    else
-    {
-        for (int i = 0; i < input.Length; i++)
-        {
-            if (input.TabWord[i] != cek.TabWord[i])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-}
+//     if (input.Length != cek.Length)
+//     {
+//         return false;
+//     }
+//     else
+//     {
+//         for (int i = 0; i < input.Length; i++)
+//         {
+//             if (input.TabWord[i] != cek.TabWord[i])
+//             {
+//                 return false;
+//             }
+//         }
+//         return true;
+//     }
+// }
 
 Address newNodeDraf(Draf x)
 {

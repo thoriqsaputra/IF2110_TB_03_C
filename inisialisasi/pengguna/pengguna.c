@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include "pengguna.h"
 #include "pcolor.h"
-#include "../../Lib/globalFunction.h"
 #include "pcolor.c"
+#include "../../ADT/graf.h"
+#include "../../fitur/teman/teman.h"
 // void printWord(Word kata)
 // {
 //     for (int i = 0; i < kata.Length; i++)
@@ -10,18 +11,7 @@
 //         printf("%c", kata.TabWord[i]);
 //     }
 // }
-
-int wordToInt(Word kata)
-{
-    int res = 0;
-    int i = 0;
-    while (kata.TabWord[i] >= '0' && kata.TabWord[i] <= '9' && i < kata.Length)
-    {
-        res = res * 10 + (kata.TabWord[i] - '0');
-        i++;
-    }
-    return res;
-}
+Word BlankWord = {" ", 1};
 
 void tulisDataPengguna(Pengguna *user)
 {
@@ -49,7 +39,7 @@ void tulisDataPengguna(Pengguna *user)
     }
     else
     {
-        printf("Private");
+        printf("Privat");
     }
     printf("\n");
     printf("| FotoProfil: \n");
@@ -98,9 +88,9 @@ void displayColorMatrix(Matrix m)
         printf("\n");
     }
 }
-void loadPenggunaConfig(char filename[], ListUserStatik *LU)
+void loadPenggunaConfig(char filename[], ListUserStatik *LU, Graph *GP)
 {
-    Word privateFlag = {"Private", 7};
+    Word privateFlag = {"Privat", 6};
     Word publicFlag = {"Public", 6};
     listWord LW;
     int countWord = 0;
@@ -188,6 +178,44 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU)
             {
                 ID_USER(*LU, j) = j + 1;
                 j++;
+            }
+        } // selesai baca semua info pengguna
+        // sekarang disini baca graf pertemanan (matriks adjacency)
+        int getAdjacen = 0;
+        Matrix adjMFriend;
+        createMatrix(UserCount(*LU), UserCount(*LU), &adjMFriend); // handling maks user
+        int rowAdj = 0;
+        int colAdj = 0;
+        while (getAdjacen != UserCount(*LU))
+        {
+            colAdj = 0;
+            ADVWORDFILE();
+            (LW).contents[countWord] = currentWord;
+
+            for (int i = 0; i < currentWord.Length; i++)
+            {
+                if (currentWord.TabWord[i] != BLANK)
+                {
+                    ELMTMatrix(adjMFriend, rowAdj, colAdj) = currentWord.TabWord[i] - '0';
+                    colAdj++;
+                }
+            }
+            rowAdj++;
+
+            getAdjacen++;
+        }
+        // buat graph pertemanan disini
+        displayMatrix(adjMFriend);
+        Graph grafTeman;
+        initGraph(&grafTeman, UserCount(*LU));
+        for (int i = 0; i < ROW_EFF(adjMFriend); i++)
+        {
+            for (int j = 0; j < COL_EFF(adjMFriend); j++)
+            {
+                if (ELMTMatrix(adjMFriend, i, j) == 1)
+                {
+                    addEdge(&grafTeman, i, j);
+                }
             }
         }
     }
@@ -432,7 +460,7 @@ void Masuk(ListUserStatik *LU, currentUser *CU, boolean *isLog)
     }
 }
 //=============================LIHAT PROFIL=====================================
-void lihatUser(ListUserStatik *LU, Word namaProfil)
+void lihatUser(ListUserStatik *LU, Word namaProfil, Graph *G, currentUser CU)
 {
     int iduser = getUserId(namaProfil, *LU);
     if (iduser == IDX_UNDEF)
@@ -440,6 +468,13 @@ void lihatUser(ListUserStatik *LU, Word namaProfil)
         printf("Tidak ditemukan profil dengan nama '");
         printWord(namaProfil);
         printf("' \n");
+    }
+    else if (isTeman(G, CU.idUser, iduser) == false && (*LU).buffer[iduser].jenisAkun == 0) // kalo current user tidak berteman dengan yang dicari
+    {
+        printf("Wah, akun ");
+        printWord((*LU).buffer[iduser].nama);
+        printf(" diprivat nih. Ikuti dulu yuk untuk bisa melihat profil ");
+        printWord((*LU).buffer[iduser].nama);
     }
     else
     {
@@ -480,7 +515,7 @@ void aturJenisAkun(ListUserStatik *LU, currentUser *CU)
     }
     else
     {
-        printf("Private.Ingin mengubah ke akun Publik?");
+        printf("Privat.Ingin mengubah ke akun Publik?");
     }
     printf("\n(YA/TIDAK)");
     STARTWORDINPUT();
@@ -490,7 +525,7 @@ void aturJenisAkun(ListUserStatik *LU, currentUser *CU)
         printf("Akun anda sudah diubah menjadi akun\n");
         if (JENIS_USER(*LU, getUserIdCurrent(*CU, *LU)) == 1)
         {
-            printf("Private");
+            printf("Privat");
             JENIS_USER(*LU, getUserIdCurrent(*CU, *LU)) = 0;
         }
         else

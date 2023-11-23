@@ -15,7 +15,7 @@
 // - Draf Kicauan
 
 // command run sementara
-// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/pengguna/pengguna.c fitur/drafKicauan/drafKicauan.c
+// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/newUtas.c inisialisasi/pengguna/pengguna.c  fitur/drafKicauan/drafKicauan.c Lib/globalFunction.c
 
 int main()
 {
@@ -40,14 +40,15 @@ int main()
 
     // Inisialiasi (sementara)
     ListUserStatik LU;
+    Graph GP;
     CreateEmptyPengguna(&LU);
-    loadPenggunaConfig("configs/config-1/pengguna.config", &LU);
+    loadPenggunaConfig("configs/config-1/pengguna.config", &LU, &GP);
 
     ListDinDraf LD;
     loadDrafConfig("configs/config-1/draf.config", &LD);
 
-    ListDinUtas LU;
-    loadUtasConfig("configs/config-1/utas.config", &LU);
+    ListDinUtas LS;
+    loadUtasConfig("configs/config-1/utas.config", &LS);
 
     currentUser CU;
     CreateEmptyCurrentUser(&CU);
@@ -140,7 +141,7 @@ int main()
         {
             STARTWORDINPUT();
             Word findusername = currentWord;
-            lihatUser(&LU, findusername);
+            lihatUser(&LU, findusername, &GP, CU);
         }
         else if (isWordEqual(command, keluarCmd))
         {

@@ -5,6 +5,7 @@
 // #include "Lib/ganti_profil/gantiprofil.h"
 #include "inisialisasi/pengguna/pengguna.h"
 #include "inisialisasi/draf/draf.h"
+#include "inisialisasi/utas/newUtas.h"
 #include "fitur/drafKicauan/drafKicauan.h"
 
 // main ini masi sementara
@@ -44,6 +45,9 @@ int main()
 
     ListDinDraf LD;
     loadDrafConfig("configs/config-1/draf.config", &LD);
+
+    ListDinUtas LU;
+    loadUtasConfig("configs/config-1/utas.config", &LU);
 
     currentUser CU;
     CreateEmptyCurrentUser(&CU);

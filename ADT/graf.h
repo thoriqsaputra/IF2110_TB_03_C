@@ -1,5 +1,5 @@
-#ifndef LISTDIN_H
-#define LISTDIN_H
+#ifndef GRAF_H
+#define GRAF_H
 
 #include "boolean.h"
 

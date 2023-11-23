@@ -1,11 +1,18 @@
-#include "../../ADT/tempRun.h"
 #include "balasan.h"
 #include "balasan.c"
 
 int main() {
-    ListDinListB LB;
+    ListTree LT;
+    loadBalasanConfig("../../configs/config-1/balasan.config", &LT);
+    PrintTree(LT.ContentListTree[0], 0);
 
-    loadBalasanConfig("../../configs/config-1/balasan.config", &LB);
-    displayListB(LB);
-    dealocateListDinB(&LB);
+    BALASAN* result = findBalasan(LT, 5, 1);
+
+    if (result != NULL) {
+        // Print or use the result as needed
+        printWord(result->TextBalasan);
+    } else {
+        printf("Balasan not found.\n");
+    }
+    dealocateTrees(&LT);
 }

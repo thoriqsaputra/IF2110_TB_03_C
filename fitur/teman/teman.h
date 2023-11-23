@@ -7,6 +7,6 @@ int countTeman(Graph* graph, int userID);
 
 boolean isTeman(Graph* graph, int IDUser, int IDTeman);
 
-void daftarFriend(Graph* graph, currentUser * CU, ListUserStatik * LU);
+int daftarFriend(Graph* graph, currentUser * CU, ListUserStatik * LU);
 
 void hapusFriend(Graph* graph, currentUser * CU, ListUserStatik * LU);

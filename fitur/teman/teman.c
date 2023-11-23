@@ -1,6 +1,6 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include "teman.h"
+#include <stdio.h>
+
 
 int countTeman(Graph* graph, int userID) {
     // KAMUS LOKAL
@@ -32,7 +32,7 @@ boolean isTeman(Graph* graph, int IDUser, int IDTeman) {
     return hasEdge(graph, IDUser, IDTeman);
 }
 
-void daftarFriend(Graph* graph, currentUser * CU, ListUserStatik * LU) {
+int daftarFriend(Graph* graph, currentUser * CU, ListUserStatik * LU) {
 
     // Mendapatkan ID dan Nama current user
     int CurrentUserID = idUser(*CU);
@@ -42,7 +42,8 @@ void daftarFriend(Graph* graph, currentUser * CU, ListUserStatik * LU) {
     int SumTeman = countTeman(graph, CurrentUserID);
     // Jika tidak ada teman maka print message
     if (SumTeman == 0) {
-        return printf("Bob belum mempunyai teman\n");
+        printf("Bob belum mempunyai teman\n");
+        return 1;
     }
 
     printWord(CurrentUserName);printf(" memiliki %d teman\n", SumTeman);
@@ -58,6 +59,7 @@ void daftarFriend(Graph* graph, currentUser * CU, ListUserStatik * LU) {
             
         }
     }
+    return 0;
 
 }
 
@@ -67,7 +69,7 @@ void hapusFriend(Graph* graph, currentUser * CU, ListUserStatik * LU) {
     Word tidak = {"TIDAK",5};
 
     // Mendapatkan ID current user
-    int CurrentUserID = idUser(*CU);
+    int CurrentUserID = getUserIdCurrent(*CU, *LU);
 
     // Menerima input nama
     printf("Masukkan nama pengguna:\n");

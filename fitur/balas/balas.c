@@ -1,8 +1,9 @@
-
-
+#include "balas.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /* ********* FITUR BALASAN ********* */
-int BalasKicauan(ListDinKicauan *lk, int IDKicauan, int IDBalasan, currentUser* CU, ListUserStatik* LU, ListTree *lt, ListDinListB *lb, Graph* graph ) {
+int BalasKicauan(ListDinKicauan *lk, int IDKicauan, int IDBalasan, currentUser* CU, ListUserStatik* LU, ListTree *lt, Graph* graph ) {
     
     //KAMUS LOKAL
     int idx = IDX_UNDEF, UserIDCurrent, UserID;
@@ -15,15 +16,15 @@ int BalasKicauan(ListDinKicauan *lk, int IDKicauan, int IDBalasan, currentUser* 
         }
     }   
 
-    // Jika tidak ada kicauan dengan IDKicauan tersebut return tidak terdapat kicauan
+    // Jika tidak ada kicauan dengan IDKicauan tersebut return 1 (tidak terdapat kicauan)
     if (idx == IDX_UNDEF) {
         printf("Wah, tidak terdapat kicauan yang ingin Anda balas!\n");
         return 1;
     }
     TreeNode* KicauSkrg = searchListTree(*lt, IDKicauan);
 
-    // Jika tidak ada balasan dengan IDBalasan return tidak terdapat balasan
-    if (!IsValidID(KicauSkrg, IDBalasan)) {
+    // Jika tidak ada balasan dengan IDBalasan return 2 (tidak terdapat balasan)
+    if (!IsValidID(KicauSkrg, IDBalasan, BALASAN_NODE) || KicauSkrg == NULL) {
         printf("Wah, tidak terdapat balasan yang ingin Anda balas!\n");
         return 2;
     }
@@ -33,7 +34,7 @@ int BalasKicauan(ListDinKicauan *lk, int IDKicauan, int IDBalasan, currentUser* 
         Word nama = AUTHORKICAUAN(ELMTKICAUAN(*lk, idx));
         UserID = getUserId(nama, *LU);
     } else {
-        BALASAN* balasanT = getBalasan(lb, IDKicauan, IDBalasan);
+        BALASAN* balasanT = findBalasan(*lt, IDKicauan, IDBalasan);
         Word nama = AuthorBalasan(*balasanT);
         UserID = getUserId(nama, *LU);
     }
@@ -47,7 +48,17 @@ int BalasKicauan(ListDinKicauan *lk, int IDKicauan, int IDBalasan, currentUser* 
     // Semua error telah dilalui dan dilanjuti dengan melakukan input balasan
     BALASAN newBalasan;
     DATETIME TimeNow;
-    CreateDATETIME(&TimeNow, 10, 10, 2023, 19, 39, 13); // Waktu sementara
+    
+    // Ambil waktu sekarang
+    time_t t = time(NULL);
+    struct tm *tm_info = localtime(&t);
+    int YY = 1900 + tm_info->tm_year;
+    int MM = 1 + tm_info->tm_mon;
+    int DD = tm_info->tm_mday;
+    int hh = tm_info->tm_hour;
+    int mm = tm_info->tm_min;
+    int ss = tm_info->tm_sec;
+    CreateDATETIME(&TimeNow, DD, MM, YY, hh, mm, ss);
 
     // Melalakukan input balasan
     printf("Masukkan balasan:\n");
@@ -61,60 +72,59 @@ int BalasKicauan(ListDinKicauan *lk, int IDKicauan, int IDBalasan, currentUser* 
     AuthorBalasan(newBalasan) = namaAuthor;
     DatetimeBalasan(newBalasan) = TimeNow;
 
-    // Jika Kicuan belum pernah dibalas maka membuat ListDinBalasan baru
-    if(!isKicauanInList(*lb, IDKicauan)) {
-        ListDinBalasan LDB;
-        CreateListBalasan(&LDB,10);
+    // Jika Kicuan belum pernah dibalas maka akan membuat new node baru
+    if(searchListTree(*lt, IDKicauan) == NULL) {
+        KICAUAN kicauan;
+        kicauan.ID = IDKicauan;
+        TreeNode* kicauanNode = createNodeWithData(KICAUAN_NODE, &kicauan);
         IDBalasan(newBalasan) = 1; // IDBalasan akan menjadi 1 karena baru saja di balas kicauannya
-
-        // Membuat node baru 
-        TreeNode* NodeKicau = createNode(IDKicauan);
-        // ID 1 karena baru ada 1 balasan pada kicauan tersebut
-        TreeNode* NodeBalasan = createNode(1);
-        // Menambahkan Balasan baru ke kicauan
-        addChild(NodeKicau, NodeKicau);
+        TreeNode* balasanNode = createNodeWithData(BALASAN_NODE, &newBalasan);
+        addChild(kicauanNode, balasanNode);
         // Menambahkan tree pada list tree
-        insertLastListTree(lt, NodeKicau);
-
-        insertLastListDinBalasan(&LDB, newBalasan);  // Insert Balasan ke ListDinBalasan
-        insertLastListDinB(lb, LDB); // Insert ListDinBalasan ke ListDinB
- 
+        insertLastListTree(lt, kicauanNode);
+        free(kicauanNode);
+        free(balasanNode);
     } else { // Jika sudah maka mencari ListDinBalasan dengan IDKicauan lalu insert balasan baru
-        ListDinBalasan* LDB;
-        LDB = getListDinBalasan(lb, IDKicauan);
-        IDBalasan(newBalasan) = NEFFBalasan(*LDB)+1;
-        
+        TreeNode* kicauanNode = searchListTree(*lt, IDKicauan);
+
+        IDBalasan(newBalasan) = getMaxIDBalasan(kicauanNode) + 1;
         // Membuat node baru dengan angka ID Balasan terbaru 
-        TreeNode* NodeBalasan = createNode(IDBalasan(newBalasan));
+        TreeNode* balasanNode = createNodeWithData(BALASAN_NODE, &newBalasan);
         if (IDBalasan == -1) { // Jika IDBalsan -1 maka membalas root parent makan menambah langsung ke root
-            addChild(searchListTree(*lt,IDKicauan), NodeBalasan);
+            addChild(kicauanNode, balasanNode);
         } else { // Jika membalasan ke Balasan maka akan mendapatkan Node IDKicauan dan searching Node IDBalasan untuk ditambahkan
-            addChild(SearchTree(searchListTree(*lt, IDKicauan), IDBalasan), NodeBalasan);
+            addChild(SearchTree(kicauanNode, IDBalasan, BALASAN_NODE), balasanNode);
         }
+        free(kicauanNode);
+        free(balasanNode);
     }
     
     printf("Selamat! balasan telah diterbitkan!\nDetil balasan:\n");
-    printBalasan(newBalasan);
+    printf("| ID = %d\n", IDBalasan(newBalasan));
+    printf("| ");printWord(AuthorBalasan(newBalasan));printf("\n");
+    printf("| ");TulisDATETIME(DatetimeBalasan(newBalasan));printf("\n");
+    printf("| ");printWord(TxtBalasan(newBalasan));printf("\n");
+    printf("\n");
 
     return 0;
 
 }
 
-void DisplayBalasanRecursive(TreeNode* T, int level, ListDinListB *lb, int idKicauan, ListUserStatik LU, int idCurrentUser, Graph graph) {
+void DisplayBalasanRecursive(TreeNode* T, int level,  ListUserStatik LU, int idCurrentUser, Graph graph) {
     
     TreeNode* current = AnakPertama(*T);
 
     while (current != NULL) {
         // Mendapatkan Balasan dengan menggunakan INFO dari ID di tree
-        BALASAN* B = getBalasan(lb,idKicauan, INGFO(*current));
+        BALASAN B = current->balasanData;
 
-        int idUserBalasan = getUserId(AuthorBalasan(*B), LU); // Mendapatkan ID user Balasan
+        int idUserBalasan = getUserId(AuthorBalasan(B), LU); // Mendapatkan ID user Balasan
 
         if (isTeman(&graph, idCurrentUser, idUserBalasan) == false && JENIS_USER(LU, idUserBalasan) == 0) { // Jika current user dan user balasan bukan teman dan user balasan privat maka PRIVATTTT SEMUAAA
             for (int i = 0; i < level; i++) {
             printf("\t");
             }
-            printf("| ID = %d\n", IDBalasan(*B));
+            printf("| ID = %d\n", IDBalasan(B));
             for (int i = 0; i < level; i++) {
                 printf("\t");
             }
@@ -132,24 +142,24 @@ void DisplayBalasanRecursive(TreeNode* T, int level, ListDinListB *lb, int idKic
             for (int i = 0; i < level; i++) {
                 printf("\t");
             }
-            printf("| ID = %d\n", IDBalasan(*B));
+            printf("| ID = %d\n", IDBalasan(B));
             for (int i = 0; i < level; i++) {
                 printf("\t");
             }
-            printf("| ");printWord(AuthorBalasan(*B));printf("\n");
+            printf("| ");printWord(AuthorBalasan(B));printf("\n");
             for (int i = 0; i < level; i++) {
                 printf("\t");
             }
-            printf("| ");TulisDATETIME(DatetimeBalasan(*B));printf("\n");
+            printf("| ");TulisDATETIME(DatetimeBalasan(B));printf("\n");
             for (int i = 0; i < level; i++) {
                 printf("\t");
             }
-            printf("| ");printWord(TxtBalasan(*B));printf("\n");
+            printf("| ");printWord(TxtBalasan(B));printf("\n");
             printf("\n");
         }
 
         // Melakukan print secara rekursif
-        DisplayBalasanRecursive(current, level + 1, lb, idKicauan);
+        DisplayBalasanRecursive(current, level + 1, LU, idCurrentUser, graph);
 
         // Melanjutkan ke Balasan berikutnya
         current = SaudaraBerikut(*current);
@@ -167,28 +177,44 @@ KICAUAN* getKicauan(ListDinKicauan LD, int IDKicuan) {
     return NULL;
 }
 
-void DisplayBalasan(int idKicauan, ListDinListB lb, ListTree lt, ListUserStatik LU, currentUser CU, ListDinKicauan LD, Graph graph) {
+void DisplayBalasan(int idKicauan, ListTree lt, ListUserStatik LU, currentUser CU, ListDinKicauan LD, Graph graph) {
 
-    ListDinBalasan* ListBalasan = getListDinBalasan(&lb, idKicauan );
+    KICAUAN* kicau = getKicauan(LD, idKicauan); // Mendapatkan kicauan menggunakana ID
 
     int idUserCurrent = getUserIdCurrent(CU, LU);
     
-    if(ListBalasan == NULL) { // Jika tidak terdapat Kicauan dengan id yang diminta
+    if(kicau == NULL) { // Jika tidak terdapat Kicauan dengan id yang diminta
         printf("Tidak terdapat kicauan dengan id tersebut!\n");
     } else { // Jika terdapat kicauan dengan id yang diminta
-        KICAUAN* kicau = getKicauan(LD, idKicauan); // Mendapatkan kicauan menggunakana ID
         int idUserKicauan = getUserId(AUTHORKICAUAN(*kicau), LU); // Mendapatkan id user kicauan
-        if (searchListTree(lt, idKicauan) == NULL) { // Jika kicauan tersebut belum pernah dibalas maka tidak akan ada di tree
+        TreeNode* kicauanNode = searchListTree(lt, idKicauan);
+        if ( kicauanNode == NULL || kicauanNode->firstChild == NULL ) { // Jika kicauan tersebut belum pernah dibalas maka tidak akan ada di tree
             printf("Belum terdapat balasan apapun pada kicauan tersebut. Yuk balas kicauan tersebut!\n");
         } else if (isTeman(&graph, idUserCurrent, idUserKicauan) == false && JENIS_USER(LU, idUserKicauan) == 0 ){ // Jika current user dan user kicauan bukan teman dan user kicauan privat
             printf("Wah, kicauan tersebut dibuat oleh pengguna dengan akun privat!\n");
         } else { // GO THROUGHHHH ALLL
             // Memanggil fungsi rekursif untuk print balasan
             TreeNode* current = searchListTree(lt, idKicauan);
-            DisplayBalasanRecursive(current, 0, &lb, idKicauan, LU, idUserCurrent, graph);
+            DisplayBalasanRecursive(current, 0,  LU, idUserCurrent, graph);
         }
     }
 
 }
 
-void HapusBalasan()
+void HapusBalasan(ListUserStatik *LU, currentUser *CU, int IDKicauan, int IDBalasan, ListTree *LT) {
+
+    BALASAN* balas = findBalasan(*LT, IDKicauan, IDBalasan);
+    int idCurrentUser = getUserIdCurrent(*CU,*LU);
+
+    if (balas = NULL) {
+            printf("Balasan tidak ditemukan\n");
+    } else {
+        if (idCurrentUser != getUserId(AuthorBalasan(*balas), *LU)) {
+        printf("Hei, ini balasan punya siapa? Jangan dihapus ya!\n");
+        }
+        else {
+            deleteNode(searchListTree(*LT, IDKicauan), IDBalasan, BALASAN_NODE);
+            printf("Balasan berhasil dihapus\n");
+        }
+    }
+}

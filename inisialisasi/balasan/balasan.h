@@ -1,9 +1,8 @@
 #ifndef BALASAN_H
 #define BALASAN_H
 
-#include "../../ADT/wordmachine.h"
+#include "../../ADT/tempRun.h"
 #include "../../ADT/datetime.h"
-#include "../../ADT/tree.h"
 #include "../kicauan/kicauan.h"
 
 /*  Kamus Umum */
@@ -30,147 +29,76 @@ typedef struct BALASAN
 #define AuthorBalasan(l) (l).Author
 #define DatetimeBalasan(l) (l).DT
 
-typedef struct
-{
-    int IDKicau;
-    BALASAN *contentBalasan;
-    int capacitybalasan;
-    int nEffBalasan;
-} ListDinBalasan;
+// Enumeration to represent the type of node
+typedef enum { KICAUAN_NODE, BALASAN_NODE } NodeType;
 
-/* ********** SELEKTOR List Dinamis BALASAN ********** */
-#define IDKicauB(l) (l).IDKicau
-#define ELMTBalasan(l, i) (l).contentBalasan[i]
-#define ContentBalasan(l) (l).contentBalasan
-#define NEFFBalasan(l) (l).nEffBalasan
-#define CAPACITYBalasan(l) (l).capacitybalasan
+// TreeNode structure
+typedef struct TreeNode {
+    NodeType type;  // Type of the node
+    union {
+        KICAUAN kicauanData;  // Data for KICAUAN node
+        BALASAN balasanData;  // Data for BALASAN node
+    };
+    struct TreeNode* firstChild;
+    struct TreeNode* nextSibling;
+} TreeNode;
 
-typedef struct
-{
-    ListDinBalasan *contentList;
-    int capacityList;
-    int nEffList;
-} ListDinListB;
+// ListTree structure
+typedef struct {
+    TreeNode** ContentListTree;  // Array of pointers to TreeNode
+    int NEFFListTree;            // Number of elements in the list
+    int CAPACITYLISTTREE;        // Capacity of the list
+} ListTree;
 
-/************ Selektor List Dinamis ************/
-#define ELMTListB(l, i) (l).contentList[i]
-#define ContentListB(l) (l).contentList
-#define NEFFListB(l) (l).nEffList
-#define CAPACITYListB(l) (l).capacityList
 
-/* ********** KONSTRUKTOR ListBalasan ********** */
+// Function to create a node with specific type and data
+TreeNode* createNodeWithData(NodeType type, void* data);
+
+// Function to add a child node to the parent node
+void addChild(TreeNode* parent, TreeNode* child);
+
+// Function to print the tree
+void PrintTree(TreeNode* root, int level);
+
+boolean IsValidID(TreeNode* parent, int target, NodeType targetType);
+
+TreeNode* SearchTree(TreeNode* parent, int target, NodeType targetType);
+
+void deleteNode(TreeNode* parent, int target, NodeType targetType);
+
+int getMaxIDBalasan(TreeNode* parent);
+
+/* ********** KONSTRUKTOR ListDinTree ********** */
 /* Konstruktor : create list kosong  */
-void CreateListBalasan(ListDinBalasan *l, int capacity);
-/* I.S. l sembarang, capacity > 0 */
-/* F.S. Terbentuk list dinamis l kosong dengan kapasitas capacity dan diisi BALASAN */
+void CreateListTree(ListTree* lt, int capacity);
 
-void dealocateBalasan(ListDinBalasan *l);
-/* I.S. l terdefinisi; */
-/* F.S. (l) dikembalikan ke system, CAPACITY(l)=0; NEFF(l)=0 */
+void dealocateTrees(ListTree* lt);
 
-/* ********** SELEKTOR (TAMBAHAN) ********** */
-/* *** Banyaknya elemen *** */
-int LengthListBalasan(ListDinBalasan l);
-/* Mengirimkan banyaknya elemen efektif list */
-/* Mengirimkan nol jika list l kosong */
-/* *** Daya tampung container *** */
+int LengthListTree(ListTree l);
 
-/* ********** OPERASI LAIN ********** */
-void copyListDinBalasan(ListDinBalasan lIn, ListDinBalasan *lOut);
-/* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
-/* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */
-/* Proses : Menyalin isi lIn ke lOut */
+void copyListTree(ListTree lIn, ListTree* lOut);
 
-BALASAN *getBalasan(ListDinListB *lb, int IDKicauan, int IDBalasan);
+void deleteLastListTree(ListTree* l, TreeNode** tree);
 
-void printBalasan(BALASAN B);
+void expandListTree(ListTree* l, int num);
 
-/* ********** BOOLEAN ********** */
-boolean isFullBalasan(ListDinBalasan l);
-/* return true jika penuh */
+void insertLastListTree(ListTree* l, TreeNode* tree);
 
-/* ********* MENGUBAH UKURAN ARRAY ********* */
-void expandListDinBalasan(ListDinBalasan *l, int num);
-/* Proses : Menambahkan capacity l sebanyak num */
-/* I.S. List sudah terdefinisi */
-/* F.S. Ukuran list bertambah sebanyak num */
+void shrinkListDinTree(ListTree* l, int num);
 
-/* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
-/* *** Menambahkan elemen terakhir *** */
-void insertLastListDinBalasan(ListDinBalasan *l, BALASAN val);
-/* Proses: Menambahkan val sebagai elemen terakhir list */
-/* I.S. List l boleh kosong, tetapi tidak penuh */
-/* F.S. val adalah elemen terakhir l yanDg baru */
+TreeNode* searchListTree(ListTree l, int value);
 
-/* ********** MENGHAPUS ELEMEN ********** */
-void deleteLastListDinBalasan(ListDinBalasan *l, BALASAN *val);
-/* Proses : Menghapus elemen terakhir list */
-/* I.S. List tidak kosong */
-/* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
-/*      Banyaknya elemen list berkurang satu */
-/*      List l mungkin menjadi kosong */
-
-/* ********** KONSTRUKTOR ListDinBalasan ********** */
-/* Konstruktor : create list kosong  */
-void CreateListDinB(ListDinListB *lb, int capacity);
-/* I.S. l sembarang, capacity > 0 */
-/* F.S. Terbentuk list dinamis l kosong dengan kapasitas capacity dan diisi ListBalasan */
-
-void dealocateListDinB(ListDinListB *lb);
-/* I.S. l terdefinisi; */
-/* F.S. (l) dikembalikan ke system, CAPACITY(l)=0; NEFF(l)=0 */
-
-/* ********** SELEKTOR (TAMBAHAN) ********** */
-/* *** Banyaknya elemen *** */
-int LengthListB(ListDinListB l);
-/* Mengirimkan banyaknya elemen efektif list */
-/* Mengirimkan nol jika list l kosong */
-/* *** Daya tampung container *** */
-
-/* ********** OPERASI LAIN ********** */
-void copyListDinB(ListDinListB lIn, ListDinListB *lOut);
-/* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
-/* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */
-/* Proses : Menyalin isi lIn ke lOut */
-
-ListDinBalasan *getListDinBalasan(ListDinListB *lb, int IDKicauan);
-
-/* ********** BOOLEAN ********** */
-boolean isFullListDinB(ListDinListB lb);
-/* return true jika penuh */
-
-boolean isKicauanInList(ListDinListB lb, int IDKicauan);
-
-/* ********* MENGUBAH UKURAN ARRAY ********* */
-void expandListDinB(ListDinListB *l, int num);
-/* Proses : Menambahkan capacity l sebanyak num */
-/* I.S. List sudah terdefinisi */
-/* F.S. Ukuran list bertambah sebanyak num */
-
-/* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
-/* *** Menambahkan elemen terakhir *** */
-void insertLastListDinB(ListDinListB *l, ListDinBalasan val);
-/* Proses: Menambahkan val sebagai elemen terakhir list */
-/* I.S. List l boleh kosong, tetapi tidak penuh */
-/* F.S. val adalah elemen terakhir l yanDg baru */
-
-/* ********** MENGHAPUS ELEMEN ********** */
-void deleteLastListDinB(ListDinListB *l, ListDinBalasan *val);
-/* Proses : Menghapus elemen terakhir list */
-/* I.S. List tidak kosong */
-/* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
-/*      Banyaknya elemen list berkurang satu */
-/*      List l mungkin menjadi kosong */
+BALASAN* findBalasan(ListTree LT, int IDKicauan, int IDBalasan);
 
 /* ********* CONFIGS ********* */
-void loadBalasanConfig(char filename[], ListDinListB *lb, ListTree *LT);
+void loadBalasanConfig(char filename[], ListTree *LT);
 /* I.S. l kosong; */
 /* F.S. l diisi sesuai config */
 
-/* ********** FUNGSI LAIN ********** */
-void displayBalasan(ListDinBalasan B);
+// /* ********** FUNGSI LAIN ********** */
+// void displayBalasan(ListDinBalasan B);
 
-void displayListB(ListDinListB lb);
+// void displayListB(ListDinListB lb);
 
 int wordToInt(Word kata);
 

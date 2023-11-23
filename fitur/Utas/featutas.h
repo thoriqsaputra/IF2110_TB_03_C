@@ -1,9 +1,11 @@
-#ifndef UTAS_H
-#define UTAS_H
+#ifndef featUTAS_H
+#define featUTAS_H
 
 
-#include "../../ADT/wordmachine.h"
+#include "../../inisialisasi/kicauan/kicauan.h"
+#include "../../teman/teman.h"
 #include <stdlib.h>
+#include "../../ADT/boolean.h"
 
 typedef struct node* Address;
 
@@ -61,7 +63,14 @@ typedef struct
 #define FIRSTU(l) (l)
 
 
-void loadUtasConfig(char file[],ListDinUtas *LDU);
+void BUAT_UTAS(int IDKicau,ListDinKicauan *LDK,currentUser cu,ListDinUtas *LDU);
+
+void SAMBUNG_UTAS(int IDUtas,int index,currentUser cu,ListDinUtas *LDU);
+
+
+void HAPUS_UTAS(int IDUtas, int index,currentUser cu,ListDinUtas *LDU);
+
+void CETAK_UTAS(int IDUtas,currentUser cu,Graph *G,ListUserStatik *LU,ListDinKicauan *LDK,ListDinUtas *LDU);
 
 
 
@@ -69,13 +78,22 @@ void loadUtasConfig(char file[],ListDinUtas *LDU);
 /* ---------- Primitif List Dinamis Utas ---------- */
 /* -------------------------------------------------*/
 
-void CreatelistUtas(ListDinUtas *LDU,int capacity);
-
 int lengthListDinUtas(ListDinUtas l);
 
+IdxType getLastIdxListDinUtas(ListDinUtas l);
 
 void insertLastListDinUtas(ListDinUtas *l, Utas utas);
 
+boolean isIDKicauTaken(int IDKicauan,ListDinUtas LDU);
+
+
+/* ------------------------------------------------*/
+/* ----------- Fungsi Bantuan Kicauan ------------ */
+/* ------------------------------------------------*/
+
+void displayMainKicauan(int IDKicau,ListDinKicauan LK);
+
+boolean isIdxEffListDinKicauan(ListDinKicauan lk, IdxType i);
 
 
 
@@ -88,6 +106,13 @@ Address newNodeUtas(info_utas info);
 
 void CreateListLinUtas(ListLinUtas *l);
 
+void InsertUtasAt(ListLinUtas *l, info_utas info, int idx);
+
+void deleteUtasAt(ListLinUtas *l, int idx, info_utas *info);
+
+int lengthListLinUtas(ListLinUtas l);
+
+ListLinUtas concatListLinUtas(ListLinUtas l1, ListLinUtas l2);
 
 void insertFirstListLinUtas(ListLinUtas *l, info_utas data);
 
@@ -102,6 +127,10 @@ boolean isEmptyListLinUtas(ListLinUtas l);
 void CreateMainUtas(ListDinUtas *LDU, Utas main);
 
 void TambahUtas(ListLinUtas *LDU,int idx,currentUser cu);
+
+void displayUtas(Utas U);
+
+boolean isWordEqual(Word input, Word cek);
 
 
 #endif

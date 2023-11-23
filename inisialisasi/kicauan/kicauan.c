@@ -64,6 +64,11 @@ void unloadListKicauan(ListDinKicauan *l) // Gunakan saat keluar program & jika 
     CAPACITYKICAUAN(*l) = 0;
 }
 
+boolean isEmptyKicauan(ListDinKicauan l)
+{
+    return (l.nEffKicauan == 0);
+}
+
 /* ********* Load dari config ********* */
 void loadKicauanConfig(char filename[], ListDinKicauan *l)
 {
@@ -127,28 +132,23 @@ void addKicauan(ListDinKicauan *l, KICAUAN t)
     NEFFKICAUAN(*l)++;
 }
 
-boolean tesEmptyText(Word text)
-{
-    int i = 0;
-    while (i < text.Length && text.TabWord[i] == ' ')
-    {
-        i++;
-    }
-    return i = text.Length;
-}
-
-boolean createNewKicauanInput(int newID, currentUser CU, KICAUAN * kOut)
+boolean createNewKicauanInput(int newID, int likes, currentUser CU, KICAUAN * kOut)
 {
     STARTWORDINPUT();
-    if (!tesEmptyText(currentWord))
+    printf("\nEndInput: %d\n",EndInput);
+    if (EndInput)
     {
         return false;
     }
-    IDKICAUAN(*kOut) = newID;
-    TEXTKICAUAN(*kOut) = currentWord;
-    LIKEKICAUAN(*kOut) = 0;
-    AUTHORKICAUAN(*kOut) = CU.nama;
-    DATETIMEKICAUAN(*kOut) = grabCurrentDateTime();
+    else
+    {
+        printf("\nlength cw: %d\n",currentWord.Length);
+        IDKICAUAN(*kOut) = newID;
+        TEXTKICAUAN(*kOut) = currentWord;
+        LIKEKICAUAN(*kOut) = likes;
+        AUTHORKICAUAN(*kOut) = CU.nama;
+        DATETIMEKICAUAN(*kOut) = grabCurrentDateTime();
+    }
 
     return true;
 }
@@ -168,7 +168,7 @@ void berkicau(ListDinKicauan *l, ListDinKicauan *lUser, currentUser CU)
 {
     KICAUAN newKicauan;
     printf("Masukkan kicauan:\n");
-    if (createNewKicauanInput(NEFFKICAUAN(*l) + 1,CU,&newKicauan))
+    if (createNewKicauanInput(NEFFKICAUAN(*l) + 1, 0, CU, &newKicauan))
     {
         addKicauan(l,newKicauan);
         addKicauan(lUser,newKicauan);
@@ -204,18 +204,32 @@ void likeKicauanByID(ListDinKicauan *l, int ID) // masih butuh yang pertemanan
 }
 
 /* ************* Mengedit kicauan di dalam list ************ */
-void editKicauanInList(ListDinKicauan * l, int ID, currentUser CU)
+void editKicauanInList(ListDinKicauan *l, ListDinKicauan *lUser, int ID, currentUser CU)
 {
     if (ID <= NEFFKICAUAN(*l) && ID > 0)
     {
         if (isWordEqual(CU.nama, AUTHORKICAUAN(ELMTKICAUAN(*l,ID-1))))
         {
+            int iUser = 0;
+            while (IDKICAUAN(ELMTKICAUAN(*lUser,iUser)) != ID)
+            {
+                iUser++;
+            }
             printf("\nMasukkan kicauan baru:\n");
-            STARTWORDINPUT();
-            TEXTKICAUAN(ELMTKICAUAN(*l,ID-1)) = currentWord;
-            DATETIMEKICAUAN(ELMTKICAUAN(*l,ID-1)) = grabCurrentDateTime();
-            printf("Selamat! kicauan telah diterbitkan!\nDetil kicauan:\n");
-            displayKicauan(ELMTKICAUAN(*l,ID-1));
+            KICAUAN edittedKicauan;
+            
+            if (createNewKicauanInput(ID, 0, CU, &edittedKicauan))
+            {
+                ELMTKICAUAN(*l,ID-1) = edittedKicauan;
+                ELMTKICAUAN(*lUser,iUser) = edittedKicauan;
+                printf("Selamat! kicauan telah diterbitkan!\nDetil kicauan:\n");
+                displayKicauan(edittedKicauan);
+            }
+            else
+            {
+                printf("Kicauan tidak boleh hanya berisi spasi!\n");
+            }
+            
             printf("\n");
         }
         else

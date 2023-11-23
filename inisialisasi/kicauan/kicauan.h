@@ -7,7 +7,6 @@
 #include "../../ADT/wordmachine.h"
 #include "../../ADT/datetime.h"
 #include "../pengguna/pengguna.h"
-// #include "../../Lib/globalFunction.h"
 
 /*  Kamus Umum */
 #define IDX_MIN 0
@@ -46,9 +45,12 @@ typedef struct
 #define CAPACITYKICAUAN(l) (l).capacityKicauan
 
 /* ********** List Dinamis Kicauan Program ********** */
-extern ListDinKicauan ListKicauan; 
+extern ListDinKicauan ListRawKicauan; 
 
 /* ********** KONSTRUKTOR ********** */
+boolean isWordEqual(Word input, Word cek);
+
+boolean isEmptyKicauan(ListDinKicauan l);
 /* Konstruktor : create list kosong  */
 void CreateListKicauan(ListDinKicauan *l, int capacity);
 /* I.S. l sembarang, capacity > 0 */
@@ -77,9 +79,9 @@ boolean isFullOfKicauan(ListDinKicauan l);
 /* return true jika penuh */
 
 /* ********** FUNGSI KICAUAN ********** */
-boolean tesEmptyText(Word text);
+boolean tesEmptyText();
 
-boolean createNewKicauanInput(int newID, currentUser CU, KICAUAN * kOut);
+boolean createNewKicauanInput(int newID, int likes, currentUser CU, KICAUAN * kOut);
 
 KICAUAN createNewKicauanFromText(int newID, Word text, currentUser CU);
 
@@ -95,7 +97,7 @@ void likeKicauanByID(ListDinKicauan *l, int ID);
         Jika tidak bisa maka akan keluar pesan, "This kicauan is privated"
         Mungkin bisa ditambahin anjuran rquest teman dengan pengarang kicauannya */
 
-void editKicauanInList(ListDinKicauan *l, int ID, currentUser CU);
+void editKicauanInList(ListDinKicauan *l, ListDinKicauan *lUser, int ID, currentUser CU);
 /* I.S. l terdefinisi dan ID valid yang dibuat oleh akun sekarang; */
 /* F.S. Text diperbaharui */
 

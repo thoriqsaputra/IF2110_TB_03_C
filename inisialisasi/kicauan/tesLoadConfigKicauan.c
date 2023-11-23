@@ -25,10 +25,12 @@ int main()
     printf("NEFF = %d\n",NEFFKICAUAN(LKD));
     printf("CAPACITY = %d\n",CAPACITYKICAUAN(LKD));
 
-    editKicauanInList(&LKD, NEFFKICAUAN(LKD), cUser);
+    editKicauanInList(&LKD, &LUser, NEFFKICAUAN(LKD), cUser);
 
     printf("NEFF = %d\n",NEFFKICAUAN(LKD));
     printf("CAPACITY = %d\n",CAPACITYKICAUAN(LKD));
+
+    displayKicauan(ELMTKICAUAN(LUser,0));
 
     unloadListKicauan(&LKD);
     fclose(pita);

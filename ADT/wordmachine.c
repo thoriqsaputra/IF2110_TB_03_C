@@ -50,8 +50,11 @@ void STARTWORD()
 void STARTWORDINPUT()
 {
     START();
-    IgnoreBlanks();
-    ignoreNewLine();
+    while (currentChar == BLANK || currentChar == newLine)
+    {
+        IgnoreBlanks();
+        ignoreNewLine();
+    }
     if (currentChar == MARKINPUT)
     {
         EndInput = true;

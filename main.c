@@ -16,6 +16,7 @@
 // - Draf Kicauan
 // - Graf Pertemanan
 // - Kicauan (on progress)
+// - Utas ( on progress )
 
 // command run sementara
 // gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/utas.c inisialisasi/pengguna/pengguna.c inisialisasi/kicauan/kicauan.c fitur/drafKicauan/drafKicauan.c fitur/teman/teman.c Lib/globalFunction.c
@@ -164,17 +165,9 @@ int main()
         }
         else if (isWordEqual(command, kicauanCmd))
         {
-            printf("1");
             for (int i = NEFFKICAUAN(LKD) - 1; i >= 0; i--)
             {
-                printf("2");
-                Word namaTeman = ELMTKICAUAN(LKD, i).Author;
-                printWord(namaTeman);
-                int idKicauLain = getUserId(namaTeman, LU);
-                // if (isTeman(GP, CU.idUser, idKicauLain))
-                // {
-                //     displayKicauan(ELMTKICAUAN(lUser, i));
-                // }
+                displayKicauan(ELMTKICAUAN(LKD, i));
             }
         }
         else if (isWordEqual(command, ubahKicauanCmd))
@@ -182,6 +175,18 @@ int main()
             STARTWORDINPUT();
             Word ID = currentWord;
             editKicauanInList(&LKD, &LUKser, wordToInt(ID), CU);
+        }
+        else if (isWordEqual(command, utasCmd))
+        {
+            STARTWORDINPUT();
+            Word idkicau = currentWord;
+            buatUtas(wordToInt(idkicau), &LS, LKD, CU);
+        }
+        else if (isWordEqual(command, cetakUtasCmd))
+        {
+            STARTWORDINPUT();
+            Word idutas = currentWord;
+            cetakUtas(LS, wordToInt(idutas), LKD);
         }
         else
         {

@@ -74,6 +74,25 @@ void PrintTree(TreeNode *root, int level)
     }
 }
 
+int countNodesExceptParent(TreeNode* node) {
+    if (node == NULL) {
+        return 0;
+    }
+
+    int count = 0;
+
+    // Count the nodes in the children
+    TreeNode* current = node->firstChild;
+    while (current != NULL) {
+        count += 1 + countNodesExceptParent(current);
+        current = current->nextSibling;
+    }
+
+    return count;
+}
+
+
+
 boolean IsValidID(TreeNode *parent, int target, NodeType targetType)
 {
     if (parent == NULL)

@@ -26,22 +26,22 @@ typedef struct
 #define AUTHORUTAS(l) (l).author
 #define DATETIMEUTAS(l) (l).datetime
 
-typedef struct nodeUtas *Address;
+typedef struct nodeUtas *AddressUtas;
 
 typedef struct nodeUtas
 {
     int idKicau;
     int idUtas;
     Utas info;
-    Address next;
+    AddressUtas next;
 } NodeUtas;
 
 #define INFOUTAS(p) (p)->info
 #define NEXTUTAS(p) (p)->next
 
-Address newNodeUtas(Utas val, int idKicau, int idUtas);
+AddressUtas newNodeUtas(Utas val, int idKicau, int idUtas);
 
-typedef Address ListLinUtas;
+typedef AddressUtas ListLinUtas;
 
 // #define IDX_UNDEF (-1)
 #define FIRSTUTAS(l) (l)

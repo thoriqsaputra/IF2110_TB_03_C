@@ -125,10 +125,10 @@ void deleteLinkedDrafByIdUtas(ListDinUtas *l, int id)
     }
 }
 
-Address newNodeUtas(Utas val, int idKicau, int idUtas)
+AddressUtas newNodeUtas(Utas val, int idKicau, int idUtas)
 {
-    Address p;
-    p = (Address)malloc(sizeof(NodeUtas));
+    AddressUtas p;
+    p = (AddressUtas)malloc(sizeof(NodeUtas));
     if (p != NULL)
     {
         INFOUTAS(p) = val;
@@ -149,7 +149,7 @@ boolean isEmptyListLinUtas(ListLinUtas l)
 
 Utas getElmtUtas(ListLinUtas l, int idx)
 {
-    Address p;
+    AddressUtas p;
     p = l;
     for (int i = 0; i < idx; i++)
     {
@@ -160,7 +160,7 @@ Utas getElmtUtas(ListLinUtas l, int idx)
 
 void setElmtListLinUtas(ListLinUtas *l, int idx, Utas val)
 {
-    Address p;
+    AddressUtas p;
     int ctr;
     p = *l;
     ctr = 0;
@@ -174,7 +174,7 @@ void setElmtListLinUtas(ListLinUtas *l, int idx, Utas val)
 
 void insertLastListLinUtas(ListLinUtas *l, Utas val, int idKicau, int idUtas)
 {
-    Address p, last;
+    AddressUtas p, last;
     p = newNodeUtas(val, idKicau, idUtas);
     if (p != NULL)
     {
@@ -196,7 +196,7 @@ void insertLastListLinUtas(ListLinUtas *l, Utas val, int idKicau, int idUtas)
 
 void insertAtListLinUtas(ListLinUtas *l, Utas val, int idx, int idKicau, int idUtas)
 {
-    Address p, prev;
+    AddressUtas p, prev;
     int ctr;
     p = newNodeUtas(val, idKicau, idUtas);
     if (p != NULL)
@@ -223,7 +223,7 @@ void insertAtListLinUtas(ListLinUtas *l, Utas val, int idx, int idKicau, int idU
 
 void deleteAtListLinUtas(ListLinUtas *l, int idx, Utas *val)
 {
-    Address p, prev;
+    AddressUtas p, prev;
     int ctr;
     if (idx == 0)
     {
@@ -250,7 +250,7 @@ void deleteAtListLinUtas(ListLinUtas *l, int idx, Utas *val)
 
 int lengthListLinUtas(ListLinUtas l)
 {
-    Address p;
+    AddressUtas p;
     int ctr;
     p = FIRSTUTAS(l);
     ctr = 0;
@@ -264,7 +264,7 @@ int lengthListLinUtas(ListLinUtas l)
 
 void displayListLinUtas(ListLinUtas l)
 {
-    Address p;
+    AddressUtas p;
     p = FIRSTUTAS(l);
     while (p != NULL)
     {

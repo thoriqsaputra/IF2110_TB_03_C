@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include <sys/stat.h>
-#include <sys/types.h>
+#include <stdlib.h>
 #include "../../Lib/includeall.h"
 #include "loadnsave.h"
 
@@ -30,31 +29,6 @@ void muat(Word folder, ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, 
         pathFolder[i] = namaFolder[j];
         j++;
     }
-
-    // struct stat st = {0};
-
-    // if (stat(pathFolder, &st) == -1)
-    // {
-    //     printf("Belum terdapat Folder tersebut. Akan dilakukan pembuatan folder tersebut terlebih dahulu.\n\n");
-    //     printf("Mohon tunggu...\n");
-    //     printf("1...\n");
-    //     printf("1...\n");
-    //     printf("2...\n");
-    //     printf("3...\n\n");
-    //     if (mkdir(namaFolder, 0700) == -1)
-    //     {
-    //         perror("ERROR: Tidak dapat membuat folder\n");
-    //         return;
-    //     }
-    //     else
-    //     {
-    //         for (i = 0; i < folder.Length; i++)
-    //         {
-    //             printf("%c", namaFolder[i]);
-    //         }
-    //         printf("Folder sudah berhasil dibuat.\n");
-    //     }
-    // }
 
     // Buat path-path config
     char pathBalasan[folder.Length + 8 + 16];
@@ -168,7 +142,7 @@ void muat(Word folder, ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, 
     loadBalasanConfig(pathBalasan, LT);
 }
 
-void simpan(ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas *LS, Graph *GP)
+void simpan(ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas *LS, Graph *GP, ListTree *LT)
 {
     // printf("Masukkan nama folder penyimpanan");
     // STARTWORDINPUT();
@@ -225,7 +199,7 @@ void simpan(ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas
     // }
 
     // // Buat path-path config
-    // char pathBalasan[folder.Length + 8 + 15];
+    // char pathBalasan[folder.Length + 8 + 16];
     // for (i = 0; i < folder.Length + 8; i++)
     // {
     //     pathBalasan[i] = pathFolder[i];
@@ -245,8 +219,9 @@ void simpan(ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas
     // pathBalasan[folder.Length + 8 + 12] = 'f';
     // pathBalasan[folder.Length + 8 + 13] = 'i';
     // pathBalasan[folder.Length + 8 + 14] = 'g';
+    // pathBalasan[folder.Length + 8 + 15] = '\0';
 
-    // char pathDraf[folder.Length + 8 + 12];
+    // char pathDraf[folder.Length + 8 + 13];
     // for (i = 0; i < folder.Length + 8; i++)
     // {
     //     pathDraf[i] = pathFolder[i];
@@ -263,6 +238,7 @@ void simpan(ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas
     // pathDraf[folder.Length + 8 + 9] = 'f';
     // pathDraf[folder.Length + 8 + 10] = 'i';
     // pathDraf[folder.Length + 8 + 11] = 'g';
+    // pathDraf[folder.Length + 8 + 12] = '\0';
 
     // char pathKicauan[folder.Length + 8 + 16];
     // for (i = 0; i < folder.Length + 8; i++)
@@ -276,17 +252,17 @@ void simpan(ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas
     // pathKicauan[folder.Length + 8 + 4] = 'a';
     // pathKicauan[folder.Length + 8 + 5] = 'u';
     // pathKicauan[folder.Length + 8 + 6] = 'a';
-    // pathKicauan[folder.Length + 8 + 7] = 'a';
-    // pathKicauan[folder.Length + 8 + 8] = 'n';
-    // pathKicauan[folder.Length + 8 + 9] = '.';
-    // pathKicauan[folder.Length + 8 + 10] = 'c';
-    // pathKicauan[folder.Length + 8 + 11] = 'o';
-    // pathKicauan[folder.Length + 8 + 12] = 'n';
-    // pathKicauan[folder.Length + 8 + 13] = 'f';
-    // pathKicauan[folder.Length + 8 + 14] = 'i';
-    // pathKicauan[folder.Length + 8 + 15] = 'g';
+    // pathKicauan[folder.Length + 8 + 7] = 'n';
+    // pathKicauan[folder.Length + 8 + 8] = '.';
+    // pathKicauan[folder.Length + 8 + 9] = 'c';
+    // pathKicauan[folder.Length + 8 + 10] = 'o';
+    // pathKicauan[folder.Length + 8 + 11] = 'n';
+    // pathKicauan[folder.Length + 8 + 12] = 'f';
+    // pathKicauan[folder.Length + 8 + 13] = 'i';
+    // pathKicauan[folder.Length + 8 + 14] = 'g';
+    // pathKicauan[folder.Length + 8 + 15] = '\0';
 
-    // char pathPengguna[folder.Length + 8 + 16];
+    // char pathPengguna[folder.Length + 8 + 17];
     // for (i = 0; i < folder.Length + 8; i++)
     // {
     //     pathPengguna[i] = pathFolder[i];
@@ -307,8 +283,9 @@ void simpan(ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas
     // pathPengguna[folder.Length + 8 + 13] = 'f';
     // pathPengguna[folder.Length + 8 + 14] = 'i';
     // pathPengguna[folder.Length + 8 + 15] = 'g';
+    // pathPengguna[folder.Length + 8 + 16] = '\0';
 
-    // char pathUtas[folder.Length + 8 + 12];
+    // char pathUtas[folder.Length + 8 + 13];
     // for (i = 0; i < folder.Length + 8; i++)
     // {
     //     pathUtas[i] = pathFolder[i];
@@ -325,78 +302,79 @@ void simpan(ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas
     // pathUtas[folder.Length + 8 + 9] = 'f';
     // pathUtas[folder.Length + 8 + 10] = 'i';
     // pathUtas[folder.Length + 8 + 11] = 'g';
+    // pathUtas[folder.Length + 8 + 12] = '\0';
 
     // // Simpan data
     // FILE *file;
 
-    // file = fopen(pathPengguna, "w");
-    // if (file != NULL)
-    // {
-    //     // pengguna
-    //     fprintf(file, "%d\n", LU->capacity);
-    //     for (int i = 0; i < LU->capacity; i++)
-    //     {
-    //         for (int j = 0; j < LU->buffer[i].nama.Length; j++)
-    //         {
-    //             fprintf(file, "%c", LU->buffer[i].nama.TabWord[j]);
-    //         }
-    //         fprintf(file, "\n");
-    //         for (int j = 0; j < LU->buffer[i].password.Length; j++)
-    //         {
-    //             fprintf(file, "%c", LU->buffer[i].password.TabWord[j]);
-    //         }
-    //         fprintf(file, "\n");
-    //         for (int j = 0; j < LU->buffer[i].bio.Length; j++)
-    //         {
-    //             fprintf(file, "%c", LU->buffer[i].bio.TabWord[j]);
-    //         }
-    //         fprintf(file, "\n");
-    //         for (int j = 0; j < LU->buffer[i].noHp.Length; j++)
-    //         {
-    //             fprintf(file, "%c", LU->buffer[i].noHp.TabWord[j]);
-    //         }
-    //         fprintf(file, "\n");
-    //         for (int j = 0; j < LU->buffer[i].weton.Length; j++)
-    //         {
-    //             fprintf(file, "%c", LU->buffer[i].weton.TabWord[j]);
-    //         }
-    //         fprintf(file, "\n");
-    //         if (LU->buffer[i].jenisAkun == 1)
-    //         {
-    //             fprintf(file, "Publik\n");
-    //         }
-    //         else
-    //         {
-    //             fprintf(file, "Privat\n");
-    //         }
-    //         for (int j = 0; j < LU->buffer[i].fotoProfil.rowEff; j++)
-    //         {
-    //             for (int k = 0; k < LU->buffer[i].fotoProfil.colEff; k++)
-    //             {
-    //                 fprintf(file, "%c", LU->buffer[i].fotoProfil.mem[j][k]);
-    //                 if (k != LU->buffer[i].fotoProfil.colEff - 1)
-    //                 {
-    //                     fprintf(file, " ");
-    //                 }
-    //             }
-    //             if (j != LU->buffer[i].fotoProfil.rowEff - 1)
-    //             {
-    //                 fprintf(file, "\n");
-    //             }
-    //         }
-    //         if (i != LU->capacity - 1)
-    //         {
-    //             fprintf(file, "\n");
-    //         }
-    //     }
-    //     fclose(file);
-    // }
+    // // file = fopen(pathPengguna, "w");
+    // // if (file != NULL)
+    // // {
+    // //     // pengguna
+    // //     fprintf(file, "%d\n", LU->capacity);
+    // //     for (int i = 0; i < LU->capacity; i++)
+    // //     {
+    // //         for (int j = 0; j < LU->buffer[i].nama.Length; j++)
+    // //         {
+    // //             fprintf(file, "%c", LU->buffer[i].nama.TabWord[j]);
+    // //         }
+    // //         fprintf(file, "\n");
+    // //         for (int j = 0; j < LU->buffer[i].password.Length; j++)
+    // //         {
+    // //             fprintf(file, "%c", LU->buffer[i].password.TabWord[j]);
+    // //         }
+    // //         fprintf(file, "\n");
+    // //         for (int j = 0; j < LU->buffer[i].bio.Length; j++)
+    // //         {
+    // //             fprintf(file, "%c", LU->buffer[i].bio.TabWord[j]);
+    // //         }
+    // //         fprintf(file, "\n");
+    // //         for (int j = 0; j < LU->buffer[i].noHp.Length; j++)
+    // //         {
+    // //             fprintf(file, "%c", LU->buffer[i].noHp.TabWord[j]);
+    // //         }
+    // //         fprintf(file, "\n");
+    // //         for (int j = 0; j < LU->buffer[i].weton.Length; j++)
+    // //         {
+    // //             fprintf(file, "%c", LU->buffer[i].weton.TabWord[j]);
+    // //         }
+    // //         fprintf(file, "\n");
+    // //         if (LU->buffer[i].jenisAkun == 1)
+    // //         {
+    // //             fprintf(file, "Publik\n");
+    // //         }
+    // //         else
+    // //         {
+    // //             fprintf(file, "Privat\n");
+    // //         }
+    // //         for (int j = 0; j < LU->buffer[i].fotoProfil.rowEff; j++)
+    // //         {
+    // //             for (int k = 0; k < LU->buffer[i].fotoProfil.colEff; k++)
+    // //             {
+    // //                 fprintf(file, "%c", LU->buffer[i].fotoProfil.mem[j][k]);
+    // //                 if (k != LU->buffer[i].fotoProfil.colEff - 1)
+    // //                 {
+    // //                     fprintf(file, " ");
+    // //                 }
+    // //             }
+    // //             if (j != LU->buffer[i].fotoProfil.rowEff - 1)
+    // //             {
+    // //                 fprintf(file, "\n");
+    // //             }
+    // //         }
+    // //         if (i != LU->capacity - 1)
+    // //         {
+    // //             fprintf(file, "\n");
+    // //         }
+    // //     }
+    // //     fclose(file);
+    // // }
 
     // file = fopen(pathBalasan, "w");
     // if (file != NULL)
     // {
     //     // balasan
-    //     fprintf(file, "%d\n", LB->nEffBalasan);
+    //     fprintf(file, "%d\n", LT->NEFFListTree);
 
     //     fclose(file);
     // }
@@ -477,6 +455,46 @@ void simpan(ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas
     // if (file != NULL)
     // {
     //     // utas
+    //     fprintf(file, "%d\n", LS->nEff);
+    //     for (int i = 0; i < LS->nEff; i++)
+    //     {
+    //         fprintf(file, "%d\n", LS->buffer[i]->idKicau);
+    //         fprintf(file, "%d\n", lengthListLinUtas(LS->buffer[i]));
+    //         AddressUtas p;
+    //         p = FIRSTUTAS(LS);
+    //         while (p != NULL)
+    //         {
+    //             for (int j = 0; j < p->info.text.Length; j++)
+    //             {
+    //                 fprintf(file, "%c", p->info.text.TabWord[j]);
+    //             }
+    //             fprintf(file, "\n");
+    //             for (int j = 0; j < p->info.author.Length; j++)
+    //             {
+    //                 fprintf(file, "%c", p->info.author.TabWord[j]);
+    //             }
+    //             fprintf(file, "\n");
+    //             fprintf(file, "%02d", LD->buffer[i].datetime.DD);
+    //             fprintf(file, "/");
+    //             fprintf(file, "%02d", LD->buffer[i].datetime.MM);
+    //             fprintf(file, "/");
+    //             fprintf(file, "%04d ", LD->buffer[i].datetime.YYYY);
+    //             fprintf(file, "%02d", LD->buffer[i].datetime.T.HH);
+    //             fprintf(file, ":");
+    //             fprintf(file, "%02d", LD->buffer[i].datetime.T.MM);
+    //             fprintf(file, ":");
+    //             fprintf(file, "%02d", LD->buffer[i].datetime.T.SS);
+    //             if (p->next != NULL)
+    //             {
+    //                 fprintf(file, "\n");
+    //             }
+    //             p = NEXTUTAS(p);
+    //         }
+    //         if (i != LS->nEff - 1)
+    //         {
+    //             fprintf(file, "\n");
+    //         }
+    //     }
     //     fclose(file);
     // }
 }

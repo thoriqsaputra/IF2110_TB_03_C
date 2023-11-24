@@ -131,6 +131,8 @@ AddressUtas newNodeUtas(Utas val, int idKicau, int idUtas)
     p = (AddressUtas)malloc(sizeof(NodeUtas));
     if (p != NULL)
     {
+        p->idKicau = idKicau;
+        p->idUtas = idUtas;
         INFOUTAS(p) = val;
         NEXTUTAS(p) = NULL;
     }
@@ -294,7 +296,7 @@ boolean isuserauthor(ListDinUtas LD, int idutas, currentUser cu)
 
 ListLinUtas getlistUtasbyid(ListDinUtas LD, int idutas)
 {
-    int capacity, i;
+    int capacity, i = 0;
     boolean found;
     ListLinUtas LU;
 
@@ -302,7 +304,7 @@ ListLinUtas getlistUtasbyid(ListDinUtas LD, int idutas)
     found = false;
     while (i < capacity && !found)
     {
-        if (ELMTUTAS(LD, idutas)->idUtas == idutas)
+        if (LD.buffer[i]->idUtas == idutas)
         {
             found = true;
             LU = LD.buffer[i];
@@ -351,7 +353,7 @@ void buatUtas(int idKicau, ListDinUtas *LD, ListDinKicauan LK, currentUser u)
                         masukan,
                         u.nama,
                         grabCurrentDateTime()};
-            insertLastListLinUtas(&LLU, new, idKicau, LKU.nEffKicauan);
+            insertLastListLinUtas(&LLU, new, idKicau, LKU.nEffKicauan + 1);
             printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK) ");
             STARTWORDINPUT();
             masukan = currentWord;

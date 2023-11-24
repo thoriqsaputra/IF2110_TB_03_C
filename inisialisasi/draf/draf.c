@@ -82,7 +82,6 @@ void loadDrafConfig(char filename[], ListDinDraf *LD)
         i++;
     }
     NEFFDRAF((*LD)) = j;
-    printf("Draf berhasil di load\n");
 }
 
 void displayDataDraf(Draf id)

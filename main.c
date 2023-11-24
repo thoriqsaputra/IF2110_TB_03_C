@@ -9,6 +9,7 @@
 #include "fitur/drafKicauan/drafKicauan.h"
 #include "inisialisasi/kicauan/kicauan.h"
 #include "fitur/balas/balas.h"
+#include "fitur/load/loadnsave.h"
 
 // main ini masi sementaraddd
 // yang baru bisa
@@ -34,32 +35,26 @@ int main()
 
     printf("Aplikasi untuk studi kualitatif mengenai perilaku manusia dengan menggunakan metode (pengambilan data berupa) Focused Group Discussion kedua di zamannya.\n\n");
 
-    // printf("Silahkan masukan folder konfigurasi untuk dimuat: ");
+    printf("Silahkan masukan folder konfigurasi untuk dimuat: ");
 
-    // STARTWORDINPUT();
+    STARTWORDINPUT();
 
-    // Word folder = currentWord;
+    Word folder = currentWord;
 
-    boolean isLogged = false; // sementara true
+    boolean isLogged = false;
 
-    // Inisialiasi (sementara)
     ListUserStatik LU;
     Graph GP;
     CreateEmptyPengguna(&LU);
-    loadPenggunaConfig("configs/config-1/pengguna.config", &LU, &GP);
 
     ListDinDraf LD;
-    loadDrafConfig("configs/config-1/draf.config", &LD);
 
     ListTree LT;
-    loadBalasanConfig("configs/config-1/balasan.config", &LT);
 
     ListDinUtas LS;
-    loadUtasConfig("configs/config-1/utas.config", &LS);
 
     ListDinKicauan LKD;
     ListDinKicauan LUKser;
-    loadKicauanConfig("configs/config-1/kicauan.config", &LKD);
 
     currentUser CU;
     CreateEmptyCurrentUser(&CU);
@@ -67,8 +62,7 @@ int main()
     DrafKicauan DK;
     CreateDrafKicauan(&DK);
 
-    // Nanti pake ini
-    // muat(Word folder, ListUserStatik * LU, ListDinBalasan * LB, ListDinDraf * LD, ListDinKicauan * LK)
+    muat(folder, &LU, &LD, &LKD, &LS, &GP, &LT);
 
     printf("File konfigurasi berhasil dimuat! Selamat berkicau!\n\n");
 

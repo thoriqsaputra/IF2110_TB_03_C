@@ -2,6 +2,7 @@
 #define GRAF_H
 
 #include "boolean.h"
+#include "listlinier.h"
 
 #define MAX_VERTICES 100
 
@@ -28,5 +29,7 @@ boolean hasEdge(Graph* graph, int vertex1, int vertex2);
 
 // Fungsi untuk memperluas graf dengan menambahkan newVertices baru
 void expandGraph(Graph* graph, int newVertices);
+
+connectedEdges(Graph* graph, int index, int edges[], ListLin* LL);
 
 #endif

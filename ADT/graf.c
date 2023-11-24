@@ -75,3 +75,18 @@ void expandGraph(Graph* graph, int newVertices) {
         }
     }
 }
+
+void connectedEdges(Graph* graph, int index, int edges[], ListLin* LL) {
+    if (index < 0 || index >= Vertices(graph) || edges[index]) {
+        return;
+    }
+
+    edges[index] = 1;
+    insertLastListDin(LL, index);
+
+    for (int i = 0; i < Vertices(graph); ++i) {
+        if (AdjMatrix(graph, index, i) == 1) {
+            connectedEdges(graph, i, edges, LL);
+        }
+    }
+}

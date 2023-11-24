@@ -115,3 +115,37 @@ void hapusFriend(Graph *graph, currentUser *CU, ListUserStatik *LU)
         printf("Penghapusan teman dibatalkan.\n");
     }
 }
+
+void kelompokFriend(Graph *graph, currentUser *CU, ListUserStatik *LU) {
+    ListLin LL;
+    Address p;
+
+    // Membuat list linear untuk 
+    CreateListLin(&LL);
+
+    // Mendapatkan IDuser current dan menguranginya dengan 1 untuk menyesuaikan dengan index graf
+    int IDuser = getUserIdCurrent(*CU, *LU) - 1;
+    // Membuat tempat penyimpanan edges yang connected sementara
+    int visited[MAX_VERTICES] = {0};
+    // Melalui fungsi ini mendapatkan secara rekursif iduser - 1 yang connected lalu menyimpan idnya dalam linked list
+    connectedEdges(&graph, IDuser, visited, &LL);
+
+    // Mendapatkan jumlah orang di kelompok
+    int sumFrens = lengthListLin(LL);
+
+    // Mendaptkan nama user skrg
+    Word namaUserNow = nameUser(*CU);
+
+    // Print daftar kelompok
+    printf("Terdapat %d orang dalam Kelompok Teman", sumFrens);
+    printWord(namaUserNow);printf(" :\n");
+
+    p = LL;
+    while (p != NULL) {
+        int idUser = INFO(p) + 1;
+        Word namaUser = NAMA_USER(*LU, idUser);
+        printWord(namaUser);printf("\n");
+        p = NEXT(p);
+    }
+
+}

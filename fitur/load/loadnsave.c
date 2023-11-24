@@ -183,19 +183,17 @@ void simpan(ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas
         printf("1...\n");
         printf("2...\n");
         printf("3...\n\n");
-        if (mkdir(namaFolder, 0700) == -1)
+        // if (mkdir(pathFolder, 0700) == -1)
+        // {
+        //     perror("ERROR: Tidak dapat membuat folder\n");
+        //     return;
+        // }
+
+        for (i = 0; i < folder.Length; i++)
         {
-            perror("ERROR: Tidak dapat membuat folder\n");
-            return;
+            printf("%c", namaFolder[i]);
         }
-        else
-        {
-            for (i = 0; i < folder.Length; i++)
-            {
-                printf("%c", namaFolder[i]);
-            }
-            printf("Folder sudah berhasil dibuat.\n");
-        }
+        printf("Folder sudah berhasil dibuat.\n");
     }
 
     // Buat path-path config

@@ -385,7 +385,7 @@ void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u)
         }
         else
         {
-            if (!(idx > 0 && idx < lengthListLinUtas(LLU)))
+            if (!(idx > 0 && idx <= lengthListLinUtas(LLU)))
             {
                 printf("Index terlalu tinggi!\n");
             }
@@ -398,7 +398,7 @@ void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u)
                             masukan,
                             u.nama,
                             grabCurrentDateTime()};
-                insertAtListLinUtas(&LLU, new, idx, LLU->idKicau, LLU->idUtas);
+                insertAtListLinUtas(&LLU, new, idx - 1, LLU->idKicau, LLU->idUtas);
                 printf("Utas berhasil disambung!\n");
             }
             LD->buffer[i] = LLU;
@@ -406,7 +406,7 @@ void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u)
     }
 }
 
-void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUser u)
+void hapusUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u)
 {
     int i;
     ListLinUtas LU;
@@ -430,17 +430,17 @@ void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUse
             }
             else
             {
-                if (!(idx >= 0 && idx < lengthListLinUtas(LLU)))
+                if (!(idx >= 0 && idx <= lengthListLinUtas(LU)))
                 {
                     printf("Kicauan sambungan dengan index %d tidak ditemukan pada utas\n", idx);
                 }
                 else
                 {
                     Utas val;
-                    deleteAtListLinUtas(&LLU, idx, &val);
+                    deleteAtListLinUtas(&LU, idx - 1, &val);
                     printf("Kicauan sambungan berhasil dihapus!\n");
                 }
-                LD->buffer[i] = LLU;
+                LD->buffer[i] = LU;
             }
         }
     }

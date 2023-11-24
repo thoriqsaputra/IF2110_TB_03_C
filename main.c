@@ -10,6 +10,7 @@
 #include "inisialisasi/kicauan/kicauan.h"
 #include "fitur/balas/balas.h"
 #include "fitur/load/loadnsave.h"
+#include "inisialisasi/permintaan/permintaan_pertemanan.h"
 
 // main ini masi sementaraddd
 // yang baru bisa
@@ -21,7 +22,7 @@
 // - Utas ( on progress )
 
 // command run sementara
-// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/utas.c inisialisasi/pengguna/pengguna.c inisialisasi/kicauan/kicauan.c inisialisasi/balasan/balasan.c fitur/drafKicauan/drafKicauan.c fitur/balas/balas.c fitur/teman/teman.c Lib/globalFunction.c fitur/load/loadnsave.c
+// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/utas.c inisialisasi/pengguna/pengguna.c inisialisasi/kicauan/kicauan.c inisialisasi/permintaan/permintaan_pertemanan.c inisialisasi/balasan/balasan.c fitur/drafKicauan/drafKicauan.c fitur/balas/balas.c fitur/teman/teman.c Lib/globalFunction.c fitur/load/loadnsave.c
 int main()
 {
     printf(".______    __    __  .______      .______    __  .______      \n");
@@ -237,6 +238,94 @@ int main()
             int idkicau = wordToInt(currentWord);
             DisplayBalasan(idkicau, LT, &LU, CU, LKD, GP);
         }
+        // else if (isWordEqual(command, tambahTemanCmd))
+        // {
+        //     Tambah_teman(&LU, &DPP, &GP)
+        // }
+        else if (isWordEqual(command, sambungUtasCmd))
+        {
+            STARTWORDINPUT();
+            // Membaca ID yang dibalas ID balasan
+            Word ID = currentWord;
+            int currentResult = 0;
+            int idutas = 0;
+            int idindex = 0;
+            boolean isNegative = false;
+            for (int i = 0; i < ID.Length; i++)
+            {
+                if (ID.TabWord[i] == '-')
+                {
+                    isNegative = true;
+                }
+                else if (ID.TabWord[i] == ' ')
+                {
+                    if (isNegative)
+                    {
+                        currentResult = -currentResult;
+                        isNegative = false;
+                    }
+                    // Menyimpan ID yang dibalas
+                    idutas = currentResult;
+                    currentResult = 0;
+                }
+                else
+                {
+                    currentResult = currentResult * 10 + (ID.TabWord[i] - '0');
+                }
+            }
+            if (isNegative)
+            {
+                currentResult = -currentResult;
+            }
+            // Menyimpan ID Balasan
+            idindex = currentResult;
+
+            sambungUtas(&LS, idutas, idindex, CU);
+        }
+        else if (isWordEqual(command, hapusUtasCmd))
+        {
+            STARTWORDINPUT();
+            // Membaca ID yang dibalas ID balasan
+            Word ID = currentWord;
+            int currentResult = 0;
+            int idutas = 0;
+            int idindex = 0;
+            boolean isNegative = false;
+            for (int i = 0; i < ID.Length; i++)
+            {
+                if (ID.TabWord[i] == '-')
+                {
+                    isNegative = true;
+                }
+                else if (ID.TabWord[i] == ' ')
+                {
+                    if (isNegative)
+                    {
+                        currentResult = -currentResult;
+                        isNegative = false;
+                    }
+                    // Menyimpan ID yang dibalas
+                    idutas = currentResult;
+                    currentResult = 0;
+                }
+                else
+                {
+                    currentResult = currentResult * 10 + (ID.TabWord[i] - '0');
+                }
+            }
+            if (isNegative)
+            {
+                currentResult = -currentResult;
+            }
+            // Menyimpan ID Balasan
+            idindex = currentResult;
+            hapusUtas(&LS, idutas, idindex, CU);
+        }
+        else if (isWordEqual(command, simpanCmd))
+        {
+            simpan(&LU, &LD, &LKD, &LS, &GP, &LT);
+        }
+
         else
         {
             printf("Tidak ada command itu\n\n");

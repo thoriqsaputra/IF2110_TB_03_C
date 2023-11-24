@@ -119,7 +119,7 @@ void buatUtas(int idKicau, ListDinUtas *LD, ListDinKicauan LK, currentUser u);
 
 void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u);
 
-void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUser u);
+void hapusUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u);
 
 void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK, Graph g, currentUser u, ListUserStatik *LU);
 

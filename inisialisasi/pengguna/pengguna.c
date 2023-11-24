@@ -4,6 +4,7 @@
 #include "pcolor.c"
 #include "../../ADT/graf.h"
 #include "../../fitur/teman/teman.h"
+// #include "../permintaan/permintaan_pertemanan.h"
 // void printWord(Word kata)
 // {
 //     for (int i = 0; i < kata.Length; i++)
@@ -217,6 +218,19 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU, Graph *GP)
                 }
             }
         }
+        // Buat config pertemanan
+        // PrioQueueChar PQ;
+        // currentUser CU;
+        // ADVWORDFILE();
+        // int rowMinta = wordToInt(currentWord);
+        // for (int i = 0; i < rowMinta; i++)
+        // {
+        //     ADVWORDFILE();
+        //     int iduser = currentWord.TabWord[0];
+        //     CU.idUser = iduser;
+        //     PQ = dpp(*p, iduser);
+        //     tambahdpp(&PQ, CU, &GP);
+        // }
     }
     printf("Berhasil Konfigurasi! , jumlah user di data = %d\n", UserCount(*LU));
 }

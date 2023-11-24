@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include "../../inisialisasi/inisialisasi.h"
 
 void muat(Word folder, ListUserStatik *LU, ListDinDraf *LD, ListDinKicauan *LK, ListDinUtas *LS, Graph *GP, ListTree *LT);

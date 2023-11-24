@@ -92,21 +92,41 @@ void expandGraph(Graph *graph, int newVertices)
     }
 }
 
-// void connectedEdges(Graph *graph, int index, int edges[], ListLin *LL)
-// {
-//     if (index < 0 || index >= Vertices(graph) || edges[index])
-//     {
-//         return;
-//     }
+void displayGraph(Graph* graph) {
 
-//     edges[index] = 1;
-//     insertLastListDin(LL, index);
+    for (int i = 0; i < Vertices(graph); ++i) {
+        for (int j = 0; j < Vertices(graph); ++j) {
+            printf("%d ", AdjMatrix(graph, i, j));
+        }
+        printf("\n");
+    }
+}
 
-//     for (int i = 0; i < Vertices(graph); ++i)
-//     {
-//         if (AdjMatrix(graph, index, i) == 1)
-//         {
-//             connectedEdges(graph, i, edges, LL);
-//         }
-//     }
-// }
+void displayGraph(Graph* graph) {
+
+    for (int i = 0; i < Vertices(graph); ++i) {
+        for (int j = 0; j < Vertices(graph); ++j) {
+            printf("%d ", AdjMatrix(graph, i, j));
+        }
+        printf("\n");
+    }
+}
+
+void connectedEdges(Graph *graph, int index, int edges[], ListLin *LL)
+{
+    if (index < 0 || index >= Vertices(graph) || edges[index])
+    {
+        return;
+    }
+
+    edges[index] = 1;
+    insertLastListDin(&LL, index);
+
+    for (int i = 0; i < Vertices(graph); ++i)
+    {
+        if (AdjMatrix(graph, index, i) == 1)
+        {
+            connectedEdges(graph, i, edges, LL);
+        }
+    }
+}

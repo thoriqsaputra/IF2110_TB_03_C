@@ -394,24 +394,35 @@ void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u)
 void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUser u)
 {
     int i;
-    for (i = 0; i < (*LD).nEff; i++)
-    {
-        if (LD->buffer[i]->idUtas == idUtas && isWordEqual(LD->buffer[i]->info.author, u.nama))
-        {
-            LLU = LD->buffer[i];
+    ListLinUtas LU;
+
+    LU = getlistUtasbyid(*LD,idUtas);
+    if(LU == NULL){
+        printf("Utas tidak ditemukan\n");
+    }
+    else{
+        if(!isuserauthor(*LD,idUtas,u)){
+            printf("Anda tidak bisa menghapus kicauan dalam utas ini!\n");
+        }
+        else{
+            if (idx == 0){
+                printf("Anda tidak bisa menghapus kicauan utama!\n");
+            }
+            else{
+                if (!(idx >= 0 && idx < lengthListLinUtas(LLU)))
+                {
+                    printf("Kicauan sambungan dengan index %d tidak ditemukan pada utas\n",idx);
+                }
+                else
+                {
+                    Utas val;
+                    deleteAtListLinUtas(&LLU, idx, &val);
+                    printf("Kicauan sambungan berhasil dihapus!\n");
+                }
+                LD->buffer[i] = LLU;
+            } 
         }
     }
-    if (!(idx > 0 && idx < lengthListLinUtas(LLU)))
-    {
-        printf("Index terlalu tinggi!\n");
-    }
-    else
-    {
-        Utas val;
-        deleteAtListLinUtas(&LLU, idx, &val);
-        printf("Utas berhasil dihapus!\n");
-    }
-    LD->buffer[i] = LLU;
 }
 
 void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK)

@@ -2,43 +2,43 @@
 #include <stdlib.h>
 #include "kicauan.h"
 
-boolean isWordEqual(Word input, Word cek)
-{
+// boolean isWordEqual(Word input, Word cek) pindah ke fungsi global
+// {
 
-    if (input.Length != cek.Length)
-    {
-        return false;
-    }
-    else
-    {
-        for (int i = 0; i < input.Length; i++)
-        {
-            if (input.TabWord[i] != cek.TabWord[i])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-}
+//     if (input.Length != cek.Length)
+//     {
+//         return false;
+//     }
+//     else
+//     {
+//         for (int i = 0; i < input.Length; i++)
+//         {
+//             if (input.TabWord[i] != cek.TabWord[i])
+//             {
+//                 return false;
+//             }
+//         }
+//         return true;
+//     }
+// }
 
-int wordToInt(Word kata)
-{
-    int res = 0;
-    int i = 0;
-    while (kata.TabWord[i] >= '0' && kata.TabWord[i] <= '9' && i < kata.Length) 
-    // memeriksa jika char di antara kedua bilangan tersebut (Jika ditambah komen di kanan angka), dan i lebih kecil dari panjang (Jika tidak ada, karena tidak tahu mengapa begitu keluaran 24 untuk ID 2)
-    {
-        res = res * 10 + (kata.TabWord[i] - '0');
-        i++;
-    }
-    return res;
-}
+// int wordToInt(Word kata)
+// {
+//     int res = 0;
+//     int i = 0;
+//     while (kata.TabWord[i] >= '0' && kata.TabWord[i] <= '9' && i < kata.Length)
+//     // memeriksa jika char di antara kedua bilangan tersebut (Jika ditambah komen di kanan angka), dan i lebih kecil dari panjang (Jika tidak ada, karena tidak tahu mengapa begitu keluaran 24 untuk ID 2)
+//     {
+//         res = res * 10 + (kata.TabWord[i] - '0');
+//         i++;
+//     }
+//     return res;
+// }
 
 void CreateDATETIMEfromWord(DATETIME *D, Word kata)
 {
     int day, month, year, hour, minute, second;
-    day = (kata.TabWord[0] % 48 ) * 10 + (kata.TabWord[1] % 48 );
+    day = (kata.TabWord[0] % 48) * 10 + (kata.TabWord[1] % 48);
     month = (kata.TabWord[3] % 48) * 10 + (kata.TabWord[4] % 48);
     year = (kata.TabWord[6] % 48) * 1000 + (kata.TabWord[7] % 48) * 100 + (kata.TabWord[8] % 48) * 10 + (kata.TabWord[9] % 48);
     hour = (kata.TabWord[11] % 48) * 10 + (kata.TabWord[12] % 48);
@@ -74,44 +74,53 @@ void loadKicauanConfig(char filename[], ListDinKicauan *l)
 {
     STARTWORDFILE(filename);
     int capacity = wordToInt(currentWord);
-    CreateListKicauan(l,capacity);
+    CreateListKicauan(l, capacity);
 
     for (int i = 0; i < CAPACITYKICAUAN(*l); i++)
     {
         ADVWORDFILE();
-        IDKICAUAN(ELMTKICAUAN(*l,i)) = wordToInt(currentWord);
+        IDKICAUAN(ELMTKICAUAN(*l, i)) = wordToInt(currentWord);
         ADVWORDFILE();
-        TEXTKICAUAN(ELMTKICAUAN(*l,i)) = currentWord;
+        TEXTKICAUAN(ELMTKICAUAN(*l, i)) = currentWord;
         ADVWORDFILE();
-        LIKEKICAUAN(ELMTKICAUAN(*l,i)) = wordToInt(currentWord);
+        LIKEKICAUAN(ELMTKICAUAN(*l, i)) = wordToInt(currentWord);
         ADVWORDFILE();
-        AUTHORKICAUAN(ELMTKICAUAN(*l,i)) = currentWord;
+        AUTHORKICAUAN(ELMTKICAUAN(*l, i)) = currentWord;
         ADVWORDFILE();
-        CreateDATETIMEfromWord(&DATETIMEKICAUAN(ELMTKICAUAN(*l,i)),currentWord);
+        CreateDATETIMEfromWord(&DATETIMEKICAUAN(ELMTKICAUAN(*l, i)), currentWord);
     }
     NEFFKICAUAN(*l) = CAPACITYKICAUAN(*l);
 }
 
 /* load untuk current user */
-void loadKicauanUser(ListDinKicauan l, ListDinKicauan * lOut, currentUser CU)
+void loadKicauanUser(ListDinKicauan l, ListDinKicauan *lOut, currentUser CU)
 {
-    CreateListKicauan(lOut,0);
+    CreateListKicauan(lOut, 0);
     for (int i = 0; i < NEFFKICAUAN(l); i++)
     {
-        if (isWordEqual(AUTHORKICAUAN(ELMTKICAUAN(l,i)), CU.nama))
+        if (isWordEqual(AUTHORKICAUAN(ELMTKICAUAN(l, i)), CU.nama))
         {
-            addKicauan(lOut, ELMTKICAUAN(l,i));
+            addKicauan(lOut, ELMTKICAUAN(l, i));
         }
     }
 }
 
-/* **** **** **** KICAUAN **** **** **** */ // butuh pertemanan juga 
-void showKicauanUser(ListDinKicauan lUser)
+/* **** **** **** KICAUAN **** **** **** */ // butuh pertemanan juga
+void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik LU, Graph *GP)
 {
+    printf("1");
     for (int i = NEFFKICAUAN(lUser) - 1; i >= 0; i--)
     {
-        displayKicauan(ELMTKICAUAN(lUser,i));
+        printf("2");
+        Word namaTeman = ELMTKICAUAN(lUser, i).Author;
+        // int idKicauLain = getUserId(namaTeman, LU);
+        // if (isTeman(GP, CU.idUser, idKicauLain))
+        // {
+        //     displayKicauan(ELMTKICAUAN(lUser, i));
+        // }
     }
+
+    // buat pertemanan
 }
 
 /* ********** MENAMBAH KICAUAN BARU ********** */
@@ -122,27 +131,29 @@ void addKicauan(ListDinKicauan *l, KICAUAN t)
         if (CAPACITYKICAUAN(*l) == 0)
         {
             CAPACITYKICAUAN(*l) = 1;
-        } else
+        }
+        else
         {
             CAPACITYKICAUAN(*l) *= 2;
         }
         CONTENTKICAUAN(*l) = (KICAUAN *)realloc(CONTENTKICAUAN(*l), CAPACITYKICAUAN(*l) * sizeof(KICAUAN));
     }
-    ELMTKICAUAN(*l,NEFFKICAUAN(*l)) = t;
-    NEFFKICAUAN(*l)++;
+    ELMTKICAUAN(*l, NEFFKICAUAN(*l)) = t;
+    NEFFKICAUAN(*l)
+    ++;
 }
 
-boolean createNewKicauanInput(int newID, int likes, currentUser CU, KICAUAN * kOut)
+boolean createNewKicauanInput(int newID, int likes, currentUser CU, KICAUAN *kOut)
 {
     STARTWORDINPUT();
-    printf("\nEndInput: %d\n",EndInput);
+    printf("\nEndInput: %d\n", EndInput);
     if (EndInput)
     {
         return false;
     }
     else
     {
-        printf("\nlength cw: %d\n",currentWord.Length);
+        printf("\nlength cw: %d\n", currentWord.Length);
         IDKICAUAN(*kOut) = newID;
         TEXTKICAUAN(*kOut) = currentWord;
         LIKEKICAUAN(*kOut) = likes;
@@ -170,8 +181,8 @@ void berkicau(ListDinKicauan *l, ListDinKicauan *lUser, currentUser CU)
     printf("Masukkan kicauan:\n");
     if (createNewKicauanInput(NEFFKICAUAN(*l) + 1, 0, CU, &newKicauan))
     {
-        addKicauan(l,newKicauan);
-        addKicauan(lUser,newKicauan);
+        addKicauan(l, newKicauan);
+        addKicauan(lUser, newKicauan);
         printf("\nSelamat! kicauan telah diterbitkan!\nDetil kicauan:\n");
         displayKicauan(newKicauan);
     }
@@ -184,9 +195,9 @@ void berkicau(ListDinKicauan *l, ListDinKicauan *lUser, currentUser CU)
 void kicaukanDraf(ListDinKicauan *l, ListDinKicauan *lUser, Word text, currentUser CU)
 {
     KICAUAN newKicauan;
-    newKicauan = createNewKicauanFromText(NEFFKICAUAN(*l) + 1,text,CU);
-    addKicauan(l,newKicauan);
-    addKicauan(lUser,newKicauan);
+    newKicauan = createNewKicauanFromText(NEFFKICAUAN(*l) + 1, text, CU);
+    addKicauan(l, newKicauan);
+    addKicauan(lUser, newKicauan);
 }
 /* ************************************************************************************************************ */
 
@@ -195,7 +206,8 @@ void likeKicauanByID(ListDinKicauan *l, int ID) // masih butuh yang pertemanan
 {
     if (ID <= NEFFKICAUAN(*l) && ID > 0)
     {
-        LIKEKICAUAN(ELMTKICAUAN(*l, ID - 1))++;
+        LIKEKICAUAN(ELMTKICAUAN(*l, ID - 1))
+        ++;
     }
     else
     {
@@ -208,20 +220,20 @@ void editKicauanInList(ListDinKicauan *l, ListDinKicauan *lUser, int ID, current
 {
     if (ID <= NEFFKICAUAN(*l) && ID > 0)
     {
-        if (isWordEqual(CU.nama, AUTHORKICAUAN(ELMTKICAUAN(*l,ID-1))))
+        if (isWordEqual(CU.nama, AUTHORKICAUAN(ELMTKICAUAN(*l, ID - 1))))
         {
             int iUser = 0;
-            while (IDKICAUAN(ELMTKICAUAN(*lUser,iUser)) != ID)
+            while (IDKICAUAN(ELMTKICAUAN(*lUser, iUser)) != ID)
             {
                 iUser++;
             }
             printf("\nMasukkan kicauan baru:\n");
             KICAUAN edittedKicauan;
-            
+
             if (createNewKicauanInput(ID, 0, CU, &edittedKicauan))
             {
-                ELMTKICAUAN(*l,ID-1) = edittedKicauan;
-                ELMTKICAUAN(*lUser,iUser) = edittedKicauan;
+                ELMTKICAUAN(*l, ID - 1) = edittedKicauan;
+                ELMTKICAUAN(*lUser, iUser) = edittedKicauan;
                 printf("Selamat! kicauan telah diterbitkan!\nDetil kicauan:\n");
                 displayKicauan(edittedKicauan);
             }
@@ -229,7 +241,7 @@ void editKicauanInList(ListDinKicauan *l, ListDinKicauan *lUser, int ID, current
             {
                 printf("Kicauan tidak boleh hanya berisi spasi!\n");
             }
-            
+
             printf("\n");
         }
         else
@@ -252,7 +264,7 @@ boolean isFullOfKicauan(ListDinKicauan l)
 void displayKicauan(KICAUAN T)
 {
     printf("| ID : ");
-    printf("%d\n",IDKICAUAN(T));
+    printf("%d\n", IDKICAUAN(T));
 
     printf("| @");
     printWord(AUTHORKICAUAN(T));
@@ -263,7 +275,7 @@ void displayKicauan(KICAUAN T)
     printf("\n");
 
     printf("| Disukai : ");
-    printf("%d\n",LIKEKICAUAN(T));
+    printf("%d\n", LIKEKICAUAN(T));
 
     printf("| ");
     TulisDATETIME(DATETIMEKICAUAN(T));

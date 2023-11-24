@@ -7,6 +7,7 @@
 #include "../../ADT/wordmachine.h"
 #include "../../ADT/datetime.h"
 #include "../pengguna/pengguna.h"
+#include "../../fitur/teman/teman.h"
 
 /*  Kamus Umum */
 #define IDX_MIN 0
@@ -31,11 +32,11 @@ typedef struct
 #define AUTHORKICAUAN(k) (k).Author
 #define DATETIMEKICAUAN(k) (k).Datetime
 
-typedef struct 
+typedef struct
 {
     KICAUAN *contentKicauan; /* memori tempat penyimpan data KICAUAN (Dinamis maka pakai pointer) */
-    int nEffKicauan;       /* >=0, banyaknya elemen efektif */
-    int capacityKicauan;   /* ukuran elemen */
+    int nEffKicauan;         /* >=0, banyaknya elemen efektif */
+    int capacityKicauan;     /* ukuran elemen */
 } ListDinKicauan;
 
 /* ********** SELEKTOR List Dinamis********** */
@@ -45,7 +46,7 @@ typedef struct
 #define CAPACITYKICAUAN(l) (l).capacityKicauan
 
 /* ********** List Dinamis Kicauan Program ********** */
-extern ListDinKicauan ListRawKicauan; 
+extern ListDinKicauan ListRawKicauan;
 
 /* ********** KONSTRUKTOR ********** */
 boolean isWordEqual(Word input, Word cek);
@@ -64,11 +65,11 @@ void loadKicauanConfig(char filename[], ListDinKicauan *l);
 /* I.S. l kosong; */
 /* F.S. l diisi sesuai config */
 
-void loadKicauanUser(ListDinKicauan l, ListDinKicauan * lOut, currentUser CU);
+void loadKicauanUser(ListDinKicauan l, ListDinKicauan *lOut, currentUser CU);
 /* I.S. l berisi raw data */
 /* F.S. lOut diisi kicauan milik user */
 
-void showKicauanUser(ListDinKicauan lUser);
+void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik LU, Graph *GP);
 
 void addKicauan(ListDinKicauan *l, KICAUAN t);
 /* I.S. l berisi kicauan, mungkin penuh */
@@ -81,11 +82,11 @@ boolean isFullOfKicauan(ListDinKicauan l);
 /* ********** FUNGSI KICAUAN ********** */
 boolean tesEmptyText();
 
-boolean createNewKicauanInput(int newID, int likes, currentUser CU, KICAUAN * kOut);
+boolean createNewKicauanInput(int newID, int likes, currentUser CU, KICAUAN *kOut);
 
 KICAUAN createNewKicauanFromText(int newID, Word text, currentUser CU);
 
-void berkicau(ListDinKicauan *l,ListDinKicauan *lUser, currentUser CU);
+void berkicau(ListDinKicauan *l, ListDinKicauan *lUser, currentUser CU);
 /* I.S. l terdefinisi; */
 /* F.S. anggota l bertambah 1 dengan teks <= 280 kata*/
 
@@ -93,7 +94,7 @@ void kicaukanDraf(ListDinKicauan *l, ListDinKicauan *lUser, Word text, currentUs
 
 void likeKicauanByID(ListDinKicauan *l, int ID);
 /* I.S. l terdefinisi dan ID valid; */
-/* F.S. likes pada kicauan ID bertambah jika dapat diakses (akun tidak private / diperbolehkan) 
+/* F.S. likes pada kicauan ID bertambah jika dapat diakses (akun tidak private / diperbolehkan)
         Jika tidak bisa maka akan keluar pesan, "This kicauan is privated"
         Mungkin bisa ditambahin anjuran rquest teman dengan pengarang kicauannya */
 

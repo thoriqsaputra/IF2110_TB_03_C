@@ -7,15 +7,18 @@
 #include "inisialisasi/draf/draf.h"
 #include "inisialisasi/utas/newUtas.h"
 #include "fitur/drafKicauan/drafKicauan.h"
+#include "inisialisasi/kicauan/kicauan.h"
 
 // main ini masi sementara
 // yang baru bisa
 // - Profil
 // - Pengguna
 // - Draf Kicauan
+// - Graf Pertemanan
+// - Kicauan (on progress)
 
 // command run sementara
-// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/newUtas.c inisialisasi/pengguna/pengguna.c  fitur/drafKicauan/drafKicauan.c Lib/globalFunction.c
+// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/newUtas.c inisialisasi/pengguna/pengguna.c inisialisasi/kicauan/kicauan.c fitur/drafKicauan/drafKicauan.c Lib/globalFunction.c
 
 int main()
 {
@@ -50,6 +53,10 @@ int main()
     ListDinUtas LS;
     loadUtasConfig("configs/config-1/utas.config", &LS);
 
+    ListDinKicauan LKD;
+    ListDinKicauan LUKser;
+    loadKicauanConfig("configs/config-1/kicauan.config", &LKD);
+
     currentUser CU;
     CreateEmptyCurrentUser(&CU);
 
@@ -80,6 +87,7 @@ int main()
                 Masuk(&LU, &CU, &isLogged);
                 CreateDrafKicauan(&DK);
                 loadDrafKicauan(LD, &DK, CU); // Load draf dari raw data sesuai dengan current user
+                loadKicauanUser(LKD, &LUKser, CU);
             }
             else if (isWordEqual(command, daftarCmd))
             {
@@ -118,15 +126,7 @@ int main()
         }
         else if (isWordEqual(command, kicauCmd))
         {
-            ADVWORD();
-            Word kicau = currentWord;
-            printf("kamu masuk kicau\n");
-
-            for (int i = 0; i < kicau.Length; i++)
-            {
-                printf("%c", kicau.TabWord[i]);
-            }
-            printf("\n");
+            berkicau(&LKD, &LUKser, CU);
         }
         else if (isWordEqual(command, gantiProfilCmd))
         {
@@ -162,6 +162,27 @@ int main()
         else if (isWordEqual(command, lihatDrafCmd))
         {
             lihatDraf(&DK, &LD, CU);
+        }
+        else if (isWordEqual(command, kicauanCmd))
+        {
+            printf("1");
+            for (int i = NEFFKICAUAN(LKD) - 1; i >= 0; i--)
+            {
+                printf("2");
+                Word namaTeman = ELMTKICAUAN(LKD, i).Author;
+                printWord(namaTeman);
+                int idKicauLain = getUserId(namaTeman, LU);
+                // if (isTeman(GP, CU.idUser, idKicauLain))
+                // {
+                //     displayKicauan(ELMTKICAUAN(lUser, i));
+                // }
+            }
+        }
+        else if (isWordEqual(command, ubahKicauanCmd))
+        {
+            STARTWORDINPUT();
+            Word ID = currentWord;
+            editKicauanInList(&LKD, &LUKser, wordToInt(ID), CU);
         }
         else
         {

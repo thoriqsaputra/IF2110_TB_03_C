@@ -3,28 +3,35 @@
 #include "graf.h"
 
 // Inisialisasi graf dengan jumlah vertex tertentu
-void initGraph(Graph* graph, int vertices) {
+void initGraph(Graph *graph, int vertices)
+{
     Vertices(graph) = vertices;
     Edges(graph) = 0;
 
-    for (int i = 0; i < vertices; i++) {
-        for (int j = 0; j < vertices; j++) {
+    for (int i = 0; i < vertices; i++)
+    {
+        for (int j = 0; j < vertices; j++)
+        {
             AdjMatrix(graph, i, j) = 0;
         }
     }
 }
 
 // Menambahkan edge antara dua vertex
-void addEdge(Graph* graph, int vertex1, int vertex2) {
-    if (vertex1 >= 0 && vertex1 < Vertices(graph) && vertex2 >= 0 && vertex2 < Vertices(graph)) {
+void addEdge(Graph *graph, int vertex1, int vertex2)
+{
+    if (vertex1 >= 0 && vertex1 < Vertices(graph) && vertex2 >= 0 && vertex2 < Vertices(graph))
+    {
         AdjMatrix(graph, vertex1, vertex2) = 1;
         AdjMatrix(graph, vertex2, vertex1) = 1;
         Edges(graph)++;
     }
 }
 
-void removeEdge(Graph* graph, int vertex1, int vertex2) {
-    if (vertex1 >= 0 && vertex1 < Vertices(graph) && vertex2 >= 0 && vertex2 < Vertices(graph)) {
+void removeEdge(Graph *graph, int vertex1, int vertex2)
+{
+    if (vertex1 >= 0 && vertex1 < Vertices(graph) && vertex2 >= 0 && vertex2 < Vertices(graph))
+    {
         AdjMatrix(graph, vertex1, vertex2) = 0;
         AdjMatrix(graph, vertex2, vertex1) = 0;
         Edges(graph)--;
@@ -32,16 +39,20 @@ void removeEdge(Graph* graph, int vertex1, int vertex2) {
 }
 
 // Mengecek apakah ada edge antara dua vertex
-boolean hasEdge(Graph* graph, int vertex1, int vertex2) {
-    if (vertex1 >= 0 && vertex1 < Vertices(graph) && vertex2 >= 0 && vertex2 < Vertices(graph)) {
+boolean hasEdge(Graph *graph, int vertex1, int vertex2)
+{
+    if (vertex1 >= 0 && vertex1 < Vertices(graph) && vertex2 >= 0 && vertex2 < Vertices(graph))
+    {
         return AdjMatrix(graph, vertex1, vertex2) == 1;
     }
     return false;
 }
 
 // Fungsi untuk memperluas graf dengan menambahkan newVertices baru
-void expandGraph(Graph* graph, int newVertices) {
-    if (newVertices <= 0) {
+void expandGraph(Graph *graph, int newVertices)
+{
+    if (newVertices <= 0)
+    {
         printf("Invalid number of new vertices.\n");
         return;
     }
@@ -50,7 +61,8 @@ void expandGraph(Graph* graph, int newVertices) {
     int totalVertices = prevVertices + newVertices;
 
     // Check for exceeding the maximum vertices
-    if (totalVertices > MAX_VERTICES) {
+    if (totalVertices > MAX_VERTICES)
+    {
         printf("Cannot exceed the maximum number of vertices.\n");
         return;
     }
@@ -59,34 +71,42 @@ void expandGraph(Graph* graph, int newVertices) {
     int newAdjMatrix[MAX_VERTICES][MAX_VERTICES] = {0};
 
     // Copy the content of the old graph into the new adjacency matrix
-    for (int i = 0; i < prevVertices; i++) {
-        for (int j = 0; j < prevVertices; j++) {
+    for (int i = 0; i < prevVertices; i++)
+    {
+        for (int j = 0; j < prevVertices; j++)
+        {
             newAdjMatrix[i][j] = AdjMatrix(graph, i, j);
-        }   
+        }
     }
 
     // Update the graph structure with the expanded size and new adjacency matrix
     Vertices(graph) = totalVertices;
-    Edges(graph) = Edges(graph); 
+    Edges(graph) = Edges(graph);
 
-    for (int i = 0; i < totalVertices; i++) {
-        for (int j = 0; j < totalVertices; j++) {
+    for (int i = 0; i < totalVertices; i++)
+    {
+        for (int j = 0; j < totalVertices; j++)
+        {
             AdjMatrix(graph, i, j) = newAdjMatrix[i][j];
         }
     }
 }
 
-void connectedEdges(Graph* graph, int index, int edges[], ListLin* LL) {
-    if (index < 0 || index >= Vertices(graph) || edges[index]) {
-        return;
-    }
+// void connectedEdges(Graph *graph, int index, int edges[], ListLin *LL)
+// {
+//     if (index < 0 || index >= Vertices(graph) || edges[index])
+//     {
+//         return;
+//     }
 
-    edges[index] = 1;
-    insertLastListDin(LL, index);
+//     edges[index] = 1;
+//     insertLastListDin(LL, index);
 
-    for (int i = 0; i < Vertices(graph); ++i) {
-        if (AdjMatrix(graph, index, i) == 1) {
-            connectedEdges(graph, i, edges, LL);
-        }
-    }
-}
+//     for (int i = 0; i < Vertices(graph); ++i)
+//     {
+//         if (AdjMatrix(graph, index, i) == 1)
+//         {
+//             connectedEdges(graph, i, edges, LL);
+//         }
+//     }
+// }

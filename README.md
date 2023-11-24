@@ -27,3 +27,28 @@ make
 ```bash
 ./main
 ```
+
+## Pembagian Tugas
+
+- 13522125
+
+  > config draf, draf kicauan, simpan, muat
+
+- 13522129
+
+  > main, config pengguna, pengguna, profil
+
+- 13522141
+
+  > config balasan, teman
+
+- 13522160
+
+  > kicauan, config kicauan, laporan
+
+- 13522162
+  > utas, permintaam pertemanan, config utas
+
+## Status Pengerjaan
+
+- Tidak selesai

@@ -157,18 +157,17 @@ int main()
         }
         else if (isWordEqual(command, buatDrafCmd))
         {
-            buatDraf(&DK, CU, &LD);
+            buatDraf(&DK, CU, &LD, &LKD);
         }
         else if (isWordEqual(command, lihatDrafCmd))
         {
-            lihatDraf(&DK, &LD, CU);
+            lihatDraf(&DK, &LD, CU, &LKD);
         }
         else if (isWordEqual(command, kicauanCmd))
         {
-            for (int i = NEFFKICAUAN(LKD) - 1; i >= 0; i--)
-            {
-                displayKicauan(ELMTKICAUAN(LKD, i));
-            }
+            displayGraph(&GP);
+
+            showKicauanUser(LKD, CU, &LU, &GP);
         }
         else if (isWordEqual(command, ubahKicauanCmd))
         {
@@ -187,6 +186,12 @@ int main()
             STARTWORDINPUT();
             Word idutas = currentWord;
             cetakUtas(LS, wordToInt(idutas), LKD);
+        }
+        else if (isWordEqual(command, sukaKicauanCmd))
+        {
+            STARTWORDINPUT();
+            Word idkicau = currentWord;
+            likeKicauanByID(&LKD, wordToInt(idkicau), &GP, CU, &LU);
         }
         else
         {

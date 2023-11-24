@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "../../inisialisasi/draf/draf.h"
 #include "../../inisialisasi/pengguna/pengguna.h"
+#include "../../inisialisasi/kicauan/kicauan.h"
 
 typedef struct node *AddressDraf;
 typedef struct node
@@ -67,10 +68,10 @@ void popDraf(DrafKicauan *s, Draf *x);
 /*      elemen Top yang lama didealokasi */
 /* Pada dasarnya adalah operasi deleteFirst pada list linier */
 
-void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf *l);
+void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf *l, ListDinKicauan *LK);
 /* Command BUAT_DRAF */
 
-void lihatDraf(DrafKicauan *s, ListDinDraf *l, currentUser u);
+void lihatDraf(DrafKicauan *s, ListDinDraf *l, currentUser u, ListDinKicauan *LK);
 /* Command LIHAT_DRAF */
 
 void loadDrafKicauan(ListDinDraf l, DrafKicauan *d, currentUser u);

@@ -273,42 +273,51 @@ void displayListLinUtas(ListLinUtas l)
     }
 }
 
-boolean isuserauthor(ListDinUtas LD, int idutas, currentUser cu){
+boolean isuserauthor(ListDinUtas LD, int idutas, currentUser cu)
+{
     Word user;
     boolean check;
     int i;
     ListLinUtas LU;
 
     check = false;
-    LU = getlistUtasbyid(LD,idutas);
-    if (LU != NULL){
-        if(isWordEqual(LU->info.author,cu.nama)){
+    LU = getlistUtasbyid(LD, idutas);
+    if (LU != NULL)
+    {
+        if (isWordEqual(LU->info.author, cu.nama))
+        {
             check = true;
         }
     }
     return check;
 }
 
-ListLinUtas getlistUtasbyid(ListDinUtas LD, int idutas){
-    int capacity,i;
+ListLinUtas getlistUtasbyid(ListDinUtas LD, int idutas)
+{
+    int capacity, i;
     boolean found;
     ListLinUtas LU;
 
     capacity = LD.capacity;
     found = false;
-    while (i < capacity && !found){
-        if(ELMTUTAS(LD,idutas)->idUtas == idutas){
+    while (i < capacity && !found)
+    {
+        if (ELMTUTAS(LD, idutas)->idUtas == idutas)
+        {
             found = true;
             LU = LD.buffer[i];
         }
-        else{
+        else
+        {
             i++;
         }
     }
-    if (found){
+    if (found)
+    {
         return LU;
     }
-    else {
+    else
+    {
         return NULL;
     }
 }
@@ -361,15 +370,19 @@ void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u)
     ListLinUtas LLU;
     int i;
 
-    LLU = getlistUtasbyid(*LD,idUtas);
-    if (LLU == NULL){
+    LLU = getlistUtasbyid(*LD, idUtas);
+    if (LLU == NULL)
+    {
         printf("Utas tidak ditemukan!\n");
     }
-    else{
-        if (!isuserauthor(*LD,idutas,u)){
+    else
+    {
+        if (!isuserauthor(*LD, idUtas, u))
+        {
             printf("Anda tidak bisa menyambung utas ini!\n");
         }
-        else{
+        else
+        {
             if (!(idx > 0 && idx < lengthListLinUtas(LLU)))
             {
                 printf("Index terlalu tinggi!\n");
@@ -387,7 +400,7 @@ void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u)
                 printf("Utas berhasil disambung!\n");
             }
             LD->buffer[i] = LLU;
-        } 
+        }
     }
 }
 

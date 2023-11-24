@@ -176,7 +176,7 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU, Graph *GP)
             }
             else if (i % 11 == 0) // reset
             {
-                ID_USER(*LU, j) = j + 1;
+                ID_USER(*LU, j) = j;
                 j++;
             }
         } // selesai baca semua info pengguna

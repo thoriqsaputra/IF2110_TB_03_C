@@ -33,4 +33,6 @@ void expandGraph(Graph *graph, int newVertices);
 
 // void connectedEdges(Graph *graph, int index, int edges[], ListLin *LL);
 
+void displayGraph(Graph* graph);
+
 #endif

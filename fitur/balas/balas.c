@@ -40,7 +40,7 @@ int BalasKicauan(ListDinKicauan *lk, int IDKicauan, int IDBalasan, currentUser* 
     }
     UserIDCurrent = getUserIdCurrent(*CU, *LU);
     //Jika bukan teman dan akun tersebut privat 
-    if (isTeman(graph, UserIDCurrent, UserID) == false && JENIS_USER(*LU,UserID) == 0) {
+    if (isTeman(graph, UserIDCurrent, UserID) == false && JENIS_USER(*LU,UserID) == 0 && UserID != UserIDCurrent) {
         printf("Wah, akun tersebut merupakan akun privat dan anda belum berteman akun tersebut!\n");
         return 3;
     }
@@ -120,7 +120,7 @@ void DisplayBalasanRecursive(TreeNode* T, int level,  ListUserStatik LU, int idC
 
         int idUserBalasan = getUserId(AuthorBalasan(B), LU); // Mendapatkan ID user Balasan
 
-        if (isTeman(&graph, idCurrentUser, idUserBalasan) == false && JENIS_USER(LU, idUserBalasan) == 0) { // Jika current user dan user balasan bukan teman dan user balasan privat maka PRIVATTTT SEMUAAA
+        if (isTeman(&graph, idCurrentUser, idUserBalasan) == false && JENIS_USER(LU, idUserBalasan) == 0 && idCurrentUser != idUserBalasan) { // Jika current user dan user balasan bukan teman dan user balasan privat maka PRIVATTTT SEMUAAA
             for (int i = 0; i < level; i++) {
             printf("\t");
             }

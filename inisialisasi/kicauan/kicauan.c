@@ -106,18 +106,19 @@ void loadKicauanUser(ListDinKicauan l, ListDinKicauan *lOut, currentUser CU)
 }
 
 /* **** **** **** KICAUAN **** **** **** */ // butuh pertemanan juga
-void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik LU, Graph *GP)
+void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik *LU, Graph *GP)
 {
-    printf("1");
+
     for (int i = NEFFKICAUAN(lUser) - 1; i >= 0; i--)
     {
-        printf("2");
         Word namaTeman = ELMTKICAUAN(lUser, i).Author;
-        // int idKicauLain = getUserId(namaTeman, LU);
-        // if (isTeman(GP, CU.idUser, idKicauLain))
-        // {
-        //     displayKicauan(ELMTKICAUAN(lUser, i));
-        // }
+        int idKicauLain = getUserId(namaTeman, *LU);
+        printf("%d\n", idKicauLain);
+        printf(" id user  : %d , id Author : %d CEK BOOL : %d", CU.idUser, idKicauLain, isTeman(GP, CU.idUser, idKicauLain));
+        if (isTeman(GP, CU.idUser, idKicauLain))
+        {
+            displayKicauan(ELMTKICAUAN(lUser, i));
+        }
     }
 
     // buat pertemanan
@@ -202,13 +203,26 @@ void kicaukanDraf(ListDinKicauan *l, ListDinKicauan *lUser, Word text, currentUs
 /* ************************************************************************************************************ */
 
 /* ************* Menambah Like ************ */
-void likeKicauanByID(ListDinKicauan *l, int ID) // masih butuh yang pertemanan
+void likeKicauanByID(ListDinKicauan *l, int ID, Graph *G, currentUser CU, ListUserStatik *LU) // masih butuh yang pertemanan
 {
     if (ID <= NEFFKICAUAN(*l) && ID > 0)
     {
-        LIKEKICAUAN(ELMTKICAUAN(*l, ID - 1))
-        ++;
+        Word namaAuthorKicau = AUTHORKICAUAN(ELMTKICAUAN((*l), ID - 1));
+        int idAuthor = getUserId(namaAuthorKicau, *LU);
+
+        if (isTeman(G, CU.idUser, idAuthor) == false && (*LU).buffer[idAuthor].jenisAkun == 0) // privat
+        {
+            printf("Wah, kicauan tersebut dibuat oleh akun privat! Ikuti akun itu dulu ya");
+        }
+        else
+        {
+            printf("Selamat! kicauan telah disukai!\nDetil kicauan:\n");
+            displayKicauan(ELMTKICAUAN((*l), ID - 1));
+            LIKEKICAUAN(ELMTKICAUAN(*l, ID - 1))
+            ++;
+        }
     }
+
     else
     {
         printf("Tidak ditemukan kicauan dengan ID = %d", ID);
@@ -230,7 +244,7 @@ void editKicauanInList(ListDinKicauan *l, ListDinKicauan *lUser, int ID, current
             printf("\nMasukkan kicauan baru:\n");
             KICAUAN edittedKicauan;
 
-            if (createNewKicauanInput(ID, 0, CU, &edittedKicauan))
+            if (createNewKicauanInput(ID, LIKEKICAUAN(ELMTKICAUAN((*l), ID - 1)), CU, &edittedKicauan))
             {
                 ELMTKICAUAN(*l, ID - 1) = edittedKicauan;
                 ELMTKICAUAN(*lUser, iUser) = edittedKicauan;

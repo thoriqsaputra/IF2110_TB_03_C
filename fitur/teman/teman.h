@@ -10,4 +10,4 @@ int daftarFriend(Graph *graph, currentUser *CU, ListUserStatik *LU);
 
 void hapusFriend(Graph *graph, currentUser *CU, ListUserStatik *LU);
 
-// void kelompokFriend(Graph *graph, currentUser *CU, ListUserStatik *LU);
+void kelompokFriend(Graph *graph, currentUser *CU, ListUserStatik *LU);

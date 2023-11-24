@@ -32,8 +32,6 @@ int countTeman(Graph *graph, int userID)
 boolean isTeman(Graph *graph, int IDUser, int IDTeman)
 {
     // Jika edge = 1 maka bener mereka temanan
-    IDUser--;
-    IDTeman--;
     return hasEdge(graph, IDUser, IDTeman);
 }
 

@@ -1,107 +1,123 @@
-#ifndef UTAS_H
-#define UTAS_H
+/* File: utas.h */
+/* Definisi ADT Utas */
 
+#ifndef __UTAS__
+#define __UTAS__
 
+#include "../../ADT/datetime.h"
 #include "../../ADT/wordmachine.h"
-#include <stdlib.h>
+#include "../../inisialisasi/pengguna/pengguna.h"
+#include "../../inisialisasi/kicauan/kicauan.h"
+#include "../../Lib/globalFunction.h"
 
-typedef struct node* Address;
-
-typedef struct {
-    Word Utas;
-    Word author;
-    DATETIME time;
-} info_utas;
-
-typedef struct node {
-    info_utas infou;
-    Address nextu;
-} Node_Utas;
-
-typedef Address ListLinUtas;
-
-typedef struct {
-    int IDKicau;
-    int banyak_utas; 
-    Address nextk;
-} Utas;
+/* Definisi elemen dan koleksi objek */
 
 typedef struct
 {
-   Utas *kontenUtas; /* memori tempat penyimpan elemen (container) */
-   int nEffUtas;       /* >=0, banyaknya elemen efektif */
-   int capacityUtas;   /* ukuran elemen */
+    int index;
+    Word text;
+    Word author;
+    DATETIME datetime;
+} Utas;
+
+/* ********** SELEKTOR UTAS********** */
+#define IDXUTAS(l) (l).index
+#define TEXTUTAS(l) (l).text
+#define AUTHORUTAS(l) (l).author
+#define DATETIMEUTAS(l) (l).datetime
+
+typedef struct nodeUtas *Address;
+
+typedef struct nodeUtas
+{
+    int idKicau;
+    int idUtas;
+    Utas info;
+    Address next;
+} NodeUtas;
+
+#define INFOUTAS(p) (p)->info
+#define NEXTUTAS(p) (p)->next
+
+Address newNodeUtas(Utas val, int idKicau, int idUtas);
+
+typedef Address ListLinUtas;
+
+// #define IDX_UNDEF (-1)
+#define FIRSTUTAS(l) (l)
+
+typedef struct
+{
+    ListLinUtas *buffer;
+    int nEff;
+    int capacity;
 } ListDinUtas;
 
+/* ********** SELEKTOR List Dinamis********** */
+#define NEFFUTAS(l) (l).nEff
+#define BUFFERUTAS(l) (l).buffer
+#define ELMTUTAS(l, i) (l).buffer[i]
+#define CAPACITYUTAS(l) (l).capacity
 
-// List Din //
-#define NEFFUTAS(l) (l).nEffUtas
-#define KONTENUTAS(l) (l).kontenUtas
-#define ELMTUTAS(l, i) (l).kontenUtas[i]
-#define CAPACITYUTAS(l) (l).capacityUtas
+/* ********** LIST DINAMIS UTAS ********** */
 
-// List Lin //
-//#define IDX_UNDEF_Utas (-1)
-//#define FIRST(l) (l)
+/* ********** KONSTRUKTOR ********** */
+/* Konstruktor : create list kosong  */
+void CreateListUtas(ListDinUtas *l, int capacity);
+/* I.S. l sembarang, capacity > 0 */
+/* F.S. Terbentuk list dinamis l kosong dengan kapasitas capacity dan diisi KICAUAN */
 
+void dealocateListUtas(ListDinUtas *l);
+/* I.S. l terdefinisi; */
+/* F.S. (l) dikembalikan ke system, CAPACITY(l)=0; NEFF(l)=0 */
 
-// Utas //
-#define IDK(x) (x).IDKicau
-#define N(x) (x).banyak_utas
-#define NEXTK(x) (x).nextk
+void displayDataUtas(Utas id);
+/*I.S Menulis dari
+  F.S
+*/
+void loadUtasConfig(char filename[], ListDinUtas *LD);
+/*Load Config Pengguna dari pengguna.config, lalu mengassign data data sesuai dengan kebutuhan typedef Pengguna
+ */
 
-// info_utas //
-#define UTAS(x) (x).Utas
-#define AUTHORUTAS(p) (p).author
-#define TIMEUTAS(x) (x).time
+void addLinkedUtas(ListDinUtas *l, ListLinUtas lkd);
+/* I.S. l berisi draf, mungkin penuh */
+/* F.S. l diisi kicauan baru nEff bertambah 1, capacity draf menyesuaikan*/
 
-// Node_utas //
-#define InfoU(p) (p)->infou
-#define NEXTU(p) (p)->nextu
-#define FIRSTU(l) (l)
+/* ********** BOOLEAN ********** */
+boolean isFullOfLinkedUtas(ListDinUtas l);
+/* return true jika penuh */
 
+void deleteLinkedDrafByIdUtas(ListDinUtas *l, int idKicauan);
 
-void loadUtasConfig(char file[],ListDinUtas *LDU);
+/* ********** LIST LINIER UTAS ********** */
+void CreateListLinUtas(ListLinUtas *lku);
 
+boolean isEmptyListLinUtas(ListLinUtas lku);
 
+Utas getElmtUtas(ListLinUtas lku, int idx);
 
-/* -------------------------------------------------*/
-/* ---------- Primitif List Dinamis Utas ---------- */
-/* -------------------------------------------------*/
+void setElmtListLinUtas(ListLinUtas *lku, int idx, Utas val);
 
-void CreatelistUtas(ListDinUtas *LDU,int capacity);
+void insertLastListLinUtas(ListLinUtas *lku, Utas val, int idKicau, int idUtas);
 
-int lengthListDinUtas(ListDinUtas l);
+void insertAtListLinUtas(ListLinUtas *lku, Utas val, int idx, int idKicau, int idUtas);
 
+void deleteAtListLinUtas(ListLinUtas *lku, int idx, Utas *val);
 
-void insertLastListDinUtas(ListDinUtas *l, Utas utas);
+int lengthListLinUtas(ListLinUtas lku);
 
+void displayListLinUtas(ListLinUtas l);
 
+// Fitur
 
+void buatUtas(int idKicau, ListDinUtas *LD, ListDinKicauan LK, currentUser u);
 
+void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u);
 
-/* ------------------------------------------------*/
-/* ---------- Primitif List Linier Utas ---------- */
-/* ------------------------------------------------*/
+void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUser u);
 
-Address newNodeUtas(info_utas info);
+void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK);
 
-void CreateListLinUtas(ListLinUtas *l);
-
-
-void insertFirstListLinUtas(ListLinUtas *l, info_utas data);
-
-void insertLastListLinUtas(ListLinUtas *l, info_utas data);
-
-boolean isEmptyListLinUtas(ListLinUtas l);
-
-/* -----------------------------------------*/
-/* ---------- Fungsi-Fungsi Utas ---------- */
-/* -----------------------------------------*/
-
-void CreateMainUtas(ListDinUtas *LDU, Utas main);
-
-void TambahUtas(ListLinUtas *LDU,int idx,currentUser cu);
-
+/* ********** NODE UTAS ********** */
 
 #endif

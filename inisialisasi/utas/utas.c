@@ -1,156 +1,391 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "utas.h"
 
-void loadUtasConfig(char file[],ListDinUtas *LDU){
-    //Kamus//
+void CreateListUtas(ListDinUtas *l, int capacity)
+{
+    NEFFUTAS(*l) = 0;
+    BUFFERUTAS(*l) = (ListLinUtas *)malloc(capacity * sizeof(ListLinUtas));
+    CAPACITYUTAS(*l) = capacity;
+}
 
-    int n;
-    Utas main;
-    ListLinUtas LLU;
-    info_utas data;
-    DATETIME time;
-    KICAUAN kicau;
-    //Algoritma//
+void dealocateListUtas(ListDinUtas *l)
+{
+    free(BUFFERUTAS(*l));
+    NEFFUTAS(*l) = 0;
+    CAPACITYUTAS(*l) = 0;
+}
 
+void displayDataUtas(Utas id)
+{
+    printf("Index: %d\n", IDXUTAS(id));
+    printf("Text: ");
+    printWord(TEXTUTAS(id));
+    printf("\n");
+    printf("Author: ");
+    printWord(AUTHORUTAS(id));
+    printf("\n");
+    printf("Datetime: ");
+    TulisDATETIME((id).datetime);
+    printf("\n");
+}
 
-    STARTWORDFILE(file);
-    n = wordToInt(currentWord);
-    //printf("n = %d\n",n);
-    ADVWORDFILE();
-    for (int i = 0; i<n;i++){
-        IDK(main) = wordToInt(currentWord);
-        //printf("idkicau = %d\n", idkicau);
+void loadUtasConfig(char filename[], ListDinUtas *LD)
+{
+    STARTWORDFILE(filename);
+    int total = currentWord.TabWord[0] % 48;
+    if (total > 0)
+    {
         ADVWORDFILE();
-        N(main) = wordToInt(currentWord);
-        CreateListLinUtas(&LLU);
-        //printf("banyakutas = %d\n", banyakutas);
-        ADVWORDFILE();
-        for(int j = 0; j<N(main);j++){
-            if (j == 0){
-                TEXTKICAUAN(kicau) = currentWord;
-                ADVWORDFILE();
-                AUTHORKICAUAN(kicau) = currentWord;
-                ADVWORDFILE();
-                CreateDATETIMEfromWord(&time,currentWord);
-                DATETIMEKICAUAN(kicau) = time;
-            }
-            else {
-                UTAS(data) = currentWord;
-                //printWord(utas);
-                ADVWORDFILE();
-                AUTHORUTAS(data) = currentWord;
-                //printWord(author);
-                ADVWORDFILE();
-                CreateDATETIMEfromWord(&time,currentWord);
-                TIMEUTAS(data) = time;
-                insertLastListLinUtas(&LLU,data);
-                //printWord(time);
-            }
-            
+        for (int i = 0; i < total; i++)
+        {
+            ListLinUtas lku;
+            // printf("%d\n", total);
+            CreateListLinUtas(&lku);
+            int idKicau = currentWord.TabWord[0] % 48;
+            int idUtas = i + 1;
             ADVWORDFILE();
+            int banyakUtas = currentWord.TabWord[0] % 48;
+            ADVWORDFILE();
+            for (int j = 0; j < banyakUtas; j++)
+            {
+                Utas utas;
+                utas.index = j + 1;
+                utas.text = currentWord;
+                ADVWORDFILE();
+                utas.author = currentWord;
+                ADVWORDFILE();
+                DATETIME t;
+                Word temp = currentWord;
+                int DD = (int)(temp.TabWord[0] % 48) * 10 + (int)(temp.TabWord[1] % 48);
+                int MM = (int)(temp.TabWord[3] % 48) * 10 + (int)(temp.TabWord[4] % 48);
+                int YY = (int)(temp.TabWord[6] % 48) * 1000 + (int)(temp.TabWord[7] % 48) * 100 + (int)(temp.TabWord[8] % 48) * 10 + (int)(temp.TabWord[9] % 48);
+                int hh = (int)(temp.TabWord[11] % 48) * 10 + (int)(temp.TabWord[12] % 48);
+                int mm = (int)(temp.TabWord[14] % 48) * 10 + (int)(temp.TabWord[15] % 48);
+                int ss = (int)(temp.TabWord[17] % 48) * 10 + (int)(temp.TabWord[18] % 48);
+                CreateDATETIME(&t, DD, MM, YY, hh, mm, ss);
+                utas.datetime = t;
+                // displayDataUtas(utas);
+                if (j != banyakUtas - 1)
+                {
+                    ADVWORDFILE();
+                }
+                insertLastListLinUtas(&lku, utas, idKicau, idUtas);
+            }
+            if (i != total - 1)
+            {
+                ADVWORDFILE();
+            }
+            addLinkedUtas(LD, lku);
         }
-        NEXTK(main) = FIRSTU(LLU);
-        CreateMainUtas(LDU,main);
     }
 }
 
-/* -------------------------------------------------*/
-/* ---------- Primitif List Dinamis Utas ---------- */
-/* -------------------------------------------------*/
-
-void CreatelistUtas(ListDinUtas *LDU,int capacity){
-    NEFFUTAS(*LDU) = 0;
-    KONTENUTAS(*LDU) = (Utas*)malloc(capacity * sizeof(Utas));
-    CAPACITYUTAS(*LDU) = capacity;
-}
-
-int lengthListDinUtas(ListDinUtas l)
+void addLinkedUtas(ListDinUtas *l, ListLinUtas lkd)
 {
-    return NEFFUTAS(l);
-}
-
-void insertLastListDinUtas(ListDinUtas *l, Utas utas)
-{   
-    ELMTUTAS(*l, lengthListDinUtas(*l)) = utas;
+    if (isFullOfLinkedUtas(*l))
+    {
+        if (CAPACITYUTAS(*l) == 0)
+        {
+            CAPACITYUTAS(*l) = 1;
+            BUFFERUTAS(*l) = (ListLinUtas *)malloc(CAPACITYUTAS(*l) * sizeof(ListLinUtas));
+        }
+        else
+        {
+            CAPACITYUTAS(*l) *= 2;
+            BUFFERUTAS(*l) = (ListLinUtas *)realloc(BUFFERUTAS(*l), CAPACITYUTAS(*l) * sizeof(ListLinUtas));
+        }
+    }
+    ELMTUTAS(*l, NEFFUTAS(*l)) = lkd;
     NEFFUTAS(*l) += 1;
 }
 
-/* ------------------------------------------------*/
-/* ---------- Primitif List Linier Utas ---------- */
-/* ------------------------------------------------*/
+boolean isFullOfLinkedUtas(ListDinUtas l)
+{
+    return (NEFFUTAS(l) == CAPACITYUTAS(l));
+}
 
-Address newNodeUtas(info_utas info){
+void deleteLinkedDrafByIdUtas(ListDinUtas *l, int id)
+{
+    int i = 0;
+    while (i < NEFFUTAS(*l))
+    {
+        if ((*l).buffer[i]->idKicau == id)
+        {
+            for (int j = i; j < NEFFUTAS(*l) - 1; j++)
+            {
+                ELMTUTAS(*l, j) = ELMTUTAS(*l, j + 1);
+            }
+            NEFFUTAS(*l) -= 1;
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
+
+Address newNodeUtas(Utas val, int idKicau, int idUtas)
+{
     Address p;
-    p = (Address) malloc(sizeof(Node_Utas));
-    if (p != NULL){
-        InfoU(p) = info;
-        NEXTU(p) = NULL;
+    p = (Address)malloc(sizeof(NodeUtas));
+    if (p != NULL)
+    {
+        INFOUTAS(p) = val;
+        NEXTUTAS(p) = NULL;
     }
     return p;
 }
 
-void CreateListLinUtas(ListLinUtas *l){
-    FIRSTU(*l) = NULL;
+void CreateListLinUtas(ListLinUtas *l)
+{
+    FIRSTUTAS(*l) = NULL;
 }
 
-void insertFirstListLinUtas(ListLinUtas *l, info_utas data){
+boolean isEmptyListLinUtas(ListLinUtas l)
+{
+    return FIRSTUTAS(l) == NULL;
+}
+
+Utas getElmtUtas(ListLinUtas l, int idx)
+{
     Address p;
-    p = newNodeUtas(data);
-    if (p != NULL){
-        NEXTU(p) = *l;
-        *l = p;
+    p = l;
+    for (int i = 0; i < idx; i++)
+    {
+        p = NEXTUTAS(p);
     }
+    return INFOUTAS(p);
 }
 
-void insertLastListLinUtas(ListLinUtas *l, info_utas data){
-    Address p,last;
-    if(isEmptyListLinUtas(*l)){
-        insertFirstListLinUtas(l,data);
+void setElmtListLinUtas(ListLinUtas *l, int idx, Utas val)
+{
+    Address p;
+    int ctr;
+    p = *l;
+    ctr = 0;
+    while (ctr < idx)
+    {
+        ctr++;
+        p = NEXTUTAS(p);
     }
-    else{
-        p = newNodeUtas(data);
-        if (p != NULL){
-            last = *l;
-            while (NEXTU(last) != NULL){
-                last = NEXTU(last);
+    INFOUTAS(p) = val;
+}
+
+void insertLastListLinUtas(ListLinUtas *l, Utas val, int idKicau, int idUtas)
+{
+    Address p, last;
+    p = newNodeUtas(val, idKicau, idUtas);
+    if (p != NULL)
+    {
+        if (isEmptyListLinUtas(*l))
+        {
+            FIRSTUTAS(*l) = p;
+        }
+        else
+        {
+            last = FIRSTUTAS(*l);
+            while (NEXTUTAS(last) != NULL)
+            {
+                last = NEXTUTAS(last);
             }
-            NEXTU(last) = p;
+            NEXTUTAS(last) = p;
         }
     }
 }
 
-boolean isEmptyListLinUtas(ListLinUtas l){
-    return FIRSTU(l) == NULL;
+void insertAtListLinUtas(ListLinUtas *l, Utas val, int idx, int idKicau, int idUtas)
+{
+    Address p, prev;
+    int ctr;
+    p = newNodeUtas(val, idKicau, idUtas);
+    if (p != NULL)
+    {
+        if (idx == 0)
+        {
+            NEXTUTAS(p) = FIRSTUTAS(*l);
+            FIRSTUTAS(*l) = p;
+        }
+        else
+        {
+            prev = FIRSTUTAS(*l);
+            ctr = 0;
+            while (ctr < idx - 1)
+            {
+                ctr++;
+                prev = NEXTUTAS(prev);
+            }
+            NEXTUTAS(p) = NEXTUTAS(prev);
+            NEXTUTAS(prev) = p;
+        }
+    }
 }
 
-/* -----------------------------------------*/
-/* ---------- Fungsi-Fungsi Utas ---------- */
-/* -----------------------------------------*/
-
-void CreateMainUtas(ListDinUtas *LDU,Utas main){
-    // ------- KAMUS ------- //
-
-    // ------- ALGORITMA ------- //
-    insertLastListDinUtas(LDU,main);
+void deleteAtListLinUtas(ListLinUtas *l, int idx, Utas *val)
+{
+    Address p, prev;
+    int ctr;
+    if (idx == 0)
+    {
+        p = FIRSTUTAS(*l);
+        *val = INFOUTAS(p);
+        FIRSTUTAS(*l) = NEXTUTAS(p);
+        free(p);
+    }
+    else
+    {
+        prev = FIRSTUTAS(*l);
+        ctr = 0;
+        while (ctr < idx - 1)
+        {
+            ctr++;
+            prev = NEXTUTAS(prev);
+        }
+        p = NEXTUTAS(prev);
+        *val = INFOUTAS(p);
+        NEXTUTAS(prev) = NEXTUTAS(p);
+        free(p);
+    }
 }
 
-void TambahUtas(ListLinUtas *LU,int idx,currentUser cu){
-    
-    Word input,currentuser;
-    info_utas data;
-    DATETIME timeutas;
-    
-    currentuser = cu.nama;
-    if (idx > lengthListLinUtas(*LU)-1){
+int lengthListLinUtas(ListLinUtas l)
+{
+    Address p;
+    int ctr;
+    p = FIRSTUTAS(l);
+    ctr = 0;
+    while (p != NULL)
+    {
+        ctr++;
+        p = NEXTUTAS(p);
+    }
+    return ctr;
+}
+
+void displayListLinUtas(ListLinUtas l)
+{
+    Address p;
+    p = FIRSTUTAS(l);
+    while (p != NULL)
+    {
+        displayDataUtas(INFOUTAS(p));
+        p = NEXTUTAS(p);
+    }
+}
+
+void buatUtas(int idKicau, ListDinUtas *LD, ListDinKicauan LK, currentUser u)
+{
+    ListDinKicauan LKU;
+    Word masukan = {"YA", 2};
+    Word ya = {"YA", 2};
+    loadKicauanUser(LK, &LKU, u);
+    boolean punya = false;
+    for (int i = 0; i < LKU.nEffKicauan; i++)
+    {
+        if (LKU.contentKicauan[i].ID == idKicau)
+        {
+            punya = true;
+        }
+    }
+    if (punya)
+    {
+        ListLinUtas LLU;
+        CreateListLinUtas(&LLU);
+        int i = 1;
+        while (isWordEqual(masukan, ya))
+        {
+            printf("Utas berhasil dibuat!\n\n");
+            printf("Masukkan kicauan:\n");
+            STARTWORDINPUT();
+            masukan = currentWord;
+            Utas new = {i,
+                        masukan,
+                        u.nama,
+                        grabCurrentDateTime()};
+            insertLastListLinUtas(&LLU, new, idKicau, LKU.nEffKicauan);
+            printf("Apakah Anda ingin melanjutkan utas ini? (YA/TIDAK) ");
+            STARTWORDINPUT();
+            masukan = currentWord;
+            i++;
+        }
+        addLinkedUtas(LD, LLU);
+    }
+    else
+    {
+        printf("Utas ini bukan milik anda!");
+    }
+}
+
+void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u)
+{
+    ListLinUtas LLU;
+    int i;
+    for (i = 0; i < (*LD).nEff; i++)
+    {
+        if (LD->buffer[i]->idUtas == idUtas && isWordEqual(LD->buffer[i]->info.author, u.nama))
+        {
+            LLU = LD->buffer[i];
+        }
+    }
+    if (!(idx > 0 && idx < lengthListLinUtas(LLU)))
+    {
         printf("Index terlalu tinggi!\n");
     }
-    else{
+    else
+    {
         printf("Masukkan kicauan:\n");
         STARTWORDINPUT();
-        input = currentWord;
-        UTAS(data) = input;
-        AUTHORUTAS(data) = currentuser;
-        TIMEUTAS(data) = grabCurrentDateTime();
-        InsertUtasAt(LU,data,idx);
+        Word masukan = currentWord;
+        Utas new = {lengthListLinUtas(LLU) + 1,
+                    masukan,
+                    u.nama,
+                    grabCurrentDateTime()};
+        insertAtListLinUtas(&LLU, new, idx, LLU->idKicau, LLU->idUtas);
+        printf("Utas berhasil disambung!\n");
+    }
+    LD->buffer[i] = LLU;
+}
 
+void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUser u)
+{
+    int i;
+    for (i = 0; i < (*LD).nEff; i++)
+    {
+        if (LD->buffer[i]->idUtas == idUtas && isWordEqual(LD->buffer[i]->info.author, u.nama))
+        {
+            LLU = LD->buffer[i];
+        }
+    }
+    if (!(idx > 0 && idx < lengthListLinUtas(LLU)))
+    {
+        printf("Index terlalu tinggi!\n");
+    }
+    else
+    {
+        Utas val;
+        deleteAtListLinUtas(&LLU, idx, &val);
+        printf("Utas berhasil dihapus!\n");
+    }
+    LD->buffer[i] = LLU;
+}
+
+void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK)
+{
+    for (int i = 0; i < LD.nEff; i++)
+    {
+        if (idUtas == LD.buffer[i]->idUtas)
+        {
+            KICAUAN k;
+            for (int j = 0; j < LK.nEffKicauan; j++)
+            {
+                if (LK.contentKicauan[j].ID == LD.buffer[i]->idKicau)
+                {
+                    k = LK.contentKicauan[j];
+                }
+            }
+            displayKicauan(k);
+            printf("\n");
+            displayListLinUtas(LD.buffer[i]);
+        }
     }
 }

@@ -69,7 +69,7 @@ void loadKicauanUser(ListDinKicauan l, ListDinKicauan *lOut, currentUser CU);
 /* I.S. l berisi raw data */
 /* F.S. lOut diisi kicauan milik user */
 
-void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik LU, Graph *GP);
+void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik *LU, Graph *GP);
 
 void addKicauan(ListDinKicauan *l, KICAUAN t);
 /* I.S. l berisi kicauan, mungkin penuh */
@@ -92,7 +92,8 @@ void berkicau(ListDinKicauan *l, ListDinKicauan *lUser, currentUser CU);
 
 void kicaukanDraf(ListDinKicauan *l, ListDinKicauan *lUser, Word text, currentUser CU);
 
-void likeKicauanByID(ListDinKicauan *l, int ID);
+void likeKicauanByID(ListDinKicauan *l, int ID, Graph *G, currentUser CU, ListUserStatik *LU);
+// masih butuh yang pertemanan
 /* I.S. l terdefinisi dan ID valid; */
 /* F.S. likes pada kicauan ID bertambah jika dapat diakses (akun tidak private / diperbolehkan)
         Jika tidak bisa maka akan keluar pesan, "This kicauan is privated"

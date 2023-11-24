@@ -141,7 +141,7 @@ void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf *l, ListDinKicauan *LK)
     }
     else if (isWordEqual(pil, terbit))
     {
-        KICAUAN LUKser;
+        ListDinKicauan LUKser;
         loadKicauanUser(*LK, &LUKser, u);
         kicaukanDraf(LK, &LUKser, draf.text, u);
         Draf temp;
@@ -222,7 +222,7 @@ void lihatDraf(DrafKicauan *s, ListDinDraf *l, currentUser u, ListDinKicauan *LK
             }
             else if (isWordEqual(pil, terbit))
             {
-                KICAUAN LUKser;
+                ListDinKicauan LUKser;
                 Draf temp;
                 popDraf(s, &temp);
                 deleteDrafById(l, temp.id);

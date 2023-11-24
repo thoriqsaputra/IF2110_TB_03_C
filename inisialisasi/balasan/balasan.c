@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "balasan.h"
 
-// Function to create a node with specific type and data
 TreeNode* createNodeWithData(NodeType type, void* data) {
     if (data == NULL) {
         return NULL; // Handle invalid data
@@ -23,7 +22,6 @@ TreeNode* createNodeWithData(NodeType type, void* data) {
     return newNode;
 }
 
-// Function to add a child node to the parent node
 void addChild(TreeNode* parent, TreeNode* child) {
     if (parent == NULL || child == NULL) {
         return;
@@ -40,7 +38,6 @@ void addChild(TreeNode* parent, TreeNode* child) {
     }
 }
 
-// Function to print the tree
 void PrintTree(TreeNode* root, int level) {
     for (int i = 0; i < level; i++) {
         printf("\t");
@@ -161,10 +158,10 @@ void CreateListTree(ListTree* lt, int capacity) {
     if (lt->ContentListTree != NULL) {
         lt->CAPACITYLISTTREE = capacity;
     } else {
-        // Handle memory allocation failure
         lt->CAPACITYLISTTREE = 0;
     }
 }
+
 void dealocateTrees(ListTree* lt) {
     free(lt->ContentListTree);
     lt->NEFFListTree = 0;
@@ -188,7 +185,7 @@ void copyListTree(ListTree lIn, ListTree* lOut) {
 void deleteLastListTree(ListTree* l, TreeNode** tree) {
     *tree = l->ContentListTree[l->NEFFListTree - 1];
     l->NEFFListTree -= 1;
-    // Free the TreeNode itself if needed
+
     free(*tree);
 }
 
@@ -246,7 +243,7 @@ BALASAN* findBalasan(ListTree LT, int IDKicauan, int IDBalasan) {
             return &(balasanNode->balasanData);
         }
     }
-    return NULL;  // Return NULL if not found
+    return NULL;
 }
 
 /* ********* CONFIGS ********* */

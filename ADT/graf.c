@@ -67,7 +67,7 @@ void expandGraph(Graph* graph, int newVertices) {
 
     // Update the graph structure with the expanded size and new adjacency matrix
     Vertices(graph) = totalVertices;
-    Edges(graph) = Edges(graph); // Edges remain the same
+    Edges(graph) = Edges(graph); 
 
     for (int i = 0; i < totalVertices; i++) {
         for (int j = 0; j < totalVertices; j++) {

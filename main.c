@@ -8,8 +8,9 @@
 #include "inisialisasi/utas/utas.h"
 #include "fitur/drafKicauan/drafKicauan.h"
 #include "inisialisasi/kicauan/kicauan.h"
+#include "fitur/balas/balas.h"
 
-// main ini masi sementara
+// main ini masi sementaraddd
 // yang baru bisa
 // - Profil
 // - Pengguna
@@ -19,7 +20,7 @@
 // - Utas ( on progress )
 
 // command run sementara
-// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/utas.c inisialisasi/pengguna/pengguna.c inisialisasi/kicauan/kicauan.c fitur/drafKicauan/drafKicauan.c fitur/teman/teman.c Lib/globalFunction.c
+// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/utas.c inisialisasi/pengguna/pengguna.c inisialisasi/kicauan/kicauan.c inisialisasi/balasan/balasan.c fitur/drafKicauan/drafKicauan.c fitur/balas/balas.c fitur/teman/teman.c Lib/globalFunction.c
 int main()
 {
     printf(".______    __    __  .______      .______    __  .______      \n");
@@ -49,6 +50,9 @@ int main()
 
     ListDinDraf LD;
     loadDrafConfig("configs/config-1/draf.config", &LD);
+
+    ListTree LT;
+    loadBalasanConfig("configs/config-1/balasan.config", &LT);
 
     ListDinUtas LS;
     loadUtasConfig("configs/config-1/utas.config", &LS);
@@ -167,7 +171,7 @@ int main()
         {
             displayGraph(&GP);
 
-            showKicauanUser(LKD, CU, &LU, &GP);
+            showKicauanUser(LKD, CU, &LU, GP);
         }
         else if (isWordEqual(command, ubahKicauanCmd))
         {
@@ -185,7 +189,7 @@ int main()
         {
             STARTWORDINPUT();
             Word idutas = currentWord;
-            cetakUtas(LS, wordToInt(idutas), LKD);
+            cetakUtas(LS, wordToInt(idutas), LKD, GP, CU, &LU);
         }
         else if (isWordEqual(command, sukaKicauanCmd))
         {

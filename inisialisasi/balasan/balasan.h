@@ -1,7 +1,6 @@
 #ifndef BALASAN_H
 #define BALASAN_H
 
-#include "../../ADT/tempRun.h"
 #include "../../ADT/datetime.h"
 #include "../kicauan/kicauan.h"
 
@@ -30,65 +29,71 @@ typedef struct BALASAN
 #define DatetimeBalasan(l) (l).DT
 
 // Enumeration to represent the type of node
-typedef enum { KICAUAN_NODE, BALASAN_NODE } NodeType;
+typedef enum
+{
+    KICAUAN_NODE,
+    BALASAN_NODE
+} NodeType;
 
 // TreeNode structure
-typedef struct TreeNode {
-    NodeType type;  // Type of the node
-    union {
-        KICAUAN kicauanData;  // Data for KICAUAN node
-        BALASAN balasanData;  // Data for BALASAN node
+typedef struct TreeNode
+{
+    NodeType type; // Type of the node
+    union
+    {
+        KICAUAN kicauanData; // Data for KICAUAN node
+        BALASAN balasanData; // Data for BALASAN node
     };
-    struct TreeNode* firstChild;
-    struct TreeNode* nextSibling;
+    struct TreeNode *firstChild;
+    struct TreeNode *nextSibling;
 } TreeNode;
 
 // ListTree structure
-typedef struct {
-    TreeNode** ContentListTree;  // Array of pointers to TreeNode
-    int NEFFListTree;            // Number of elements in the list
-    int CAPACITYLISTTREE;        // Capacity of the list
+typedef struct
+{
+    TreeNode **ContentListTree; // Array of pointers to TreeNode
+    int NEFFListTree;           // Number of elements in the list
+    int CAPACITYLISTTREE;       // Capacity of the list
 } ListTree;
 
-
 // Function to create a node with specific type and data
-TreeNode* createNodeWithData(NodeType type, void* data);
+TreeNode *createNodeWithData(NodeType type, void *data);
 
 // Function to add a child node to the parent node
-void addChild(TreeNode* parent, TreeNode* child);
+void addChild(TreeNode *parent, TreeNode *child);
 
 // Function to print the tree
-void PrintTree(TreeNode* root, int level);
+void PrintTree(TreeNode *root, int level);
 
-boolean IsValidID(TreeNode* parent, int target, NodeType targetType);
+boolean IsValidID(TreeNode *parent, int target, NodeType targetType);
 
-TreeNode* SearchTree(TreeNode* parent, int target, NodeType targetType);
+TreeNode *SearchTree(TreeNode *parent, int target, NodeType targetType);
 
-void deleteNode(TreeNode* parent, int target, NodeType targetType);
+void deleteNode(TreeNode *parent, int target, NodeType targetType);
 
-int getMaxIDBalasan(TreeNode* parent);
+int getMaxIDBalasan(TreeNode *parent);
 
 /* ********** KONSTRUKTOR ListDinTree ********** */
 /* Konstruktor : create list kosong  */
-void CreateListTree(ListTree* lt, int capacity);
+void CreateListTree(ListTree *lt, int capacity);
 
-void dealocateTrees(ListTree* lt);
+void dealocateTrees(ListTree *lt);
 
 int LengthListTree(ListTree l);
 
-void copyListTree(ListTree lIn, ListTree* lOut);
+void copyListTree(ListTree lIn, ListTree *lOut);
 
-void deleteLastListTree(ListTree* l, TreeNode** tree);
+void deleteLastListTree(ListTree *l, TreeNode **tree);
 
-void expandListTree(ListTree* l, int num);
+void expandListTree(ListTree *l, int num);
 
-void insertLastListTree(ListTree* l, TreeNode* tree);
+void insertLastListTree(ListTree *l, TreeNode *tree);
 
-void shrinkListDinTree(ListTree* l, int num);
+void shrinkListDinTree(ListTree *l, int num);
 
-TreeNode* searchListTree(ListTree l, int value);
+TreeNode *searchListTree(ListTree l, int value);
 
-BALASAN* findBalasan(ListTree LT, int IDKicauan, int IDBalasan);
+BALASAN *findBalasan(ListTree LT, int IDKicauan, int IDBalasan);
 
 /* ********* CONFIGS ********* */
 void loadBalasanConfig(char filename[], ListTree *LT);

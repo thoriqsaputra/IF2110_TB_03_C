@@ -206,15 +206,14 @@ void loadPenggunaConfig(char filename[], ListUserStatik *LU, Graph *GP)
         }
         // buat graph pertemanan disini
         displayMatrix(adjMFriend);
-        Graph grafTeman;
-        initGraph(&grafTeman, UserCount(*LU));
+        initGraph(GP, UserCount(*LU));
         for (int i = 0; i < ROW_EFF(adjMFriend); i++)
         {
             for (int j = 0; j < COL_EFF(adjMFriend); j++)
             {
                 if (ELMTMatrix(adjMFriend, i, j) == 1)
                 {
-                    addEdge(&grafTeman, i, j);
+                    addEdge(GP, i, j);
                 }
             }
         }

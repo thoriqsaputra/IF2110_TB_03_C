@@ -106,7 +106,7 @@ void loadKicauanUser(ListDinKicauan l, ListDinKicauan *lOut, currentUser CU)
 }
 
 /* **** **** **** KICAUAN **** **** **** */ // butuh pertemanan juga
-void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik *LU, Graph *GP)
+void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik *LU, Graph GP)
 {
 
     for (int i = NEFFKICAUAN(lUser) - 1; i >= 0; i--)
@@ -114,8 +114,8 @@ void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik *LU, G
         Word namaTeman = ELMTKICAUAN(lUser, i).Author;
         int idKicauLain = getUserId(namaTeman, *LU);
         printf("%d\n", idKicauLain);
-        printf(" id user  : %d , id Author : %d CEK BOOL : %d", CU.idUser, idKicauLain, isTeman(GP, CU.idUser, idKicauLain));
-        if (isTeman(GP, CU.idUser, idKicauLain))
+        printf(" id user  : %d , id Author : %d CEK BOOL : %d", CU.idUser, idKicauLain, isTeman(&GP, CU.idUser, idKicauLain));
+        if (isTeman(&GP, CU.idUser, idKicauLain))
         {
             displayKicauan(ELMTKICAUAN(lUser, i));
         }

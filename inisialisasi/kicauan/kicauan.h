@@ -69,7 +69,7 @@ void loadKicauanUser(ListDinKicauan l, ListDinKicauan *lOut, currentUser CU);
 /* I.S. l berisi raw data */
 /* F.S. lOut diisi kicauan milik user */
 
-void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik *LU, Graph *GP);
+void showKicauanUser(ListDinKicauan lUser, currentUser CU, ListUserStatik *LU, Graph GP);
 
 void addKicauan(ListDinKicauan *l, KICAUAN t);
 /* I.S. l berisi kicauan, mungkin penuh */

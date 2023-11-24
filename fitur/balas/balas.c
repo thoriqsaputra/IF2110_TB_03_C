@@ -4,16 +4,16 @@
 #include <stdlib.h>
 
 /* ********* FITUR BALASAN ********* */
-int BalasKicauan(ListDinKicauan *lk, int IDKicauan, int IDBalasan, currentUser *CU, ListUserStatik *LU, ListTree *lt, Graph *graph)
+int BalasKicauan(ListDinKicauan lk, int IDKicauan, int IDBalasan, currentUser CU, ListUserStatik *LU, ListTree *lt, Graph graph)
 {
 
     // KAMUS LOKAL
     int idx = IDX_UNDEF, UserIDCurrent, UserID;
 
     // Mencari kicauan dengan IDKicauan
-    for (int i = 0; i < CAPACITYKICAUAN(*lk); i++)
+    for (int i = 0; i < CAPACITYKICAUAN(lk); i++)
     {
-        if (IDKICAUAN(ELMTKICAUAN(*lk, i)) == IDKicauan)
+        if (IDKICAUAN(ELMTKICAUAN(lk, i)) == IDKicauan)
         {
             idx = i;
             break;
@@ -38,7 +38,7 @@ int BalasKicauan(ListDinKicauan *lk, int IDKicauan, int IDBalasan, currentUser *
     // Mencari ID user untuk validasi pembalasan
     if (IDBalasan == -1)
     {
-        Word nama = AUTHORKICAUAN(ELMTKICAUAN(*lk, idx));
+        Word nama = AUTHORKICAUAN(ELMTKICAUAN(lk, idx));
         UserID = getUserId(nama, *LU);
     }
     else
@@ -47,9 +47,9 @@ int BalasKicauan(ListDinKicauan *lk, int IDKicauan, int IDBalasan, currentUser *
         Word nama = AuthorBalasan(*balasanT);
         UserID = getUserId(nama, *LU);
     }
-    UserIDCurrent = getUserIdCurrent(*CU, *LU);
+    UserIDCurrent = CU.idUser;
     // Jika bukan teman dan akun tersebut privat
-    if (isTeman(graph, UserIDCurrent, UserID) == false && JENIS_USER(*LU, UserID) == 0 && UserID != UserIDCurrent)
+    if (isTeman(&graph, UserIDCurrent, UserID) == false && JENIS_USER(*LU, UserID) == 0 && UserID != UserIDCurrent)
     {
         printf("Wah, akun tersebut merupakan akun privat dan anda belum berteman akun tersebut!\n");
         return 3;
@@ -222,26 +222,26 @@ KICAUAN *getKicauan(ListDinKicauan LD, int IDKicuan)
     return NULL;
 }
 
-void DisplayBalasan(int idKicauan, ListTree lt, ListUserStatik LU, currentUser CU, ListDinKicauan LD, Graph graph)
+void DisplayBalasan(int idKicauan, ListTree lt, ListUserStatik *LU, currentUser CU, ListDinKicauan LD, Graph graph)
 {
 
     KICAUAN *kicau = getKicauan(LD, idKicauan); // Mendapatkan kicauan menggunakana ID
 
-    int idUserCurrent = getUserIdCurrent(CU, LU);
+    int idUserCurrent = CU.idUser;
 
     if (kicau == NULL)
     { // Jika tidak terdapat Kicauan dengan id yang diminta
         printf("Tidak terdapat kicauan dengan id tersebut!\n");
     }
     else
-    {                                                             // Jika terdapat kicauan dengan id yang diminta
-        int idUserKicauan = getUserId(AUTHORKICAUAN(*kicau), LU); // Mendapatkan id user kicauan
+    {                                                                // Jika terdapat kicauan dengan id yang diminta
+        int idUserKicauan = getUserId(AUTHORKICAUAN(*kicau), (*LU)); // Mendapatkan id user kicauan
         TreeNode *kicauanNode = searchListTree(lt, idKicauan);
         if (kicauanNode == NULL || kicauanNode->firstChild == NULL)
         { // Jika kicauan tersebut belum pernah dibalas maka tidak akan ada di tree
             printf("Belum terdapat balasan apapun pada kicauan tersebut. Yuk balas kicauan tersebut!\n");
         }
-        else if (isTeman(&graph, idUserCurrent, idUserKicauan) == false && JENIS_USER(LU, idUserKicauan) == 0)
+        else if (isTeman(&graph, idUserCurrent, idUserKicauan) == false && JENIS_USER((*LU), idUserKicauan) == 0)
         { // Jika current user dan user kicauan bukan teman dan user kicauan privat
             printf("Wah, kicauan tersebut dibuat oleh pengguna dengan akun privat!\n");
         }
@@ -249,7 +249,7 @@ void DisplayBalasan(int idKicauan, ListTree lt, ListUserStatik LU, currentUser C
         { // GO THROUGHHHH ALLL
             // Memanggil fungsi rekursif untuk print balasan
             TreeNode *current = searchListTree(lt, idKicauan);
-            DisplayBalasanRecursive(current, 0, LU, idUserCurrent, graph);
+            DisplayBalasanRecursive(current, 0, (*LU), idUserCurrent, graph);
         }
     }
 }
@@ -260,7 +260,7 @@ void HapusBalasan(ListUserStatik *LU, currentUser *CU, int IDKicauan, int IDBala
     BALASAN *balas = findBalasan(*LT, IDKicauan, IDBalasan);
     int idCurrentUser = getUserIdCurrent(*CU, *LU);
 
-    if (balas = NULL)
+    if (balas == NULL)
     {
         printf("Balasan tidak ditemukan\n");
     }

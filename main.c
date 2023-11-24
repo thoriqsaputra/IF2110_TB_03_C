@@ -21,7 +21,7 @@
 // - Utas ( on progress )
 
 // command run sementara
-// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/utas.c inisialisasi/pengguna/pengguna.c inisialisasi/kicauan/kicauan.c inisialisasi/balasan/balasan.c fitur/drafKicauan/drafKicauan.c fitur/balas/balas.c fitur/teman/teman.c Lib/globalFunction.c
+// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/utas.c inisialisasi/pengguna/pengguna.c inisialisasi/kicauan/kicauan.c inisialisasi/balasan/balasan.c fitur/drafKicauan/drafKicauan.c fitur/balas/balas.c fitur/teman/teman.c Lib/globalFunction.c fitur/load/loadnsave.c
 int main()
 {
     printf(".______    __    __  .______      .______    __  .______      \n");
@@ -190,6 +190,52 @@ int main()
             STARTWORDINPUT();
             Word idkicau = currentWord;
             likeKicauanByID(&LKD, wordToInt(idkicau), &GP, CU, &LU);
+        }
+        else if (isWordEqual(command, balasCmd))
+        {
+            STARTWORDINPUT();
+            // Membaca ID yang dibalas ID balasan
+            Word ID = currentWord;
+            int currentResult = 0;
+            int idkicau = 0;
+            int idbalas = 0;
+            boolean isNegative = false;
+            for (int i = 0; i < ID.Length; i++)
+            {
+                if (ID.TabWord[i] == '-')
+                {
+                    isNegative = true;
+                }
+                else if (ID.TabWord[i] == ' ')
+                {
+                    if (isNegative)
+                    {
+                        currentResult = -currentResult;
+                        isNegative = false;
+                    }
+                    // Menyimpan ID yang dibalas
+                    idkicau = currentResult;
+                    currentResult = 0;
+                }
+                else
+                {
+                    currentResult = currentResult * 10 + (ID.TabWord[i] - '0');
+                }
+            }
+            if (isNegative)
+            {
+                currentResult = -currentResult;
+            }
+            // Menyimpan ID Balasan
+            idbalas = currentResult;
+
+            BalasKicauan(LKD, idkicau, idbalas, CU, &LU, &LT, GP);
+        }
+        else if (isWordEqual(command, balasanCmd))
+        {
+            STARTWORDINPUT();
+            int idkicau = wordToInt(currentWord);
+            DisplayBalasan(idkicau, LT, &LU, CU, LKD, GP);
         }
         else
         {

@@ -101,7 +101,7 @@ void popDraf(DrafKicauan *s, Draf *x)
 }
 
 // Command BUAT_DRAF
-void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf *l)
+void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf *l, ListDinKicauan *LK)
 {
     Word hapus = {"HAPUS", 5};
     Word simpan = {"SIMPAN", 6};
@@ -141,8 +141,12 @@ void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf *l)
     }
     else if (isWordEqual(pil, terbit))
     {
-        // TODO
-        // Masuk ke fungsi terbitnya kicauan
+        KICAUAN LUKser;
+        loadKicauanUser(*LK, &LUKser, u);
+        kicaukanDraf(LK, &LUKser, draf.text, u);
+        Draf temp;
+        popDraf(s, &temp);
+        deleteDrafById(l, temp.id);
         printf("Selamat! Draf kicauan telah diterbitkan!\n");
     }
     else
@@ -152,7 +156,7 @@ void buatDraf(DrafKicauan *s, currentUser u, ListDinDraf *l)
 }
 
 // Command LIHAT_DRAF
-void lihatDraf(DrafKicauan *s, ListDinDraf *l, currentUser u)
+void lihatDraf(DrafKicauan *s, ListDinDraf *l, currentUser u, ListDinKicauan *LK)
 {
     if (isEmptyDraf(*s))
     {
@@ -218,8 +222,12 @@ void lihatDraf(DrafKicauan *s, ListDinDraf *l, currentUser u)
             }
             else if (isWordEqual(pil, terbit))
             {
-                // TODO
-                // Masuk ke fungsi terbitnya kicauan
+                KICAUAN LUKser;
+                Draf temp;
+                popDraf(s, &temp);
+                deleteDrafById(l, temp.id);
+                loadKicauanUser(*LK, &LUKser, u);
+                kicaukanDraf(LK, &LUKser, temp.text, u);
                 printf("Selamat! Draf kicauan telah diterbitkan!\n");
             }
             else if (isWordEqual(pil, kembali))

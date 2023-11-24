@@ -440,7 +440,7 @@ void hapusUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u)
                     deleteAtListLinUtas(&LU, idx - 1, &val);
                     printf("Kicauan sambungan berhasil dihapus!\n");
                 }
-                LD->buffer[i] = LU;
+                LD->buffer[idUtas] = LU;
             }
         }
     }

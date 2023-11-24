@@ -273,6 +273,46 @@ void displayListLinUtas(ListLinUtas l)
     }
 }
 
+boolean isuserauthor(ListDinUtas LD, int idutas, currentUser cu){
+    Word user;
+    boolean check;
+    int i;
+    ListLinUtas LU;
+
+    check = false;
+    LU = getlistUtasbyid(LD,idutas);
+    if (LU != NULL){
+        if(isWordEqual(LU->info.author,cu.nama)){
+            check = true;
+        }
+    }
+    return check;
+}
+
+ListLinUtas getlistUtasbyid(ListDinUtas LD, int idutas){
+    int capacity,i;
+    boolean found;
+    ListLinUtas LU;
+
+    capacity = LD.capacity;
+    found = false;
+    while (i < capacity && !found){
+        if(ELMTUTAS(LD,idutas)->idUtas == idutas){
+            found = true;
+            LU = LD.buffer[i];
+        }
+        else{
+            i++;
+        }
+    }
+    if (found){
+        return LU;
+    }
+    else {
+        return NULL;
+    }
+}
+
 void buatUtas(int idKicau, ListDinUtas *LD, ListDinKicauan LK, currentUser u)
 {
     ListDinKicauan LKU;
@@ -320,30 +360,35 @@ void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u)
 {
     ListLinUtas LLU;
     int i;
-    for (i = 0; i < (*LD).nEff; i++)
-    {
-        if (LD->buffer[i]->idUtas == idUtas && isWordEqual(LD->buffer[i]->info.author, u.nama))
-        {
-            LLU = LD->buffer[i];
+
+    LLU = getlistUtasbyid(*LD,idUtas);
+    if (LLU == NULL){
+        printf("Utas tidak ditemukan!\n");
+    }
+    else{
+        if (!isuserauthor(*LD,idutas,u)){
+            printf("Anda tidak bisa menyambung utas ini!\n");
         }
+        else{
+            if (!(idx > 0 && idx < lengthListLinUtas(LLU)))
+            {
+                printf("Index terlalu tinggi!\n");
+            }
+            else
+            {
+                printf("Masukkan kicauan:\n");
+                STARTWORDINPUT();
+                Word masukan = currentWord;
+                Utas new = {lengthListLinUtas(LLU) + 1,
+                            masukan,
+                            u.nama,
+                            grabCurrentDateTime()};
+                insertAtListLinUtas(&LLU, new, idx, LLU->idKicau, LLU->idUtas);
+                printf("Utas berhasil disambung!\n");
+            }
+            LD->buffer[i] = LLU;
+        } 
     }
-    if (!(idx > 0 && idx < lengthListLinUtas(LLU)))
-    {
-        printf("Index terlalu tinggi!\n");
-    }
-    else
-    {
-        printf("Masukkan kicauan:\n");
-        STARTWORDINPUT();
-        Word masukan = currentWord;
-        Utas new = {lengthListLinUtas(LLU) + 1,
-                    masukan,
-                    u.nama,
-                    grabCurrentDateTime()};
-        insertAtListLinUtas(&LLU, new, idx, LLU->idKicau, LLU->idUtas);
-        printf("Utas berhasil disambung!\n");
-    }
-    LD->buffer[i] = LLU;
 }
 
 void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUser u)

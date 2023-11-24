@@ -87,6 +87,10 @@ void addLinkedUtas(ListDinUtas *l, ListLinUtas lkd);
 boolean isFullOfLinkedUtas(ListDinUtas l);
 /* return true jika penuh */
 
+boolean isuserauthor(ListDinUtas LD, int idutas, currentUser cu);
+
+ListLinUtas getlistUtasbyid(ListDinUtas LD, int idutas); /*return NULL jika tidak ditemukan*/
+
 void deleteLinkedDrafByIdUtas(ListDinUtas *l, int idKicauan);
 
 /* ********** LIST LINIER UTAS ********** */

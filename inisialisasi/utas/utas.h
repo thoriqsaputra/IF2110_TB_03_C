@@ -121,7 +121,7 @@ void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u);
 
 void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUser u);
 
-void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK, Graph g, currentUser u, ListUserStatik LU);
+void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK, Graph g, currentUser u, ListUserStatik *LU);
 
 /* ********** NODE UTAS ********** */
 

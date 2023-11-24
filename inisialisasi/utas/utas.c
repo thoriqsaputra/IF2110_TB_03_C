@@ -444,7 +444,7 @@ void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUse
     }
 }
 
-void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK, Graph g, currentUser u, ListUserStatik LU)
+void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK, Graph g, currentUser u, ListUserStatik *LU)
 {
     ListLinUtas LLU = getlistUtasbyid(LD, idUtas);
     if (LLU == NULL)
@@ -454,9 +454,9 @@ void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK, Graph g, currentUs
     else
     {
         Word author = LLU->info.author;
-        int idAuthor = getUserId(author, LU);
+        int idAuthor = getUserId(author, *LU);
 
-        if (isTeman(&g, u.idUser, idAuthor) || LU.buffer[idAuthor].jenisAkun == 1)
+        if (isTeman(&g, u.idUser, idAuthor) || (*LU).buffer[idAuthor].jenisAkun == 1)
         {
             displayKicauan(LK.contentKicauan[LLU->idKicau]);
             displayListLinUtas(LLU);

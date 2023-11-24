@@ -5,7 +5,7 @@
 // #include "Lib/ganti_profil/gantiprofil.h"
 #include "inisialisasi/pengguna/pengguna.h"
 #include "inisialisasi/draf/draf.h"
-#include "inisialisasi/utas/newUtas.h"
+#include "inisialisasi/utas/utas.h"
 #include "fitur/drafKicauan/drafKicauan.h"
 #include "inisialisasi/kicauan/kicauan.h"
 
@@ -18,8 +18,7 @@
 // - Kicauan (on progress)
 
 // command run sementara
-// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/newUtas.c inisialisasi/pengguna/pengguna.c inisialisasi/kicauan/kicauan.c fitur/drafKicauan/drafKicauan.c Lib/globalFunction.c
-
+// gcc -o main main.c inisialisasi/draf/draf.c inisialisasi/utas/utas.c inisialisasi/pengguna/pengguna.c inisialisasi/kicauan/kicauan.c fitur/drafKicauan/drafKicauan.c fitur/teman/teman.c Lib/globalFunction.c
 int main()
 {
     printf(".______    __    __  .______      .______    __  .______      \n");

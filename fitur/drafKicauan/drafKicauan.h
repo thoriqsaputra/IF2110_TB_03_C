@@ -8,17 +8,17 @@
 #include "../../inisialisasi/draf/draf.h"
 #include "../../inisialisasi/pengguna/pengguna.h"
 
-typedef struct node *Address;
+typedef struct node *AddressDraf;
 typedef struct node
 {
     Draf info;
-    Address next;
+    AddressDraf next;
 } Node;
 
 /* Type stack dengan ciri Top: */
 typedef struct
 {
-    Address addrTop; /* alamat Top: elemen puncak */
+    AddressDraf addrTop; /* alamat Top: elemen puncak */
 } DrafKicauan;
 
 /* Selektor */
@@ -28,7 +28,7 @@ typedef struct
 #define TOPDRAF(s) (s).addrTop->info
 
 /* Prototype manajemen memori */
-Address newNodeDraf(Draf x);
+AddressDraf newNodeDraf(Draf x);
 /* Mengembalikan alamat sebuah Node hasil alokasi dengan info = x,
    atau
    NULL jika alokasi gagal */

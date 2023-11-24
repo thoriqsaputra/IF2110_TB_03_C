@@ -26,9 +26,9 @@
 //     }
 // }
 
-Address newNodeDraf(Draf x)
+AddressDraf newNodeDraf(Draf x)
 {
-    Address P = (Address)malloc(sizeof(Draf));
+    AddressDraf P = (AddressDraf)malloc(sizeof(Draf));
     if (P != NULL)
     {
         INFODRAF(P) = x;
@@ -48,7 +48,7 @@ boolean isEmptyDraf(DrafKicauan s)
 
 int lengthDraf(DrafKicauan s)
 {
-    Address P = ADDR_TOPDRAF(s);
+    AddressDraf P = ADDR_TOPDRAF(s);
     int count = 0;
     while (P != NULL)
     {
@@ -76,7 +76,7 @@ void DisplayDraf(DrafKicauan s)
 
 void pushDraf(DrafKicauan *s, Draf x)
 {
-    Address P = newNodeDraf(x);
+    AddressDraf P = newNodeDraf(x);
     if (P != NULL)
     {
         NEXTDRAF(P) = ADDR_TOPDRAF(*s);
@@ -86,7 +86,7 @@ void pushDraf(DrafKicauan *s, Draf x)
 
 void popDraf(DrafKicauan *s, Draf *x)
 {
-    Address P = ADDR_TOPDRAF(*s);
+    AddressDraf P = ADDR_TOPDRAF(*s);
     *x = INFODRAF(P);
     if (NEXTDRAF(P) == NULL)
     {

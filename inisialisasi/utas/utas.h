@@ -8,6 +8,7 @@
 #include "../../ADT/wordmachine.h"
 #include "../../inisialisasi/pengguna/pengguna.h"
 #include "../../inisialisasi/kicauan/kicauan.h"
+#include "../../fitur/teman/teman.h"
 #include "../../Lib/globalFunction.h"
 
 /* Definisi elemen dan koleksi objek */
@@ -120,7 +121,7 @@ void sambungUtas(ListDinUtas *LD, int idUtas, int idx, currentUser u);
 
 void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUser u);
 
-void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK);
+void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK, Graph g, currentUser u, ListUserStatik LU);
 
 /* ********** NODE UTAS ********** */
 

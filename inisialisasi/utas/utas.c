@@ -409,22 +409,28 @@ void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUse
     int i;
     ListLinUtas LU;
 
-    LU = getlistUtasbyid(*LD,idUtas);
-    if(LU == NULL){
+    LU = getlistUtasbyid(*LD, idUtas);
+    if (LU == NULL)
+    {
         printf("Utas tidak ditemukan\n");
     }
-    else{
-        if(!isuserauthor(*LD,idUtas,u)){
+    else
+    {
+        if (!isuserauthor(*LD, idUtas, u))
+        {
             printf("Anda tidak bisa menghapus kicauan dalam utas ini!\n");
         }
-        else{
-            if (idx == 0){
+        else
+        {
+            if (idx == 0)
+            {
                 printf("Anda tidak bisa menghapus kicauan utama!\n");
             }
-            else{
+            else
+            {
                 if (!(idx >= 0 && idx < lengthListLinUtas(LLU)))
                 {
-                    printf("Kicauan sambungan dengan index %d tidak ditemukan pada utas\n",idx);
+                    printf("Kicauan sambungan dengan index %d tidak ditemukan pada utas\n", idx);
                 }
                 else
                 {
@@ -433,28 +439,31 @@ void hapusUtas(ListLinUtas LLU, ListDinUtas *LD, int idUtas, int idx, currentUse
                     printf("Kicauan sambungan berhasil dihapus!\n");
                 }
                 LD->buffer[i] = LLU;
-            } 
+            }
         }
     }
 }
 
-void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK)
+void cetakUtas(ListDinUtas LD, int idUtas, ListDinKicauan LK, Graph g, currentUser u, ListUserStatik LU)
 {
-    for (int i = 0; i < LD.nEff; i++)
+    ListLinUtas LLU = getlistUtasbyid(LD, idUtas);
+    if (LLU == NULL)
     {
-        if (idUtas == LD.buffer[i]->idUtas)
+        printf("Utas tidak ditemukan!\n");
+    }
+    else
+    {
+        Word author = LLU->info.author;
+        int idAuthor = getUserId(author, LU);
+
+        if (isTeman(&g, u.idUser, idAuthor) || LU.buffer[idAuthor].jenisAkun == 1)
         {
-            KICAUAN k;
-            for (int j = 0; j < LK.nEffKicauan; j++)
-            {
-                if (LK.contentKicauan[j].ID == LD.buffer[i]->idKicau)
-                {
-                    k = LK.contentKicauan[j];
-                }
-            }
-            displayKicauan(k);
-            printf("\n");
-            displayListLinUtas(LD.buffer[i]);
+            displayKicauan(LK.contentKicauan[LLU->idKicau]);
+            displayListLinUtas(LLU);
+        }
+        else
+        {
+            printf("Akun yang membuat utas ini adalah akun privat!\n Ikuti dahulu akun ini untuk melihat utasnya!\n");
         }
     }
 }
